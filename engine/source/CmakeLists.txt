@@ -1,0 +1,9 @@
+file(GLOB_RECURSE DAO_EDITOR_SRC 
+    "*.h"
+    "*.cpp"
+)
+
+add_executable(DaoEditor ${DAO_EDITOR_SRC})
+
+target_link_libraries(DaoEditor PRIVATE assimp glfw)
+
