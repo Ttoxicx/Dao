@@ -1,6 +1,7 @@
 #include <iostream>
 #include <assimp/Importer.hpp>
 #include <GLFW/glfw3.h>
+#include <vulkan/vulkan.h>
 
 int main() {
 	auto importer = Assimp::Importer();
