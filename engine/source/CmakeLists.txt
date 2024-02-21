@@ -5,19 +5,8 @@ file(GLOB_RECURSE DAO_EDITOR_SRC
 
 add_executable(DaoEditor ${DAO_EDITOR_SRC})
 
-set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../third_party")
-set(VULKAN_DIR "${THIRD_PARTY_DIR}/vulkan")
-set(VULKAN_INCLUDE_DIR "${VULKAN_DIR}/include")
-set(VULKAN_BIN_DIR "${VULKAN_DIR}/bin")
-set(VULKAN_LIB_DIR "${VULKAN_DIR}/lib")
-set(VULKAN_LIB "vulkan-1.lib")
-
 target_include_directories(DaoEditor PRIVATE ${VULKAN_INCLUDE_DIR})
 
-if(WIN32)
-    target_link_directories(DaoEditor PRIVATE ${VULKAN_LIB_DIR}/win)
-elseif(UNIX)
-    # TODO(Unix/Linux)
-endif()
+target_link_directories(DaoEditor PRIVATE ${VULKAN_LIB_DIR})
 
 target_link_libraries(DaoEditor PRIVATE ${VULKAN_LIB} assimp glfw)
