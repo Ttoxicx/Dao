@@ -2,6 +2,7 @@
 #include <assimp/Importer.hpp>
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
+#include "runtime/core/math/math_headers.h"
 
 int main() {
 	auto importer = Assimp::Importer();
@@ -26,6 +27,12 @@ int main() {
 	if (!window) {
 		std::cout << "Window Create Failed" << std::endl;
 		return -1;
+	}
+
+	{
+		std::cout << "core math test" << std::endl;
+		Dao::Vector3 vec{ 1, 1, 1 };
+		std::cout << "Dao::Vector3 x: " << vec.x<<" y: " << vec.y <<" z: " << vec.z << std::endl;
 	}
 
 	while (!glfwWindowShouldClose(window)) {

@@ -10,3 +10,5 @@ target_include_directories(DaoEditor PRIVATE ${VULKAN_INCLUDE_DIR})
 target_link_directories(DaoEditor PRIVATE ${VULKAN_LIB_DIR})
 
 target_link_libraries(DaoEditor PRIVATE ${VULKAN_LIB} assimp glfw)
+
+target_link_libraries(DaoEditor PRIVATE DaoRuntime)
