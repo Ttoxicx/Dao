@@ -26,9 +26,6 @@ namespace Dao {
 		virtual void initialize(RHIInitInfo initInfo) = 0;
 		virtual void prepareContext() = 0;
 
-		// ????????? Todo(this function should not be there)
-		virtual void isPointLightShadowEnabled() = 0;
-
 		// allocate 
 		virtual bool allocateCommandBuffers(
 			const RHICommandBufferAllocateInfo* pAllocateInfo,
@@ -375,6 +372,9 @@ namespace Dao {
 
 		// semaphores
 		virtual RHISemaphore*& getTextureCopySemaphore(uint32_t index) = 0;
+
+		// 
+		virtual void isPointLightShadowEnabled() = 0;
 	};
 
 	inline RHI::~RHI() = default;
