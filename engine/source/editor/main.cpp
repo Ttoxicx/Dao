@@ -3,6 +3,13 @@
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 #include "runtime/core/math/math_headers.h"
+#include "runtime/core/base/macro.h"
+
+namespace Dao {
+	void logTest() {
+		LOG_ERROR("engine is still in initial stage")
+	}
+}
 
 int main() {
 	auto importer = Assimp::Importer();
@@ -34,11 +41,13 @@ int main() {
 		Dao::Vector3 vec{ 1, 1, 1 };
 		std::cout << "Dao::Vector3 x: " << vec.x<<" y: " << vec.y <<" z: " << vec.z << std::endl;
 	}
-
+	Dao::g_runtime_global_context.startSystem();
+	Dao::logTest();
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 	}
 
+	Dao::g_runtime_global_context.shutdownSystem();
 	glfwTerminate();
 	return 0;
 }
