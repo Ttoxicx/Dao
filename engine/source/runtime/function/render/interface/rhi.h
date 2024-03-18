@@ -2,6 +2,7 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#include <vma/vk_mem_alloc.h>
 
 #include <memory>
 #include <vector>
@@ -102,6 +103,23 @@ namespace Dao {
 			void* data = nullptr,
 			int datasize = 0
 		) = 0;
+		virtual bool createBufferVMA(
+			VmaAllocator allocator,
+			const RHIBufferCreateInfo* pBufferCreateInfo,
+			const VmaAllocationCreateInfo* pAllocationCreateInfo,
+			RHIBuffer*& pBuffer,
+			VmaAllocation* pAllocation,
+			VmaAllocationInfo* pAllocationInfo
+		) = 0;
+		virtual bool createBufferWithAligmentVMA(
+			VmaAllocator allocator,
+			const RHIBufferCreateInfo* pBufferCreateInfo,
+			const VmaAllocationCreateInfo* pAllocationCreateInfo,
+			RHIDeviceSize minAligment,
+			RHIBuffer*& pBuffer,
+			VmaAllocation* pAllocation,
+			VmaAllocationInfo* pAllocationInfo
+		) = 0;
 		virtual void copyBuffer(
 			RHIBuffer* srcBuffer,
 			RHIBuffer* dstBuffer,
@@ -130,6 +148,26 @@ namespace Dao {
 			uint32_t layout_count,
 			uint32_t miplevels,
 			RHIImageView*& image_view
+		) = 0;
+		virtual void createGlobalImage(
+			RHIImage*& image,
+			RHIImageView*& image_view,
+			VmaAllocation& image_allocation,
+			uint32_t texture_image_width,
+			uint32_t texture_image_height,
+			void* texture_image_pixels,
+			RHIFormat texture_image_format,
+			uint32_t miplevels = 0
+		) = 0;
+		virtual void createCubeMap(
+			RHIImage*& image,
+			RHIImageView*& image_view,
+			VmaAllocation& image_allocation,
+			uint32_t texture_image_width,
+			uint32_t texture_image_height,
+			std::array<void*, 6> texture_image_pixels,
+			RHIFormat texture_image_format,
+			uint32_t miplevels
 		) = 0;
 		virtual bool createFramebuffer(
 			const RHIFramebufferCreateInfo* pCreateInfo,

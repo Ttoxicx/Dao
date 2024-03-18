@@ -3,6 +3,7 @@
 #include "runtime/function/render/interface/rhi.h"
 #include "runtime/function/render/interface/vulkan/vulkan_rhi_res.h"
 
+#include <vma/vk_mem_alloc.h>
 #include <vulkan/vulkan.h>
 
 #include <functional>
@@ -90,6 +91,23 @@ namespace Dao {
 			void* data = nullptr,
 			int datasize = 0
 		) override;
+		bool createBufferVMA(
+			VmaAllocator allocator,
+			const RHIBufferCreateInfo* pBufferCreateInfo,
+			const VmaAllocationCreateInfo* pAllocationCreateInfo,
+			RHIBuffer*& pBuffer,
+			VmaAllocation* pAllocation,
+			VmaAllocationInfo* pAllocationInfo
+		) override;
+		bool createBufferWithAligmentVMA(
+			VmaAllocator allocator,
+			const RHIBufferCreateInfo* pBufferCreateInfo,
+			const VmaAllocationCreateInfo* pAllocationCreateInfo,
+			RHIDeviceSize minAligment,
+			RHIBuffer*& pBuffer,
+			VmaAllocation* pAllocation,
+			VmaAllocationInfo* pAllocationInfo
+		) override;
 		void copyBuffer(
 			RHIBuffer* srcBuffer,
 			RHIBuffer* dstBuffer,
@@ -118,6 +136,26 @@ namespace Dao {
 			uint32_t layout_count,
 			uint32_t miplevels,
 			RHIImageView*& image_view
+		) override;
+		void createGlobalImage(
+			RHIImage*& image,
+			RHIImageView*& image_view,
+			VmaAllocation& image_allocation,
+			uint32_t texture_image_width,
+			uint32_t texture_image_height,
+			void* texture_image_pixels,
+			RHIFormat texture_image_format,
+			uint32_t miplevels = 0
+		) override;
+		void createCubeMap(
+			RHIImage*& image,
+			RHIImageView*& image_view,
+			VmaAllocation& image_allocation,
+			uint32_t texture_image_width,
+			uint32_t texture_image_height,
+			std::array<void*, 6> texture_image_pixels,
+			RHIFormat texture_image_format,
+			uint32_t miplevels
 		) override;
 		bool createFramebuffer(
 			const RHIFramebufferCreateInfo* pCreateInfo,
@@ -419,6 +457,9 @@ namespace Dao {
 		VkCommandBuffer						m_vk_current_command_buffer;
 		uint32_t							m_current_swapchain_image_index;
 
+		// asset allocator
+		VmaAllocator						m_assets_allocator;
+
 		// function pointers
 		PFN_vkCmdBeginDebugUtilsLabelEXT	f_vkCmdBeginDebugUtilsLabelEXT;
 		PFN_vkCmdEndDebugUtilsLabelEXT		f_vkCmdEndDebugUtilsLabelEXT;
@@ -440,25 +481,25 @@ namespace Dao {
 		PFN_vkCmdClearAttachments			f_vkCmdClearAttachments;
 		
 	private:
-		const std::vector<char const*>		m_validation_layers{ "VK_LAYER_KHRONOS_validation" };
-		uint32_t							m_vulkan_api_version{ VK_API_VERSION_1_0 };
-		std::vector<char const*>			m_device_extensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+		const std::vector<char const*>		_validation_layers{ "VK_LAYER_KHRONOS_validation" };
+		uint32_t							_vulkan_api_version{ VK_API_VERSION_1_0 };
+		std::vector<char const*>			_device_extensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 		
 		// default sampler cache
-		RHISampler*							m_linear_sampler = nullptr;
-		RHISampler*							m_nearest_sampler = nullptr;
-		std::map<uint32_t, RHISampler*>		m_mipmap_sampler_map;
+		RHISampler*							_linear_sampler = nullptr;
+		RHISampler*							_nearest_sampler = nullptr;
+		std::map<uint32_t, RHISampler*>		_mipmap_sampler_map;
 
 	private:
-		bool								m_enable_validation_layers{ true };
-		bool								m_enable_debug_utils_lable{ true };
-		bool								m_enable_point_light_shadow{ true };
+		bool								_enable_validation_layers{ true };
+		bool								_enable_debug_utils_lable{ true };
+		bool								_enable_point_light_shadow{ true };
 
 		// used in descriptor pool creation
-		uint32_t							m_max_vertex_blending_mesh_count{ 256 };
-		uint32_t							m_max_material_count{ 256 };
+		uint32_t							_max_vertex_blending_mesh_count{ 256 };
+		uint32_t							_max_material_count{ 256 };
 
-		VkDebugUtilsMessengerEXT			m_debug_messenger = nullptr;
+		VkDebugUtilsMessengerEXT			_debug_messenger = nullptr;
 
 	private:
 		void createInstance();
