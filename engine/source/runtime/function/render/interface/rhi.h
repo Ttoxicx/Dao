@@ -24,17 +24,17 @@ namespace Dao {
 	class RHI {
 	public:
 		virtual ~RHI() = 0;
-		virtual void initialize(RHIInitInfo initInfo) = 0;
+		virtual void initialize(RHIInitInfo init_info) = 0;
 		virtual void prepareContext() = 0;
 
 		// allocate 
 		virtual bool allocateCommandBuffers(
-			const RHICommandBufferAllocateInfo* pAllocateInfo,
-			RHICommandBuffer*& pCommandBuffers
+			const RHICommandBufferAllocateInfo* allocate_info,
+			RHICommandBuffer*& command_buffers
 		) = 0;
 		virtual bool allocateDescriptorSets(
-			const RHIDescriptorSetAllocateInfo* pAllocateInfo,
-			RHIDescriptorSet*& pDescriptorSets
+			const RHIDescriptorSetAllocateInfo* allocate_info,
+			RHIDescriptorSet*& descriptor_sets
 		) = 0;
 
 		// create
@@ -44,48 +44,48 @@ namespace Dao {
 		virtual void createFramebufferImageView() = 0;
 		virtual void createCommandPool() = 0;
 		virtual bool createCommandPool(
-			const RHICommandPoolCreateInfo* pcreateInfo, 
-			RHICommandPool*& pCommandPool
+			const RHICommandPoolCreateInfo* create_info, 
+			RHICommandPool*& command_pool
 		) = 0;
 		virtual bool createDescriptorPool(
-			const RHIDescriptorPoolCreateInfo* pCreateInfo,
-			RHIDescriptorPool*& pDescriptorPool
+			const RHIDescriptorPoolCreateInfo* create_info,
+			RHIDescriptorPool*& descriptor_pool
 		) = 0;
 		virtual bool createDescriptorSetLayout(
-			const RHIDescriptorSetLayoutCreateInfo* pCreateInfo,
-			RHIDescriptorSetLayout*& pSetLayout
+			const RHIDescriptorSetLayoutCreateInfo* create_info,
+			RHIDescriptorSetLayout*& set_layout
 		) = 0;
 		virtual bool createGraphicsPipelines(
-			RHIPipelineCache* pipelineCache,
-			uint32_t createInfoCount,
-			const RHIGraphicsPipelineCreateInfo* pCreateInfos,
-			const RHIPipeline*& pPipelines
+			RHIPipelineCache* pipeline_cache,
+			uint32_t create_info_count,
+			const RHIGraphicsPipelineCreateInfo* create_infos,
+			const RHIPipeline*& pipelines
 		) = 0;
 		virtual bool createComputePipelines(
-			RHIPipelineCache* pipelineCache,
-			uint32_t createInfoCount,
-			const RHIComputePipelineCreateInfo* pCreateInfos,
-			RHIPipeline* pPipelines
+			RHIPipelineCache* pipeline_cache,
+			uint32_t create_info_count,
+			const RHIComputePipelineCreateInfo* create_infos,
+			RHIPipeline* pipelines
 		) = 0;
 		virtual bool createPipelineLayout(
-			const RHIPipelineLayoutCreateInfo* pCreateInfo,
-			RHIPipelineLayout*& pPipelineLayout
+			const RHIPipelineLayoutCreateInfo* create_info,
+			RHIPipelineLayout*& pipeline_layout
 		) = 0;
 		virtual bool createRenderPass(
-			const RHIRenderPassCreateInfo* pCreateInfo,
-			RHIRenderPass*& pRenderPass
+			const RHIRenderPassCreateInfo* create_info,
+			RHIRenderPass*& render_pass
 		) = 0;
 		virtual bool createSampler(
-			const RHISamplerCreateInfo* pCreateInfo,
-			RHISampler*& pSampler
+			const RHISamplerCreateInfo* create_info,
+			RHISampler*& sampler
 		) = 0;
 		virtual bool createSemaphore(
-			const RHISemaphoreCreateInfo* pCreateInfo,
-			RHISemaphore*& pSemaphore
+			const RHISemaphoreCreateInfo* create_info,
+			RHISemaphore*& semaphore
 		) = 0;
 		virtual bool createFence(
-			const RHIFenceCreateInfo* pcreateInfo,
-			RHIFence*& pFence
+			const RHIFenceCreateInfo* create_info,
+			RHIFence*& fence
 		) = 0;
 		virtual void createBuffer(
 			RHIDevice size,
@@ -105,26 +105,26 @@ namespace Dao {
 		) = 0;
 		virtual bool createBufferVMA(
 			VmaAllocator allocator,
-			const RHIBufferCreateInfo* pBufferCreateInfo,
-			const VmaAllocationCreateInfo* pAllocationCreateInfo,
-			RHIBuffer*& pBuffer,
-			VmaAllocation* pAllocation,
-			VmaAllocationInfo* pAllocationInfo
+			const RHIBufferCreateInfo* buffer_create_info,
+			const VmaAllocationCreateInfo* allocation_create_info,
+			RHIBuffer*& buffer,
+			VmaAllocation* allocation,
+			VmaAllocationInfo* allocation_info
 		) = 0;
 		virtual bool createBufferWithAligmentVMA(
 			VmaAllocator allocator,
-			const RHIBufferCreateInfo* pBufferCreateInfo,
-			const VmaAllocationCreateInfo* pAllocationCreateInfo,
-			RHIDeviceSize minAligment,
-			RHIBuffer*& pBuffer,
-			VmaAllocation* pAllocation,
-			VmaAllocationInfo* pAllocationInfo
+			const RHIBufferCreateInfo* buffer_create_info,
+			const VmaAllocationCreateInfo* allocation_create_info,
+			RHIDeviceSize min_aligment,
+			RHIBuffer*& buffer,
+			VmaAllocation* allocation,
+			VmaAllocationInfo* allocation_info
 		) = 0;
 		virtual void copyBuffer(
-			RHIBuffer* srcBuffer,
-			RHIBuffer* dstBuffer,
-			RHIDevice srcOffser,
-			RHIDeviceSize dstOffset,
+			RHIBuffer* src_buffer,
+			RHIBuffer* dst_buffer,
+			RHIDevice src_offser,
+			RHIDeviceSize dst_offset,
 			RHIDeviceSize size
 		) = 0;
 		virtual void createImage(
@@ -170,8 +170,8 @@ namespace Dao {
 			uint32_t miplevels
 		) = 0;
 		virtual bool createFramebuffer(
-			const RHIFramebufferCreateInfo* pCreateInfo,
-			RHIFramebuffer*& pFramebuffer
+			const RHIFramebufferCreateInfo* create_info,
+			RHIFramebuffer*& frame_buffer
 		) = 0;
 		virtual RHIShader* createShaderModule(const std::vector<unsigned char>& shader_code) = 0;
 		virtual RHISampler* getOrCreateDefaultSampler(RHIDefaultSamplerType type) = 0;
@@ -179,160 +179,160 @@ namespace Dao {
 
 		// command PFN
 		virtual bool waitForFencesPFN(
-			uint32_t fenceCount,
-			RHIFence* const* pFences,
-			RHIBool32 waitAll,
+			uint32_t fence_count,
+			RHIFence* const* fences,
+			RHIBool32 wait_all,
 			uint64_t timeout
 		) = 0;
 		virtual bool resetFencesPFN(
-			uint32_t fenceCount,
-			RHIFence* const* pFences
+			uint32_t fence_count,
+			RHIFence* const* fences
 		) = 0;
 		virtual bool resetCommandPoolPFN(
-			RHICommandPool* commandPool,
+			RHICommandPool* command_pool,
 			RHICommandPoolResetFlags flags
 		) = 0;
 		virtual bool beginCommandBufferPFN(
-			RHICommandBuffer* commandBuffer,
-			const RHICommandBufferBeginInfo* pBeginInfo
+			RHICommandBuffer* command_buffer,
+			const RHICommandBufferBeginInfo* begin_info
 		) = 0;
-		virtual bool endCommandBufferPFN(RHICommandBuffer* commandBuffer) = 0;
+		virtual bool endCommandBufferPFN(RHICommandBuffer* command_buffer) = 0;
 		virtual void cmdBeginRenderPassPFN(
-			RHICommandBuffer* commandBuffer,
-			const RHIRenderPassBeginInfo* pRenderPassBegin,
+			RHICommandBuffer* command_buffer,
+			const RHIRenderPassBeginInfo* render_pass_begin,
 			RHISubpassContents contents
 		) = 0;
 		virtual void cmdNextSubpassPFN(
-			RHICommandBuffer* commandBuffer,
+			RHICommandBuffer* command_buffer,
 			RHISubpassContents contents
 		) = 0;
-		virtual void cmdEndRenderPassPFN(RHICommandBuffer* commandBuffer) = 0;
+		virtual void cmdEndRenderPassPFN(RHICommandBuffer* command_buffer) = 0;
 		virtual void cmdBindPipelinePFN(
-			RHICommandBuffer* commandBuffer,
-			RHIPipelineBindPoint* pipelineBindPoint,
+			RHICommandBuffer* command_buffer,
+			RHIPipelineBindPoint* pipeline_bind_point,
 			RHIPipeline* pipeline
 		) = 0;
 		virtual void cmdSetViewportPFN(
-			RHICommandBuffer* commandBuffer,
-			uint32_t firstViewport,
-			uint32_t viewportCount,
-			const RHIViewport* pViewports
+			RHICommandBuffer* command_buffer,
+			uint32_t first_viewport,
+			uint32_t viewport_count,
+			const RHIViewport* viewports
 		) = 0;
 		virtual void cmdSetScissorPFN(
-			RHICommandBuffer* commandBuffer,
-			uint32_t firstScissor,
-			uint32_t scissorCount,
-			const RHIRect2D* pScissor
+			RHICommandBuffer* command_buffer,
+			uint32_t first_scissor,
+			uint32_t scissor_count,
+			const RHIRect2D* scissor
 		) = 0;
 		virtual void cmdBindVertexBuffersPFN(
-			RHICommandBuffer* commandBuffer,
-			uint32_t firstBinding,
-			uint32_t bindingCount,
-			RHIBuffer* const* pBuffers,
-			const RHIDeviceSize* pOffsets
+			RHICommandBuffer* command_buffer,
+			uint32_t first_binding,
+			uint32_t binding_count,
+			RHIBuffer* const* buffers,
+			const RHIDeviceSize* offsets
 		) = 0;
 		virtual void cmdBindIndexBufferPFN(
-			RHICommandBuffer* commandBuffer,
+			RHICommandBuffer* command_buffer,
 			RHIBuffer* buffer,
 			RHIDeviceSize offset,
-			RHIIndexType indexType
+			RHIIndexType index_type
 		) = 0;
 		virtual void cmdBindDescriptorSetsPFN(
-			RHICommandBuffer* commandBuffer,
-			RHIPipelineBindPoint pipelineBindPoint,
+			RHICommandBuffer* command_buffer,
+			RHIPipelineBindPoint pipeline_bind_point,
 			RHIPipelineLayout* layout,
-			uint32_t firstSet,
-			uint32_t descriptorSetCount,
-			const RHIDescriptorSet* const* pDescriptorSets,
-			uint32_t dynamicOffsetCount,
-			const uint32_t* pDynamicOffsets
+			uint32_t first_set,
+			uint32_t descriptor_set_count,
+			const RHIDescriptorSet* const* descriptor_sets,
+			uint32_t dynamic_offset_count,
+			const uint32_t* dynamic_offsets
 		) = 0;
 		virtual void cmdDrawIndexedPFN(
-			RHICommandBuffer* commandBuffer,
-			uint32_t indexCount,
-			uint32_t instanceCount,
-			uint32_t firstIndex,
-			int32_t vertexOffset,
-			uint32_t firstInstance
+			RHICommandBuffer* command_buffer,
+			uint32_t index_count,
+			uint32_t instance_count,
+			uint32_t first_index,
+			int32_t vertex_offset,
+			uint32_t first_instance
 		) = 0;
 		virtual void cmdClearAttachmentsPFN(
-			RHICommandBuffer* commandBuffer,
-			uint32_t attachmentCount,
-			const RHIClearAttachment* pAttachments,
-			uint32_t rectCount,
-			const RHIClearRect* pRects
+			RHICommandBuffer* command_buffer,
+			uint32_t attachment_count,
+			const RHIClearAttachment* attachments,
+			uint32_t rect_count,
+			const RHIClearRect* rects
 		) = 0;
 
 		// command
 		virtual bool beginCommandBuffer(
-			RHICommandBuffer* commandBuffer,
-			const RHICommandBufferBeginInfo* pBeginInfo
+			RHICommandBuffer* command_buffer,
+			const RHICommandBufferBeginInfo* begin_info
 		) = 0;
 		virtual void cmdCopyImageToBuffer(
-			RHICommandBuffer* commandBuffer,
-			RHIImage* srcImage,
-			RHIImageLayout* srtImageLayout,
-			RHIBuffer* dstBuffer,
-			uint32_t regionCount,
-			const RHIBufferImageCopy* pRegions
+			RHICommandBuffer* command_buffer,
+			RHIImage* src_image,
+			RHIImageLayout* src_image_layout,
+			RHIBuffer* dst_buffer,
+			uint32_t region_count,
+			const RHIBufferImageCopy* regions
 		) = 0;
 		virtual void cmdCopyImageToImage(
-			RHICommandBuffer* commandBuffer,
-			RHIImage* srcImage,
-			RHIImageAspectFlagBits srcFlag,
-			RHIImage* destImage,
-			RHIImageAspectFlagBits dstFlags,
+			RHICommandBuffer* command_buffer,
+			RHIImage* src_image,
+			RHIImageAspectFlagBits src_flags,
+			RHIImage* dest_image,
+			RHIImageAspectFlagBits dst_flags,
 			uint32_t width,
 			uint32_t height
 		) = 0;
 		virtual void cmdCopyBuffer(
-			RHICommandBuffer* commandBuffer,
-			RHIBuffer* srcBuffer,
-			RHIBuffer* dstBuffer,
-			uint32_t regionCount,
-			RHIBufferCopy* pRegions
+			RHICommandBuffer* command_buffer,
+			RHIBuffer* src_buffer,
+			RHIBuffer* dst_buffer,
+			uint32_t region_count,
+			RHIBufferCopy* regions
 		) = 0;
 		virtual void cmdDraw(
-			RHICommandBuffer* commandBuffer,
-			uint32_t vertexCount,
-			uint32_t instanceCount,
-			uint32_t firstVertex,
-			uint32_t firstInstance
+			RHICommandBuffer* command_buffer,
+			uint32_t vertex_count,
+			uint32_t instance_count,
+			uint32_t first_vertex,
+			uint32_t first_instance
 		) = 0;
 		virtual void cmdDispatch(
-			RHICommandBuffer* commandBuffer,
-			uint32_t groupCountX,
-			uint32_t gourpCountY,
-			uint32_t groupCountZ
+			RHICommandBuffer* command_buffer,
+			uint32_t group_count_x,
+			uint32_t gourp_count_y,
+			uint32_t group_count_z
 		) = 0;
 		virtual void cmdDispatchIndirect(
-			RHICommandBuffer* commandBuffer,
+			RHICommandBuffer* command_buffer,
 			RHIBuffer* buffer,
 			RHIDevice offset
 		) = 0;
 		virtual void cmdPipelineBarrier(
-			RHICommandBuffer* commandBuffer,
-			RHIPipelineStageFlags srcStageMask,
-			RHIPipelineStageFlags dstStageMask,
-			RHIDependencyFlags dependencyFlags,
-			uint32_t memoryBarrierCount,
-			const RHIMemoryBarrier* pMemoryBarriers,
-			uint32_t bufferMemoryBarrierCount,
-			const RHIBufferMemoryBarrier* pBufferMemoryBarriers,
-			uint32_t imageMemoryBarrierCount,
-			const RHIImageMemoryBarrier* pImageMemoryBarriers
+			RHICommandBuffer* command_buffer,
+			RHIPipelineStageFlags src_stage_mask,
+			RHIPipelineStageFlags dst_stage_mask,
+			RHIDependencyFlags dependency_flags,
+			uint32_t memory_barrier_count,
+			const RHIMemoryBarrier* memory_barriers,
+			uint32_t buffer_memory_barrier_count,
+			const RHIBufferMemoryBarrier* buffer_memory_barriers,
+			uint32_t image_memory_barrier_count,
+			const RHIImageMemoryBarrier* image_memory_barriers
 		) = 0;
-		virtual bool endCommandBuffer(RHICommandBuffer* commandBuffer) = 0;
+		virtual bool endCommandBuffer(RHICommandBuffer* command_buffer) = 0;
 		virtual void updateDescriptorSets(
-			uint32_t descriptorWriteCount,
-			const RHIWriteDescriptorSet* pDescriptorWrites,
-			uint32_t descriptorCopyCount,
-			const RHICopyDescriptorSet* pDescriptorCopies
+			uint32_t descriptor_write_count,
+			const RHIWriteDescriptorSet* descriptor_writes,
+			uint32_t descriptor_copy_count,
+			const RHICopyDescriptorSet* descriptor_copies
 		) = 0;
 		virtual bool queueSubmit(
 			RHIQueue* queue,
-			uint32_t submitCount,
-			const RHISubmitInfo* pSubmits,
+			uint32_t submit_count,
+			const RHISubmitInfo* submits,
 			RHIFence* fence
 		) = 0;
 		virtual bool queueWaitIdle(RHIQueue* queue) = 0;
@@ -340,7 +340,7 @@ namespace Dao {
 		virtual void waitForFences() = 0;
 		
 		// query
-		virtual void getPhysicalDeviceProperties(RHIPhysicalDeviceProperties* pProperties) = 0;
+		virtual void getPhysicalDeviceProperties(RHIPhysicalDeviceProperties* properties) = 0;
 		virtual RHICommandBuffer* getCurrentCommandBuffer() const = 0;
 		virtual RHICommandBuffer* const* getCommandBufferList() const = 0;
 		virtual RHICommandPool* getCommandPool() const = 0;
@@ -358,8 +358,8 @@ namespace Dao {
 		// command write
 		virtual RHICommandBuffer* beginSingleTimeCommands() = 0;
 		virtual void endSingleTimeCommands(RHICommandBuffer* command_buffer) = 0;
-		virtual bool prepareBeforePass(std::function<void()> passUpdateAfterRecreateSwapChain) = 0;
-		virtual bool submitRendering(std::function<void()> passUpdateAfterRecreateSwapChain) = 0;
+		virtual bool prepareBeforePass(std::function<void()> pass_update_after_recreate_swapchain) = 0;
+		virtual void submitRendering(std::function<void()> pass_update_after_recreate_swapchain) = 0;
 		virtual void pushEvent(RHICommandBuffer* command_buffer, const char* name, const float* color) = 0;
 		virtual void popEvent(RHICommandBuffer* commond_buffer) = 0;
 
@@ -372,17 +372,17 @@ namespace Dao {
 		virtual void destroySemaphore(RHISemaphore* semaphore) = 0;
 		virtual void destroySampler(RHISampler* sampler) = 0;
 		virtual void destroyInstance(RHIInstance* instance) = 0;
-		virtual void destroyImageView(RHIImageView* imageView) = 0;
+		virtual void destroyImageView(RHIImageView* image_view) = 0;
 		virtual void destroyImage(RHIImage* image) = 0;
-		virtual void destroyFrameBuffer(RHIFramebuffer* frameBuffer) = 0;
+		virtual void destroyFrameBuffer(RHIFramebuffer* frame_buffer) = 0;
 		virtual void destroyFence(RHIFence* fance) = 0;
 		virtual void destroyDevice() = 0;
-		virtual void destroyCommandPool(RHICommandPool* commandPool) = 0;
+		virtual void destroyCommandPool(RHICommandPool* command_pool) = 0;
 		virtual void destroyBuffer(RHIBuffer*& buffer) = 0;
 		virtual void freeCommandBuffers(
-			RHICommandPool* commandPool,
-			uint32_t commandBufferCount,
-			RHICommandBuffer* pCommandBuffers
+			RHICommandPool* command_pool,
+			uint32_t command_buffer_count,
+			RHICommandBuffer* command_buffers
 		) = 0;
 
 		// memory
@@ -392,17 +392,17 @@ namespace Dao {
 			RHIDeviceSize offset,
 			RHIDeviceSize size,
 			RHIMemoryMapFlags flags,
-			void** ppData
+			void** data
 		) = 0;
 		virtual void unmapMemory(RHIDeviceMemory* memory) = 0;
 		virtual void invalidateMappedMemoryRanges(
-			void* pNext, 
+			void* next, 
 			RHIDeviceMemory* memory, 
 			RHIDeviceSize offset, 
 			RHIDeviceSize size
 		) = 0;
 		virtual void flushMappedMemoryRanges(
-			void* pNext,
+			void* next,
 			RHIDeviceMemory* memory,
 			RHIDeviceSize offset,
 			RHIDeviceSize size

@@ -13,17 +13,20 @@
 namespace Dao {
 	class VulkanRHI final: public RHI {
 	public:
-		void initialize(RHIInitInfo initInfo) override;
+
+		~VulkanRHI() override final;
+
+		void initialize(RHIInitInfo init_info) override;
 		void prepareContext() override;
 
 		// allocate 
 		bool allocateCommandBuffers(
-			const RHICommandBufferAllocateInfo* pAllocateInfo,
-			RHICommandBuffer*& pCommandBuffers
+			const RHICommandBufferAllocateInfo* allocate_info,
+			RHICommandBuffer*& command_buffers
 		) override;
 		bool allocateDescriptorSets(
-			const RHIDescriptorSetAllocateInfo* pAllocateInfo,
-			RHIDescriptorSet*& pDescriptorSets
+			const RHIDescriptorSetAllocateInfo* allocate_info,
+			RHIDescriptorSet*& descriptor_sets
 		) override;
 
 		// create
@@ -32,48 +35,48 @@ namespace Dao {
 		void createSwapchainImageViews() override;
 		void createFramebufferImageView() override;
 		bool createCommandPool(
-			const RHICommandPoolCreateInfo* pcreateInfo,
-			RHICommandPool*& pCommandPool
+			const RHICommandPoolCreateInfo* pcreate_info,
+			RHICommandPool*& command_pool
 		) override;
 		bool createDescriptorPool(
-			const RHIDescriptorPoolCreateInfo* pCreateInfo,
-			RHIDescriptorPool*& pDescriptorPool
+			const RHIDescriptorPoolCreateInfo* create_info,
+			RHIDescriptorPool*& descriptor_pool
 		) override;
 		bool createDescriptorSetLayout(
-			const RHIDescriptorSetLayoutCreateInfo* pCreateInfo,
-			RHIDescriptorSetLayout*& pSetLayout
+			const RHIDescriptorSetLayoutCreateInfo* create_info,
+			RHIDescriptorSetLayout*& set_layout
 		) override;
 		bool createGraphicsPipelines(
-			RHIPipelineCache* pipelineCache,
-			uint32_t createInfoCount,
-			const RHIGraphicsPipelineCreateInfo* pCreateInfos,
-			const RHIPipeline*& pPipelines
+			RHIPipelineCache* pipeline_cache,
+			uint32_t create_info_count,
+			const RHIGraphicsPipelineCreateInfo* create_infos,
+			const RHIPipeline*& pipelines
 		) override;
 		bool createComputePipelines(
-			RHIPipelineCache* pipelineCache,
-			uint32_t createInfoCount,
-			const RHIComputePipelineCreateInfo* pCreateInfos,
-			RHIPipeline* pPipelines
+			RHIPipelineCache* pipeline_cache,
+			uint32_t create_info_count,
+			const RHIComputePipelineCreateInfo* create_infos,
+			RHIPipeline* pipelines
 		) override;
 		bool createPipelineLayout(
-			const RHIPipelineLayoutCreateInfo* pCreateInfo,
-			RHIPipelineLayout*& pPipelineLayout
+			const RHIPipelineLayoutCreateInfo* create_info,
+			RHIPipelineLayout*& pipeline_layout
 		) override;
 		bool createRenderPass(
-			const RHIRenderPassCreateInfo* pCreateInfo,
-			RHIRenderPass*& pRenderPass
+			const RHIRenderPassCreateInfo* create_info,
+			RHIRenderPass*& render_pass
 		) override;
 		bool createSampler(
-			const RHISamplerCreateInfo* pCreateInfo,
-			RHISampler*& pSampler
+			const RHISamplerCreateInfo* create_info,
+			RHISampler*& sampler
 		) override;
 		bool createSemaphore(
-			const RHISemaphoreCreateInfo* pCreateInfo,
-			RHISemaphore*& pSemaphore
+			const RHISemaphoreCreateInfo* create_info,
+			RHISemaphore*& semaphore
 		) override;
 		bool createFence(
-			const RHIFenceCreateInfo* pcreateInfo,
-			RHIFence*& pFence
+			const RHIFenceCreateInfo* create_info,
+			RHIFence*& fence
 		) override;
 		void createBuffer(
 			RHIDevice size,
@@ -93,26 +96,26 @@ namespace Dao {
 		) override;
 		bool createBufferVMA(
 			VmaAllocator allocator,
-			const RHIBufferCreateInfo* pBufferCreateInfo,
-			const VmaAllocationCreateInfo* pAllocationCreateInfo,
-			RHIBuffer*& pBuffer,
-			VmaAllocation* pAllocation,
-			VmaAllocationInfo* pAllocationInfo
+			const RHIBufferCreateInfo* buffer_create_info,
+			const VmaAllocationCreateInfo* allocation_create_info,
+			RHIBuffer*& buffer,
+			VmaAllocation* allocation,
+			VmaAllocationInfo* allocation_info
 		) override;
 		bool createBufferWithAligmentVMA(
 			VmaAllocator allocator,
-			const RHIBufferCreateInfo* pBufferCreateInfo,
-			const VmaAllocationCreateInfo* pAllocationCreateInfo,
-			RHIDeviceSize minAligment,
-			RHIBuffer*& pBuffer,
-			VmaAllocation* pAllocation,
-			VmaAllocationInfo* pAllocationInfo
+			const RHIBufferCreateInfo* buffer_create_info,
+			const VmaAllocationCreateInfo* allocation_create_info,
+			RHIDeviceSize min_aligment,
+			RHIBuffer*& buffer,
+			VmaAllocation* allocation,
+			VmaAllocationInfo* allocation_info
 		) override;
 		void copyBuffer(
-			RHIBuffer* srcBuffer,
-			RHIBuffer* dstBuffer,
-			RHIDevice srcOffser,
-			RHIDeviceSize dstOffset,
+			RHIBuffer* src_buffer,
+			RHIBuffer* dst_buffer,
+			RHIDevice src_offser,
+			RHIDeviceSize dst_offset,
 			RHIDeviceSize size
 		) override;
 		void createImage(
@@ -158,8 +161,8 @@ namespace Dao {
 			uint32_t miplevels
 		) override;
 		bool createFramebuffer(
-			const RHIFramebufferCreateInfo* pCreateInfo,
-			RHIFramebuffer*& pFramebuffer
+			const RHIFramebufferCreateInfo* create_info,
+			RHIFramebuffer*& frame_buffer
 		) override;
 		RHIShader* createShaderModule(const std::vector<unsigned char>& shader_code) override;
 		RHISampler* getOrCreateDefaultSampler(RHIDefaultSamplerType type) override;
@@ -167,168 +170,174 @@ namespace Dao {
 
 		// command PFN
 		bool waitForFencesPFN(
-			uint32_t fenceCount,
-			RHIFence* const* pFences,
-			RHIBool32 waitAll,
+			uint32_t fence_count,
+			RHIFence* const* fences,
+			RHIBool32 wait_all,
 			uint64_t timeout
 		) override;
 		bool resetFencesPFN(
-			uint32_t fenceCount,
-			RHIFence* const* pFences
+			uint32_t fence_count,
+			RHIFence* const* fences
 		) override;
 		bool resetCommandPoolPFN(
-			RHICommandPool* commandPool,
+			RHICommandPool* command_pool,
 			RHICommandPoolResetFlags flags
 		) override;
 		bool beginCommandBufferPFN(
-			RHICommandBuffer* commandBuffer,
-			const RHICommandBufferBeginInfo* pBeginInfo
+			RHICommandBuffer* command_buffer,
+			const RHICommandBufferBeginInfo* begin_info
 		) override;
-		bool endCommandBufferPFN(RHICommandBuffer* commandBuffer) override;
+		bool endCommandBufferPFN(RHICommandBuffer* command_buffer) override;
 		void cmdBeginRenderPassPFN(
-			RHICommandBuffer* commandBuffer,
-			const RHIRenderPassBeginInfo* pRenderPassBegin,
+			RHICommandBuffer* command_buffer,
+			const RHIRenderPassBeginInfo* render_pass_begin,
 			RHISubpassContents contents
 		) override;
 		void cmdNextSubpassPFN(
-			RHICommandBuffer* commandBuffer,
+			RHICommandBuffer* command_buffer,
 			RHISubpassContents contents
 		) override;
-		void cmdEndRenderPassPFN(RHICommandBuffer* commandBuffer) override;
+		void cmdEndRenderPassPFN(RHICommandBuffer* command_buffer) override;
 		void cmdBindPipelinePFN(
-			RHICommandBuffer* commandBuffer,
-			RHIPipelineBindPoint* pipelineBindPoint,
+			RHICommandBuffer* command_buffer,
+			RHIPipelineBindPoint* pipeline_bind_point,
 			RHIPipeline* pipeline
 		) override;
 		void cmdSetViewportPFN(
-			RHICommandBuffer* commandBuffer,
-			uint32_t firstViewport,
-			uint32_t viewportCount,
-			const RHIViewport* pViewports
+			RHICommandBuffer* command_buffer,
+			uint32_t first_viewport,
+			uint32_t viewport_count,
+			const RHIViewport* viewports
 		) override;
 		void cmdSetScissorPFN(
-			RHICommandBuffer* commandBuffer,
-			uint32_t firstScissor,
-			uint32_t scissorCount,
-			const RHIRect2D* pScissor
+			RHICommandBuffer* command_buffer,
+			uint32_t first_scissor,
+			uint32_t scissor_count,
+			const RHIRect2D* scissor
 		) override;
 		void cmdBindVertexBuffersPFN(
-			RHICommandBuffer* commandBuffer,
-			uint32_t firstBinding,
-			uint32_t bindingCount,
-			RHIBuffer* const* pBuffers,
-			const RHIDeviceSize* pOffsets
+			RHICommandBuffer* command_buffer,
+			uint32_t first_binding,
+			uint32_t binding_count,
+			RHIBuffer* const* buffers,
+			const RHIDeviceSize* offsets
 		) override;
 		void cmdBindIndexBufferPFN(
-			RHICommandBuffer* commandBuffer,
+			RHICommandBuffer* command_buffer,
 			RHIBuffer* buffer,
 			RHIDeviceSize offset,
-			RHIIndexType indexType
+			RHIIndexType index_type
 		) override;
 		void cmdBindDescriptorSetsPFN(
-			RHICommandBuffer* commandBuffer,
-			RHIPipelineBindPoint pipelineBindPoint,
+			RHICommandBuffer* command_buffer,
+			RHIPipelineBindPoint pipeline_bind_point,
 			RHIPipelineLayout* layout,
-			uint32_t firstSet,
-			uint32_t descriptorSetCount,
-			const RHIDescriptorSet* const* pDescriptorSets,
-			uint32_t dynamicOffsetCount,
-			const uint32_t* pDynamicOffsets
+			uint32_t first_set,
+			uint32_t descriptor_set_count,
+			const RHIDescriptorSet* const* descriptor_sets,
+			uint32_t dynamic_offset_count,
+			const uint32_t* dynamic_offsets
 		) override;
 		void cmdDrawIndexedPFN(
-			RHICommandBuffer* commandBuffer,
-			uint32_t indexCount,
-			uint32_t instanceCount,
-			uint32_t firstIndex,
-			int32_t vertexOffset,
-			uint32_t firstInstance
+			RHICommandBuffer* command_buffer,
+			uint32_t index_count,
+			uint32_t instance_count,
+			uint32_t first_index,
+			int32_t vertex_offset,
+			uint32_t first_instance
 		) override;
 		void cmdClearAttachmentsPFN(
-			RHICommandBuffer* commandBuffer,
-			uint32_t attachmentCount,
-			const RHIClearAttachment* pAttachments,
-			uint32_t rectCount,
-			const RHIClearRect* pRects
+			RHICommandBuffer* command_buffer,
+			uint32_t attachment_count,
+			const RHIClearAttachment* attachments,
+			uint32_t rect_count,
+			const RHIClearRect* rects
 		) override;
 
 		// command
 		bool beginCommandBuffer(
-			RHICommandBuffer* commandBuffer,
-			const RHICommandBufferBeginInfo* pBeginInfo
+			RHICommandBuffer* command_buffer,
+			const RHICommandBufferBeginInfo* begin_info
 		) override;
 		void cmdCopyImageToBuffer(
-			RHICommandBuffer* commandBuffer,
-			RHIImage* srcImage,
-			RHIImageLayout* srtImageLayout,
-			RHIBuffer* dstBuffer,
-			uint32_t regionCount,
-			const RHIBufferImageCopy* pRegions
+			RHICommandBuffer* command_buffer,
+			RHIImage* src_image,
+			RHIImageLayout* src_image_layout,
+			RHIBuffer* dst_buffer,
+			uint32_t region_count,
+			const RHIBufferImageCopy* regions
 		) override;
 		void cmdCopyImageToImage(
-			RHICommandBuffer* commandBuffer,
-			RHIImage* srcImage,
-			RHIImageAspectFlagBits srcFlag,
-			RHIImage* destImage,
-			RHIImageAspectFlagBits dstFlags,
+			RHICommandBuffer* command_buffer,
+			RHIImage* src_image,
+			RHIImageAspectFlagBits src_flags,
+			RHIImage* dest_image,
+			RHIImageAspectFlagBits dst_flags,
 			uint32_t width,
 			uint32_t height
 		) override;
 		void cmdCopyBuffer(
-			RHICommandBuffer* commandBuffer,
-			RHIBuffer* srcBuffer,
-			RHIBuffer* dstBuffer,
-			uint32_t regionCount,
-			RHIBufferCopy* pRegions
+			RHICommandBuffer* command_buffer,
+			RHIBuffer* src_buffer,
+			RHIBuffer* dst_buffer,
+			uint32_t region_count,
+			RHIBufferCopy* regions
 		) override;
 		void cmdDraw(
-			RHICommandBuffer* commandBuffer,
-			uint32_t vertexCount,
-			uint32_t instanceCount,
-			uint32_t firstVertex,
-			uint32_t firstInstance
+			RHICommandBuffer* command_buffer,
+			uint32_t vertex_count,
+			uint32_t instance_count,
+			uint32_t first_vertex,
+			uint32_t first_instance
 		) override;
 		void cmdDispatch(
-			RHICommandBuffer* commandBuffer,
-			uint32_t groupCountX,
-			uint32_t gourpCountY,
-			uint32_t groupCountZ
+			RHICommandBuffer* command_buffer,
+			uint32_t group_count_x,
+			uint32_t gourp_count_y,
+			uint32_t group_count_z
 		) override;
 		void cmdDispatchIndirect(
-			RHICommandBuffer* commandBuffer,
+			RHICommandBuffer* command_buffer,
 			RHIBuffer* buffer,
 			RHIDevice offset
 		) override;
 		void cmdPipelineBarrier(
-			RHICommandBuffer* commandBuffer,
-			RHIPipelineStageFlags srcStageMask,
-			RHIPipelineStageFlags dstStageMask,
-			RHIDependencyFlags dependencyFlags,
-			uint32_t memoryBarrierCount,
-			const RHIMemoryBarrier* pMemoryBarriers,
-			uint32_t bufferMemoryBarrierCount,
-			const RHIBufferMemoryBarrier* pBufferMemoryBarriers,
-			uint32_t imageMemoryBarrierCount,
-			const RHIImageMemoryBarrier* pImageMemoryBarriers
+			RHICommandBuffer* command_buffer,
+			RHIPipelineStageFlags src_stage_mask,
+			RHIPipelineStageFlags dst_stage_mask,
+			RHIDependencyFlags dependency_flags,
+			uint32_t memory_barrier_count,
+			const RHIMemoryBarrier* memory_barriers,
+			uint32_t buffer_memory_barrier_count,
+			const RHIBufferMemoryBarrier* buffer_memory_barriers,
+			uint32_t image_memory_barrier_count,
+			const RHIImageMemoryBarrier* image_memory_barriers
 		) override;
-		bool endCommandBuffer(RHICommandBuffer* commandBuffer) = 0;
+		bool endCommandBuffer(RHICommandBuffer* command_buffer) = 0;
 		void updateDescriptorSets(
-			uint32_t descriptorWriteCount,
-			const RHIWriteDescriptorSet* pDescriptorWrites,
-			uint32_t descriptorCopyCount,
-			const RHICopyDescriptorSet* pDescriptorCopies
+			uint32_t descriptor_write_count,
+			const RHIWriteDescriptorSet* descriptor_writes,
+			uint32_t descriptor_copy_count,
+			const RHICopyDescriptorSet* descriptor_copies
 		) override;
 		bool queueSubmit(
 			RHIQueue* queue,
-			uint32_t submitCount,
-			const RHISubmitInfo* pSubmits,
+			uint32_t submit_count,
+			const RHISubmitInfo* submits,
 			RHIFence* fence
 		) override;
 		bool queueWaitIdle(RHIQueue* queue) override;
 		void resetCommandPool() override;
 		void waitForFences() override;
+		bool waitForFences(
+			uint32_t fence_count, 
+			const RHIFence* const* fences, 
+			RHIBool32 wait_all, 
+			uint64_t timeout
+		);
 
 		// query
-		void getPhysicalDeviceProperties(RHIPhysicalDeviceProperties* pProperties) override;
+		void getPhysicalDeviceProperties(RHIPhysicalDeviceProperties* properties) override;
 		RHICommandBuffer* getCurrentCommandBuffer() const override;
 		RHICommandBuffer* const* getCommandBufferList() const override;
 		RHICommandPool* getCommandPool() const override;
@@ -346,8 +355,8 @@ namespace Dao {
 		// command write
 		RHICommandBuffer* beginSingleTimeCommands() override;
 		void endSingleTimeCommands(RHICommandBuffer* command_buffer) override;
-		bool prepareBeforePass(std::function<void()> passUpdateAfterRecreateSwapChain) override;
-		bool submitRendering(std::function<void()> passUpdateAfterRecreateSwapChain) override;
+		bool prepareBeforePass(std::function<void()> pass_update_after_recreate_swapchain) override;
+		void submitRendering(std::function<void()> pass_update_after_recreate_swapchain) override;
 		void pushEvent(RHICommandBuffer* command_buffer, const char* name, const float* color) override;
 		void popEvent(RHICommandBuffer* commond_buffer) override;
 
@@ -360,17 +369,17 @@ namespace Dao {
 		void destroySemaphore(RHISemaphore* semaphore) override;
 		void destroySampler(RHISampler* sampler) override;
 		void destroyInstance(RHIInstance* instance) override;
-		void destroyImageView(RHIImageView* imageView) override;
+		void destroyImageView(RHIImageView* image_view) override;
 		void destroyImage(RHIImage* image) override;
-		void destroyFrameBuffer(RHIFramebuffer* frameBuffer) override;
+		void destroyFrameBuffer(RHIFramebuffer* frame_buffer) override;
 		void destroyFence(RHIFence* fance) override;
 		void destroyDevice() override;
-		void destroyCommandPool(RHICommandPool* commandPool) override;
+		void destroyCommandPool(RHICommandPool* command_pool) override;
 		void destroyBuffer(RHIBuffer*& buffer) override;
 		void freeCommandBuffers(
-			RHICommandPool* commandPool,
-			uint32_t commandBufferCount,
-			RHICommandBuffer* pCommandBuffers
+			RHICommandPool* command_pool,
+			uint32_t command_buffer_count,
+			RHICommandBuffer* command_buffers
 		) override;
 
 		// memory
@@ -380,17 +389,17 @@ namespace Dao {
 			RHIDeviceSize offset,
 			RHIDeviceSize size,
 			RHIMemoryMapFlags flags,
-			void** ppData
+			void** data
 		) override;
 		void unmapMemory(RHIDeviceMemory* memory) override;
 		void invalidateMappedMemoryRanges(
-			void* pNext,
+			void* next,
 			RHIDeviceMemory* memory,
 			RHIDeviceSize offset,
 			RHIDeviceSize size
 		) override;
 		void flushMappedMemoryRanges(
-			void* pNext,
+			void* next,
 			RHIDeviceMemory* memory,
 			RHIDeviceSize offset,
 			RHIDeviceSize size
@@ -450,7 +459,7 @@ namespace Dao {
 		VkCommandPool						m_command_pools[k_max_frames_in_flight];
 		VkCommandBuffer						m_vk_command_buffers[k_max_frames_in_flight];
 		VkSemaphore							m_image_available_for_render_semaphores[k_max_frames_in_flight];
-		VkSemaphore							m_image_finished_for_presentatiob_samaphores[k_max_frames_in_flight];
+		VkSemaphore							m_image_finished_for_presentation_samaphores[k_max_frames_in_flight];
 		RHISemaphore*						m_image_available_for_texturescopy_semaphores[k_max_frames_in_flight];
 		VkFence								m_is_frame_in_flight_fences[k_max_frames_in_flight];
 
@@ -492,7 +501,7 @@ namespace Dao {
 
 	private:
 		bool								_enable_validation_layers{ true };
-		bool								_enable_debug_utils_lable{ true };
+		bool								_enable_debug_utils_label{ true };
 		bool								_enable_point_light_shadow{ true };
 
 		// used in descriptor pool creation
@@ -516,17 +525,17 @@ namespace Dao {
 	private:
 		bool checkValidationLayerSupport();
 		std::vector<const char*> getRequredExtensions();
-		void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
+		void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& create_info);
 		VkResult createDebugUtilsMessengerEXT(
 			VkInstance instance,
-			const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
-			const VkAllocationCallbacks* pAllocator,
-			VkDebugUtilsMessengerEXT* pDebugMessenger
+			const VkDebugUtilsMessengerCreateInfoEXT* create_info,
+			const VkAllocationCallbacks* allocator,
+			VkDebugUtilsMessengerEXT* debug_messenger
 		);
 		void destroyDebugUtilsMessengerEXT(
 			VkInstance instance,
-			VkDebugUtilsMessengerEXT debugMessenger,
-			const VkAllocationCallbacks* pAllocator
+			VkDebugUtilsMessengerEXT debug_messenger,
+			const VkAllocationCallbacks* allocator
 		);
 		void findQueueFamilies(VkPhysicalDevice physical_device);
 		bool checkDeviceExtensionSupport(VkPhysicalDevice physical_device);
