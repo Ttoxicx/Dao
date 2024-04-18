@@ -116,7 +116,7 @@ namespace Dao {
 	private:
 		VkEvent _resource;
 	};
-	class VulkanRence :public RHIFence {
+	class VulkanFence :public RHIFence {
 	public:
 		void setResource(VkFence res) {
 			_resource = res;

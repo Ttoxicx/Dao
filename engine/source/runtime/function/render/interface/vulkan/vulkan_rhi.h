@@ -50,7 +50,7 @@ namespace Dao {
 			RHIPipelineCache* pipeline_cache,
 			uint32_t create_info_count,
 			const RHIGraphicsPipelineCreateInfo* create_infos,
-			const RHIPipeline*& pipelines
+			RHIPipeline*& pipelines
 		) override;
 		bool createComputePipelines(
 			RHIPipelineCache* pipeline_cache,
@@ -537,7 +537,7 @@ namespace Dao {
 			VkDebugUtilsMessengerEXT debug_messenger,
 			const VkAllocationCallbacks* allocator
 		);
-		void findQueueFamilies(VkPhysicalDevice physical_device);
+		QueueFamilyIndices findQueueFamilies(VkPhysicalDevice physical_device);
 		bool checkDeviceExtensionSupport(VkPhysicalDevice physical_device);
 		bool isDeviceSuitable(VkPhysicalDevice physical_device);
 		SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice physical_device);

@@ -59,7 +59,7 @@ namespace Dao {
 			RHIPipelineCache* pipeline_cache,
 			uint32_t create_info_count,
 			const RHIGraphicsPipelineCreateInfo* create_infos,
-			const RHIPipeline*& pipelines
+			RHIPipeline*& pipelines
 		) = 0;
 		virtual bool createComputePipelines(
 			RHIPipelineCache* pipeline_cache,
