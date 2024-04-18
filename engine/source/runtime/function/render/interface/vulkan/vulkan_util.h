@@ -15,7 +15,7 @@ namespace Dao {
 		static uint32_t findMemoryType(
 			VkPhysicalDevice physical_device,
 			uint32_t type_filter,
-			VkMemoryPropertyFlags properties_flag
+			VkMemoryPropertyFlags memory_property_flags
 		);
 		static VkShaderModule createShaderModule(
 			VkDevice,
@@ -32,8 +32,9 @@ namespace Dao {
 		);
 		static void createBufferAndInitalize(
 			VkDevice device,
-			VkPhysicalDevice physical_deivce,
-			VkBufferUsageFlags memoryPropertyFlags,
+			VkPhysicalDevice physical_device,
+			VkBufferUsageFlags buffer_usage_flags,
+			VkMemoryPropertyFlags memory_property_flags,
 			VkBuffer* buffer,
 			VkDeviceMemory* memory,
 			VkDeviceSize size,
