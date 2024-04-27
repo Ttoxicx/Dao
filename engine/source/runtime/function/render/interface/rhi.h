@@ -65,7 +65,7 @@ namespace Dao {
 			RHIPipelineCache* pipeline_cache,
 			uint32_t create_info_count,
 			const RHIComputePipelineCreateInfo* create_infos,
-			RHIPipeline* pipelines
+			RHIPipeline*& pipelines
 		) = 0;
 		virtual bool createPipelineLayout(
 			const RHIPipelineLayoutCreateInfo* create_info,
@@ -209,7 +209,7 @@ namespace Dao {
 		virtual void cmdEndRenderPassPFN(RHICommandBuffer* command_buffer) = 0;
 		virtual void cmdBindPipelinePFN(
 			RHICommandBuffer* command_buffer,
-			RHIPipelineBindPoint* pipeline_bind_point,
+			RHIPipelineBindPoint pipeline_bind_point,
 			RHIPipeline* pipeline
 		) = 0;
 		virtual void cmdSetViewportPFN(

@@ -56,7 +56,7 @@ namespace Dao {
 			RHIPipelineCache* pipeline_cache,
 			uint32_t create_info_count,
 			const RHIComputePipelineCreateInfo* create_infos,
-			RHIPipeline* pipelines
+			RHIPipeline*& pipelines
 		) override;
 		bool createPipelineLayout(
 			const RHIPipelineLayoutCreateInfo* create_info,
@@ -200,7 +200,7 @@ namespace Dao {
 		void cmdEndRenderPassPFN(RHICommandBuffer* command_buffer) override;
 		void cmdBindPipelinePFN(
 			RHICommandBuffer* command_buffer,
-			RHIPipelineBindPoint* pipeline_bind_point,
+			RHIPipelineBindPoint pipeline_bind_point,
 			RHIPipeline* pipeline
 		) override;
 		void cmdSetViewportPFN(
