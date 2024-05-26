@@ -41,7 +41,7 @@ namespace Dao {
 		virtual void createSwapchain() = 0;
 		virtual void recreateSwapchain() = 0;
 		virtual void createSwapchainImageViews() = 0;
-		virtual void createFramebufferImageView() = 0;
+		virtual void createFramebufferImageAndView() = 0;
 		virtual void createCommandPool() = 0;
 		virtual bool createCommandPool(
 			const RHICommandPoolCreateInfo* create_info, 
@@ -88,9 +88,9 @@ namespace Dao {
 			RHIFence*& fence
 		) = 0;
 		virtual void createBuffer(
-			RHIDevice size,
+			RHIDeviceSize size,
 			RHIBufferUsageFlags usage,
-			RHIMemoryPropertyFlags properties, 
+			RHIMemoryPropertyFlags properties,
 			RHIBuffer*& buffer,
 			RHIDeviceMemory*& buffer_memory
 		) = 0;
@@ -111,7 +111,7 @@ namespace Dao {
 			VmaAllocation* allocation,
 			VmaAllocationInfo* allocation_info
 		) = 0;
-		virtual bool createBufferWithAligmentVMA(
+		virtual bool createBufferWithAlignmentVMA(
 			VmaAllocator allocator,
 			const RHIBufferCreateInfo* buffer_create_info,
 			const VmaAllocationCreateInfo* allocation_create_info,
@@ -123,7 +123,7 @@ namespace Dao {
 		virtual void copyBuffer(
 			RHIBuffer* src_buffer,
 			RHIBuffer* dst_buffer,
-			RHIDevice src_offser,
+			RHIDeviceSize src_offset,
 			RHIDeviceSize dst_offset,
 			RHIDeviceSize size
 		) = 0;
@@ -271,7 +271,7 @@ namespace Dao {
 		virtual void cmdCopyImageToBuffer(
 			RHICommandBuffer* command_buffer,
 			RHIImage* src_image,
-			RHIImageLayout* src_image_layout,
+			RHIImageLayout src_image_layout,
 			RHIBuffer* dst_buffer,
 			uint32_t region_count,
 			const RHIBufferImageCopy* regions
@@ -308,7 +308,7 @@ namespace Dao {
 		virtual void cmdDispatchIndirect(
 			RHICommandBuffer* command_buffer,
 			RHIBuffer* buffer,
-			RHIDevice offset
+			RHIDeviceSize offset
 		) = 0;
 		virtual void cmdPipelineBarrier(
 			RHICommandBuffer* command_buffer,
@@ -349,8 +349,8 @@ namespace Dao {
 		virtual QueueFamilyIndices getQueueFamilyIndices() const = 0;
 		virtual RHIQueue* getGraphicsQueue() const = 0;
 		virtual RHIQueue* getComputeQueue() const = 0;
-		virtual RHISwapChainDesc* getSwapChainInfo() = 0;
-		virtual RHIDepthImageDesc* getDepthImageInfo() const = 0;
+		virtual RHISwapChainDesc getSwapChainInfo() = 0;
+		virtual RHIDepthImageDesc getDepthImageInfo() const = 0;
 		virtual uint8_t getMaxFramesInFlight() const = 0;
 		virtual uint8_t getCurrentFrameIndex() const = 0;
 		virtual void setCurrentFrameIndex(uint8_t index) = 0;
@@ -386,8 +386,8 @@ namespace Dao {
 		) = 0;
 
 		// memory
-		virtual void freeMemory(RHIDevice*& memory) = 0;
-		virtual void mapMemory(
+		virtual void freeMemory(RHIDeviceMemory*& memory) = 0;
+		virtual bool mapMemory(
 			RHIDeviceMemory* memory,
 			RHIDeviceSize offset,
 			RHIDeviceSize size,
@@ -412,7 +412,7 @@ namespace Dao {
 		virtual RHISemaphore*& getTextureCopySemaphore(uint32_t index) = 0;
 
 		// 
-		virtual void isPointLightShadowEnabled() = 0;
+		virtual bool isPointLightShadowEnabled() = 0;
 	};
 
 	inline RHI::~RHI() = default;

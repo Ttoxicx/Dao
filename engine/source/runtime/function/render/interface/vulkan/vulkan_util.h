@@ -143,7 +143,7 @@ namespace Dao {
 			VkPhysicalDevice physical_device,
 			VkDevice device
 		);
-		static void desctroyNearestSampler(VkDevice device);
+		static void destroyNearestSampler(VkDevice device);
 		static void destroyLinearSampler(VkDevice device);
 
 	private:

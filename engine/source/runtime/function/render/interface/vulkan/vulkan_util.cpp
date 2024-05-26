@@ -899,7 +899,7 @@ namespace Dao {
 		return _linear_sampler;
 	}
 
-	void VulkanUtil::desctroyNearestSampler(VkDevice device) {
+	void VulkanUtil::destroyNearestSampler(VkDevice device) {
 		vkDestroySampler(device, _nearset_sampler, nullptr);
 		_nearset_sampler = VK_NULL_HANDLE;
 	}

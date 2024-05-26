@@ -33,7 +33,7 @@ namespace Dao {
 		void createSwapchain() override;
 		void recreateSwapchain() override;
 		void createSwapchainImageViews() override;
-		void createFramebufferImageView() override;
+		void createFramebufferImageAndView() override;
 		bool createCommandPool(
 			const RHICommandPoolCreateInfo* pcreate_info,
 			RHICommandPool*& command_pool
@@ -79,7 +79,7 @@ namespace Dao {
 			RHIFence*& fence
 		) override;
 		void createBuffer(
-			RHIDevice size,
+			RHIDeviceSize size,
 			RHIBufferUsageFlags usage,
 			RHIMemoryPropertyFlags properties,
 			RHIBuffer*& buffer,
@@ -102,7 +102,7 @@ namespace Dao {
 			VmaAllocation* allocation,
 			VmaAllocationInfo* allocation_info
 		) override;
-		bool createBufferWithAligmentVMA(
+		bool createBufferWithAlignmentVMA(
 			VmaAllocator allocator,
 			const RHIBufferCreateInfo* buffer_create_info,
 			const VmaAllocationCreateInfo* allocation_create_info,
@@ -114,7 +114,7 @@ namespace Dao {
 		void copyBuffer(
 			RHIBuffer* src_buffer,
 			RHIBuffer* dst_buffer,
-			RHIDevice src_offser,
+			RHIDeviceSize src_offset,
 			RHIDeviceSize dst_offset,
 			RHIDeviceSize size
 		) override;
@@ -262,7 +262,7 @@ namespace Dao {
 		void cmdCopyImageToBuffer(
 			RHICommandBuffer* command_buffer,
 			RHIImage* src_image,
-			RHIImageLayout* src_image_layout,
+			RHIImageLayout src_image_layout,
 			RHIBuffer* dst_buffer,
 			uint32_t region_count,
 			const RHIBufferImageCopy* regions
@@ -299,7 +299,7 @@ namespace Dao {
 		void cmdDispatchIndirect(
 			RHICommandBuffer* command_buffer,
 			RHIBuffer* buffer,
-			RHIDevice offset
+			RHIDeviceSize offset
 		) override;
 		void cmdPipelineBarrier(
 			RHICommandBuffer* command_buffer,
@@ -346,8 +346,8 @@ namespace Dao {
 		QueueFamilyIndices getQueueFamilyIndices() const override;
 		RHIQueue* getGraphicsQueue() const override;
 		RHIQueue* getComputeQueue() const override;
-		RHISwapChainDesc* getSwapChainInfo() override;
-		RHIDepthImageDesc* getDepthImageInfo() const override;
+		RHISwapChainDesc getSwapChainInfo() override;
+		RHIDepthImageDesc getDepthImageInfo() const override;
 		uint8_t getMaxFramesInFlight() const override;
 		uint8_t getCurrentFrameIndex() const override;
 		void setCurrentFrameIndex(uint8_t index) override;
@@ -383,8 +383,8 @@ namespace Dao {
 		) override;
 
 		// memory
-		void freeMemory(RHIDevice*& memory) override;
-		void mapMemory(
+		void freeMemory(RHIDeviceMemory*& memory) override;
+		bool mapMemory(
 			RHIDeviceMemory* memory,
 			RHIDeviceSize offset,
 			RHIDeviceSize size,
@@ -409,7 +409,7 @@ namespace Dao {
 		RHISemaphore*& getTextureCopySemaphore(uint32_t index) override;
 
 	public:
-		void isPointLightShadowEnabled() override;
+		bool isPointLightShadowEnabled() override;
 
 	public:
 		static uint8_t	const				k_max_frames_in_flight{ 3 };
@@ -547,7 +547,7 @@ namespace Dao {
 			VkImageTiling tiling,
 			VkFormatFeatureFlags features
 		);
-		VkSurfaceFormatKHR chooseSwapchainSurfaceFormatDetails(const std::vector<VkSurfaceFormatKHR>& available_surface_formats);
+		VkSurfaceFormatKHR chooseSwapchainSurfaceFormatFromDetails(const std::vector<VkSurfaceFormatKHR>& available_surface_formats);
 		VkPresentModeKHR chooseSwapchainPresentModeFromDetails(const std::vector<VkPresentModeKHR>& available_presents_modes);
 		VkExtent2D chooseSwapchainExtentFromDetails(const VkSurfaceCapabilitiesKHR& capabilities);
 	};
