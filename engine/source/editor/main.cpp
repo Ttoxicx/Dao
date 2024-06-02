@@ -1,9 +1,8 @@
 #include <iostream>
 #include <assimp/Importer.hpp>
-#include <GLFW/glfw3.h>
-#include <vulkan/vulkan.h>
 #include "runtime/core/math/math_headers.h"
 #include "runtime/core/base/macro.h"
+#include "runtime/function/render/window_system.h"
 
 namespace Dao {
 	void logTest() {
@@ -25,15 +24,11 @@ int main() {
 		std::cout << "invalide scene" << std::endl;
 	}
 
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	GLFWwindow* window = glfwCreateWindow(800, 600, "DaoEditor", NULL, NULL);
-	if (!window) {
-		std::cout << "Window Create Failed" << std::endl;
-		return -1;
+	Dao::WindowSystem window{};
+	window.initialize(Dao::WindowCreateInfo{});
+	while (!window.shouldClose())
+	{
+		window.pollEvents();
 	}
 
 	{
@@ -43,11 +38,6 @@ int main() {
 	}
 	Dao::g_runtime_global_context.startSystem();
 	Dao::logTest();
-	while (!glfwWindowShouldClose(window)) {
-		glfwPollEvents();
-	}
-
 	Dao::g_runtime_global_context.shutdownSystem();
-	glfwTerminate();
 	return 0;
 }
