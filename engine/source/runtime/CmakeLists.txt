@@ -28,7 +28,10 @@ set_target_properties(${TARGET_NAME} PROPERTIES FOLDER "engine")
 target_link_libraries(${TARGET_NAME} PUBLIC glfw)
 target_link_libraries(${TARGET_NAME} PUBLIC assimp)
 target_link_libraries(${TARGET_NAME} PUBLIC spdlog::spdlog)
+target_link_libraries(${TARGET_NAME} PUBLIC imgui)
 target_link_libraries(${TARGET_NAME} PUBLIC ${VULKAN_LIB})
+target_link_libraries(${TARGET_NAME} PRIVATE json11)
+target_link_libraries(${TARGET_NAME} PRIVATE stb)
 
 target_include_directories(${TARGET_NAME} PUBLIC ${VULKAN_INCLUDE_DIR})
 
