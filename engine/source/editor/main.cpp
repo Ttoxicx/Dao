@@ -1,5 +1,4 @@
 #include <iostream>
-#include <assimp/Importer.hpp>
 #include "runtime/core/math/math_headers.h"
 #include "runtime/core/base/macro.h"
 #include "runtime/function/render/window_system.h"
@@ -12,19 +11,6 @@ namespace Dao {
 }
 
 int main() {
-	auto importer = Assimp::Importer();
-	try {
-		importer.ReadFile("/////////////////", 0);
-	}
-	catch (...) {
-		std::cout << "exception occur" << std::endl;
-	}
-
-	auto res = importer.GetScene();
-	if (res == nullptr) {
-		std::cout << "invalide scene" << std::endl;
-	}
-
 	Dao::WindowSystem window{};
 	window.initialize(Dao::WindowCreateInfo{});
 	while (!window.shouldClose())

@@ -5,10 +5,4 @@ file(GLOB_RECURSE DAO_EDITOR_SRC
 
 add_executable(DaoEditor ${DAO_EDITOR_SRC})
 
-target_include_directories(DaoEditor PRIVATE ${VULKAN_INCLUDE_DIR})
-
-target_link_directories(DaoEditor PRIVATE ${VULKAN_LIB_DIR})
-
-target_link_libraries(DaoEditor PRIVATE ${VULKAN_LIB} assimp glfw)
-
 target_link_libraries(DaoEditor PRIVATE DaoRuntime)

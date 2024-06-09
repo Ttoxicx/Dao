@@ -26,7 +26,6 @@ set_target_properties(${TARGET_NAME} PROPERTIES FOLDER "engine")
 
 # Link dependencies    
 target_link_libraries(${TARGET_NAME} PUBLIC glfw)
-target_link_libraries(${TARGET_NAME} PUBLIC assimp)
 target_link_libraries(${TARGET_NAME} PUBLIC spdlog::spdlog)
 target_link_libraries(${TARGET_NAME} PUBLIC imgui)
 target_link_libraries(${TARGET_NAME} PUBLIC ${VULKAN_LIB})
