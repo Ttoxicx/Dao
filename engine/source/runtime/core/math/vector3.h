@@ -2,13 +2,16 @@
 
 #include "runtime/core/math/math.h"
 #include "runtime/core/math/quaternion.h"
+#include "runtime/core/meta/reflection/reflection.h"
 
 #include <cassert>
 
 namespace Dao
 {
-    class Vector3
+    REFLECTION_TYPE(Vector3)
+    CLASS(Vector3, Fields)
     {
+        REFLECTION_BODY(Vector3);
     public:
         float x {0.f};
         float y {0.f};

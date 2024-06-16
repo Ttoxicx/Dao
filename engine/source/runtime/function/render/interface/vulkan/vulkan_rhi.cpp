@@ -2978,13 +2978,13 @@ namespace Dao {
         if (is_extension_supported) {
             SwapChainSupportDetails swapchian_support_detail = querySwapChainSupport(physical_device);
             is_swapchain_adequate = swapchian_support_detail.formats.empty() && !swapchian_support_detail.presentModes.empty();
-            VkPhysicalDeviceFeatures physical_device_features;
-            vkGetPhysicalDeviceFeatures(physical_device, &physical_device_features);
-            if (!queue_indices.isComplete() || !is_swapchain_adequate || !physical_device_features.samplerAnisotropy) {
-                return false;
-            }
-            return true;
         }
+        VkPhysicalDeviceFeatures physical_device_features;
+        vkGetPhysicalDeviceFeatures(physical_device, &physical_device_features);
+        if (!queue_indices.isComplete() || !is_swapchain_adequate || !physical_device_features.samplerAnisotropy) {
+            return false;
+        }
+        return true;
     }
 
     SwapChainSupportDetails VulkanRHI::querySwapChainSupport(VkPhysicalDevice physical_device) {

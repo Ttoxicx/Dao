@@ -19,3 +19,8 @@ add_subdirectory(source/editor)
 add_subdirectory(source/runtime)
 add_subdirectory(source/meta_parser)
 add_subdirectory(third_party)
+
+set(CODEGEN_TARGET "DaoPreCompile")
+include(source/precompile/precompile.cmake)
+add_dependencies(DaoRuntime "${CODEGEN_TARGET}")
+add_dependencies("${CODEGEN_TARGET}" "DaoParser")

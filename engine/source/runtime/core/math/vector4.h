@@ -2,11 +2,14 @@
 
 #include "runtime/core/math/math.h"
 #include "runtime/core/math/vector3.h"
+#include "runtime/core/meta/reflection/reflection.h"
 
 namespace Dao
 {
-    class Vector4
+    REFLECTION_TYPE(Vector4)
+    CLASS(Vector4, Fields)
     {
+        REFLECTION_BODY(Vector4);
     public:
         float x {0.f}, y {0.f}, z {0.f}, w {0.f};
 

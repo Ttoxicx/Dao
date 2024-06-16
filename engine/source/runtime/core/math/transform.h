@@ -2,12 +2,15 @@
 #include "runtime/core/math/matrix4.h"
 #include "runtime/core/math/quaternion.h"
 #include "runtime/core/math/vector3.h"
+#include "runtime/core/meta/reflection/reflection.h"
 
 namespace Dao
 {
     
-    class Transform
+    REFLECTION_TYPE(Transform)
+    CLASS(Transform, Fields)
     {
+        REFLECTION_BODY(Transform);
     public:
         Vector3    m_position {Vector3::ZERO};
         Vector3    m_scale {Vector3::UNIT_SCALE};

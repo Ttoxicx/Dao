@@ -2,3 +2,4 @@
 out
 CMakeSettings.json
 engine/bin
+engine/source/_generated

@@ -5,6 +5,7 @@
 #include "runtime/core/math/quaternion.h"
 #include "runtime/core/math/vector3.h"
 #include "runtime/core/math/vector4.h"
+#include "runtime/core/meta/reflection/reflection.h"
 
 namespace Dao
 {
@@ -40,8 +41,10 @@ namespace Dao
     [ m[3][0]  m[3][1]  m[3][2]  m[3][3] ]   {1}
     </pre>
     */
-    class Matrix4x4_
+    REFLECTION_TYPE(Matrix4x4_)
+    CLASS(Matrix4x4_, Fields)
     {
+        REFLECTION_BODY(Matrix4x4_);
     public:
         Matrix4x4_() {}
         float v0 {1.f};

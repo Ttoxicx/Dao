@@ -1,6 +1,7 @@
 #pragma once
 
 #include "runtime/core/math/math.h"
+#include "runtime/core/meta/reflection/reflection.h"
 
 #include <cassert>
 
@@ -9,8 +10,10 @@ namespace Dao
     class Matrix3x3;
     class Vector3;
 
-    class Quaternion
+    REFLECTION_TYPE(Quaternion)
+    CLASS(Quaternion, Fields)
     {
+        REFLECTION_BODY(Quaternion);
     public:
         float w {1.f}, x {0.f}, y {0.f}, z {0.f};
 

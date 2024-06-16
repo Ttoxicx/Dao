@@ -1,14 +1,17 @@
 #pragma once
 
 #include "runtime/core/math/math.h"
+#include "runtime/core/meta/reflection/reflection.h"
 
 #include <cassert>
 #include <cmath>
 
 namespace Dao
 {
-    class Vector2
+    REFLECTION_TYPE(Vector2)
+    CLASS(Vector2, Fields)
     {
+        REFLECTION_BODY(Vector2);
     public:
         float x {0.f}, y {0.f};
 
