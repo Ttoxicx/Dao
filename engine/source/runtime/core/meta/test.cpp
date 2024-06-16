@@ -1,6 +1,6 @@
 #include "runtime/core/meta/test.h"
 #include "_generated/serializer/all_serializer.h"
-
+#include "runtime/core/meta/reflection/reflection_register.h"
 #include "runtime/core/base/macro.h"
 
 #include <filesystem>
@@ -8,8 +8,10 @@
 #include <iostream>
 namespace Dao
 {
-    void test()
+    void metaTest()
     {
+        Reflection::TypeMetaRegister::metaRegister();
+
         Test1 test1_in;
         test1_in.m_int = 12;
         test1_in.m_char = 'g';

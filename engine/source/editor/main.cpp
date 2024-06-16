@@ -6,8 +6,13 @@
 #include "runtime/core/meta/test.h"
 
 namespace Dao {
-	void logTest() {
-		LOG_ERROR("engine is still in initial stage")
+	namespace Test {
+		void logTest() {
+			LOG_ERROR("engine is still in initial stage")
+		}
+		void metaTest() {
+			Dao::metaTest();
+		}
 	}
 }
 
@@ -37,8 +42,8 @@ int main() {
 		}
 	}
 	Dao::g_runtime_global_context.startSystem();
-	Dao::logTest();
-	Dao::test();
+	Dao::Test::logTest();
+	Dao::Test::metaTest();
 	Dao::g_runtime_global_context.shutdownSystem();
 	return 0;
 }

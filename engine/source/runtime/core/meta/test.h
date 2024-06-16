@@ -33,5 +33,5 @@ namespace Dao
         std::vector<Reflection::ReflectionPtr<BaseTest>> m_test_base_array;
     };
 
-    void test();
+    void metaTest();
 }
