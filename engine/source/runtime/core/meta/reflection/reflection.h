@@ -205,15 +205,15 @@ namespace Dao {
 
         class ReflectionInstance {
         public:
-            ReflectionInstance(TypeMeta meta, void* instance) :_meta(meta), _instance(instance) {};
-            ReflectionInstance() :_meta(), _instance(nullptr) {}
+            ReflectionInstance(TypeMeta meta, void* instance) :m_meta(meta), m_instance(instance) {};
+            ReflectionInstance() :m_meta(), m_instance(nullptr) {}
 
-            ReflectionInstance& operator=(ReflectionInstance& dest);
+            ReflectionInstance& operator=(const ReflectionInstance& dest);
             ReflectionInstance& operator=(ReflectionInstance&& dest);
 
-        private:
-            TypeMeta    _meta;
-            void*       _instance;
+        public:
+            TypeMeta    m_meta;
+            void*       m_instance;
         };
 
         template<typename T>
@@ -255,7 +255,7 @@ namespace Dao {
                 return *this;
             }
 
-            ReflectionPtr<T>& operator=(const ReflectionPtr<T>&& dest) {
+            ReflectionPtr<T>& operator=(ReflectionPtr<T>&& dest) {
                 if (this == &dest) {
                     return *this;
                 }

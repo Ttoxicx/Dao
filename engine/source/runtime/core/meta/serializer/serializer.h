@@ -17,16 +17,16 @@ namespace Dao {
 		}
 
 		template<typename T>
-		static T& readPointer(const Json& json_context, T*& instance) {
+		static T*& readPointer(const Json& json_context, T*& instance) {
 			assert(instance == nullptr);
 			std::string type_name = json_context["$typeName"].string_value();
 			assert(!type_name.empty());
-			if ("*" == type_name[0]) {
+			if ('*' == type_name[0]) {
 				instance = new T;
 				read(json_context["$context"], *instance);
 			}
 			else {
-				instance = static_cast<T*>(Reflection::TypeMeta::newFromNameAndJson(type_name, json_context["$context"])._instance);
+				instance = static_cast<T*>(Reflection::TypeMeta::newFromNameAndJson(type_name, json_context["$context"]).m_instance);
 			}
 			return instance;
 		}

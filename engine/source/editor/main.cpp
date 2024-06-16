@@ -3,6 +3,7 @@
 #include "runtime/core/base/macro.h"
 #include "runtime/function/render/window_system.h"
 #include "runtime/function/render/render_guid_allocator.h"
+#include "runtime/core/meta/test.h"
 
 namespace Dao {
 	void logTest() {
@@ -37,6 +38,7 @@ int main() {
 	}
 	Dao::g_runtime_global_context.startSystem();
 	Dao::logTest();
+	Dao::test();
 	Dao::g_runtime_global_context.shutdownSystem();
 	return 0;
 }

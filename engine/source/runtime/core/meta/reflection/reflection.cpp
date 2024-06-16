@@ -304,12 +304,12 @@ namespace Dao {
 			return *this;
 		}
 
-		ReflectionInstance& ReflectionInstance::operator=(ReflectionInstance& dest) {
+		ReflectionInstance& ReflectionInstance::operator=(const ReflectionInstance& dest) {
 			if (this == &dest) {
 				return *this;
 			}
-			_instance = dest._instance;
-			_meta = dest._meta;
+			m_instance = dest.m_instance;
+			m_meta = dest.m_meta;
 			return *this;
 		}
 
@@ -317,8 +317,8 @@ namespace Dao {
 			if (this == &dest) {
 				return *this;
 			}
-			_instance = dest._instance;
-			_meta = dest._meta;
+			m_instance = dest.m_instance;
+			m_meta = dest.m_meta;
 			return *this;
 		}
 	}
