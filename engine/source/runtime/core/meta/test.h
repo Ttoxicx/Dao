@@ -4,7 +4,7 @@
 
 namespace Dao
 {
-    REFLECTION_TYPE(BaseTest)
+    REFLECTION_TYPE(BaseTest);
     CLASS(BaseTest, Fields)
     {
         REFLECTION_BODY(BaseTest);
@@ -14,7 +14,7 @@ namespace Dao
         std::vector<int*> m_int_vector;
     };
 
-    REFLECTION_TYPE(Test1)
+    REFLECTION_TYPE(Test1);
     CLASS(Test1 : public BaseTest, WhiteListFields)
     {
         REFLECTION_BODY(Test1);
@@ -24,7 +24,7 @@ namespace Dao
             char m_char;
     };
 
-    REFLECTION_TYPE(Test2)
+    REFLECTION_TYPE(Test2);
     CLASS(Test2 : public BaseTest, , Fields)
     {
         REFLECTION_BODY(Test2);

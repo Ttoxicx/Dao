@@ -6,7 +6,7 @@
 
 namespace Dao
 {
-    REFLECTION_TYPE(Vector4)
+    REFLECTION_TYPE(Vector4);
     CLASS(Vector4, Fields)
     {
         REFLECTION_BODY(Vector4);

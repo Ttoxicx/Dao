@@ -7,7 +7,7 @@
 
 namespace Dao
 {
-    REFLECTION_TYPE(AxisAlignedBox)
+    REFLECTION_TYPE(AxisAlignedBox);
     CLASS(AxisAlignedBox, Fields)
     {
         REFLECTION_BODY(AxisAlignedBox);

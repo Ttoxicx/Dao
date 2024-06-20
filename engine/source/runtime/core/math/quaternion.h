@@ -10,7 +10,7 @@ namespace Dao
     class Matrix3x3;
     class Vector3;
 
-    REFLECTION_TYPE(Quaternion)
+    REFLECTION_TYPE(Quaternion);
     CLASS(Quaternion, Fields)
     {
         REFLECTION_BODY(Quaternion);

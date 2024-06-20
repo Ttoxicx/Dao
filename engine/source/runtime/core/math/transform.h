@@ -7,7 +7,7 @@
 namespace Dao
 {
     
-    REFLECTION_TYPE(Transform)
+    REFLECTION_TYPE(Transform);
     CLASS(Transform, Fields)
     {
         REFLECTION_BODY(Transform);
