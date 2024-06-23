@@ -4,6 +4,7 @@
 #include "runtime/core/math/vector3.h"
 
 namespace Dao {
+
 	REFLECTION_TYPE(Color);
 	CLASS(Color, Fields)
 	{
