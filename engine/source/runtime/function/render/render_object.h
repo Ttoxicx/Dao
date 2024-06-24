@@ -1,7 +1,7 @@
 #pragma once
 
 #include "runtime/core/math/matrix4.h"
-#include "runtime/framework/object/object_id_allocator.h"
+#include "runtime/function/framework/object/object_id_allocator.h"
 
 #include <string>
 #include <vector>
@@ -30,7 +30,7 @@ namespace Dao {
 	};
 
 	REFLECTION_TYPE(SkeletonAnimationResult);
-	STRUCT(SkeletonAnimationResult, Fields) 
+	STRUCT(SkeletonAnimationResult, Fields)
 	{
 		REFLECTION_BODY(SkeletonAnimationResult);
 		std::vector<SkeletonAnimationResultTransform> m_transforms;
@@ -72,12 +72,12 @@ namespace Dao {
 	struct GameObjectPartId {
 		GObjectID	m_go_id{ k_invalid_gobject_id };
 		size_t		m_part_id{ k_invalid_part_id };
-		
+
 		bool operator==(const GameObjectPartId& rhs) const {
 			return m_go_id == rhs.m_go_id && m_part_id == rhs.m_part_id;
 		}
-		size_t getHashValue() const { 
-			return m_go_id ^ (m_part_id << 1); 
+		size_t getHashValue() const {
+			return m_go_id ^ (m_part_id << 1);
 		}
 		bool isValid() const {
 			return m_go_id != k_invalid_gobject_id && m_part_id != k_invalid_part_id;

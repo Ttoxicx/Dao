@@ -1,4 +1,4 @@
-#include "runtime/framework/object/object_id_allocator.h"
+#include "runtime/function/framework/object/object_id_allocator.h"
 
 #include "core/base/macro.h"
 
