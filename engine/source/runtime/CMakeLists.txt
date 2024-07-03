@@ -30,6 +30,7 @@ target_link_libraries(${TARGET_NAME} PUBLIC imgui)
 target_link_libraries(${TARGET_NAME} PUBLIC ${VULKAN_LIB})
 target_link_libraries(${TARGET_NAME} PUBLIC json11)
 target_link_libraries(${TARGET_NAME} PRIVATE stb)
+target_link_libraries(${TARGET_NAME} PRIVATE tinyobjloader)
 
 target_include_directories(${TARGET_NAME} PUBLIC ${VULKAN_INCLUDE_DIR})
 
