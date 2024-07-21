@@ -250,7 +250,7 @@ namespace Dao {
         Matrix4x4 proj_view_matrix;
         {
             Matrix4x4 view_matrix = camera.getViewMatrix();
-            Matrix4x4 proj_matrix = camera.getPersProjMtarix();
+            Matrix4x4 proj_matrix = camera.getPersProjMatrix();
             proj_view_matrix = proj_matrix * view_matrix;
         }
 

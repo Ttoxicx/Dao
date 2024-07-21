@@ -43,7 +43,7 @@ namespace Dao {
 		uint32_t padding_point_light_num_1;
 		uint32_t padding_point_light_num_2;
 		uint32_t padding_point_light_num_3;
-		VulkanScenePointLight scene_point_light[s_max_point_light_count];
+		VulkanScenePointLight scene_point_lights[s_max_point_light_count];
 		VulkanSceneDirectionalLight scene_direction_light;
 		Matrix4x4 directional_light_proj_view;
 	};
@@ -100,6 +100,11 @@ namespace Dao {
 	};
 
 	struct AxisStorageBufferObject {
+		Matrix4x4	model_matrix = Matrix4x4::IDENTITY;
+		uint32_t	selected_axis = 3;
+	};
+
+	struct ParticleBillboardPerframeStorageBufferObject {
 		Matrix4x4 proj_view_matrix;
 		Vector3 right_direction;
 		float padding_right_position;
@@ -145,7 +150,7 @@ namespace Dao {
 		VmaAllocation mesh_vertex_position_buffer_allocation;
 
 		RHIBuffer* mesh_vertex_varying_enable_blending_buffer;
-		VmaAllocation mesh_vertex_varing_enable_blending_buffer_allocation;
+		VmaAllocation mesh_vertex_varying_enable_blending_buffer_allocation;
 
 		RHIBuffer* mesh_vertex_joint_binding_buffer;
 		VmaAllocation mesh_vertex_joint_binding_buffer_allocation;
@@ -162,13 +167,17 @@ namespace Dao {
 	};
 
 	struct VulkanPBRMaterial {
-		RHIImage* base_color_texture_images;
+		RHIImage* base_color_texture_image;
 		RHIImageView* base_color_image_view;
 		VmaAllocation base_color_image_allocation;
 
 		RHIImage* metallic_roughness_texture_image;
 		RHIImageView* metallic_roughness_image_view;
-		RHIImageView* metallic_roughness_image_allocation;
+		VmaAllocation metallic_roughness_image_allocation;
+
+		RHIImage* normal_texture_image;
+		RHIImageView* normal_image_view;
+		VmaAllocation normal_image_allocation;
 
 		RHIImage* occlusion_texture_image;
 		RHIImageView* occlusion_image_view;
@@ -180,7 +189,7 @@ namespace Dao {
 
 		RHIBuffer* material_uniform_buffer;
 		VmaAllocation material_uniform_buffer_allocation;
-		
+
 		RHIDescriptorSet* material_descriptor_set;
 	};
 
@@ -210,10 +219,10 @@ namespace Dao {
 		uint32_t metallic_roughness_image_width;
 		uint32_t metallic_roughness_image_height;
 		RHIFormat metallic_roughness_image_format;
-		void* normal_roughness_image_pixels;
-		uint32_t normal_roughness_image_width;
-		uint32_t normal_roughness_image_height;
-		RHIFormat normal_roughness_image_format;
+		void* normal_image_pixels;
+		uint32_t normal_image_width;
+		uint32_t normal_image_height;
+		RHIFormat normal_image_format;
 		void* occlusion_image_pixels;
 		uint32_t occlusion_image_width;
 		uint32_t occlusion_image_height;

@@ -20,7 +20,7 @@ namespace Dao {
 		//light
 		AmbientLight		m_ambient_light;
 		PDirectionalLight	m_directional_light;
-		PointLight			m_point_light_list;
+		PointLightList		m_point_light_list;
 		//render entities
 		std::vector<RenderEntity>	m_render_entities;
 	};

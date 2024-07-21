@@ -48,7 +48,7 @@ namespace Dao {
 		Vector3 right() const { return m_inv_rotation * X; }
 		Vector2 getFOV() const { return { m_fovx,m_fovy }; }
 		Matrix4x4 getViewMatrix();
-		Matrix4x4 getPersProjMtarix() const;
+		Matrix4x4 getPersProjMatrix() const;
 		Matrix4x4 getLookAtMatrix() const { return Math::makeLookAtMatrix(position(), position() + forward(), up()); }
 		float getFovYDeprecated() const { return m_fovy; }
 
