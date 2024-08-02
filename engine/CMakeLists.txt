@@ -15,6 +15,7 @@ else()
     message(FATAL_ERROR "Unknown Platform")
 endif()
 
+add_subdirectory(shader)
 add_subdirectory(source/editor)
 add_subdirectory(source/runtime)
 add_subdirectory(source/meta_parser)
