@@ -12,19 +12,20 @@ struct PointLight{
 	float padding_intensity;
 };
 //buffer(SSBO) is larger and more flexible than uniform(UBO), but is slower than uniform 
-layout(set=0,binding=0) readonly buffer _unused_name_perframe{
+layout(set=0,binding=0) readonly buffer unused_name_perframe{
 	mat4 proj_view_matrix;
 	vec3 camera_position;
 	float padding_camera_position;
 	vec3 ambient_light;
-	float padding_light_num;
+	float padding_ambient_light;
+	uint point_light_num;
 	uint padding_point_light_num_1;
 	uint padding_point_light_num_2;
 	uint padding_point_light_num_3;
 	PointLight scene_point_lights[m_max_point_light_count];
 };
 
-layout(set=0,binding=1) readonly buffer _unused_name_axis{
+layout(set=0,binding=1) readonly buffer unused_name_axis{
 	mat4 model_matrix;
 	uint selected_axis;
 };

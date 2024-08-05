@@ -1,4 +1,4 @@
-struct PGBufferData {
+struct GBufferData {
 	highp vec3 worldNormal;
 	highp vec3 baseColor;
 	highp float metallic;
@@ -33,7 +33,7 @@ highp uint DecodeShadingModelId(highp float InPackedChannel) {
 	return uint(round(InPackedChannel * float(255)));
 }
 
-void EncodeGBufferData(PGBufferData InGBuffer, out highp vec4 OutGBufferA, out highp vec4 OutGBufferB, out highp vec4 OutGBufferC) {
+void EncodeGBufferData(GBufferData InGBuffer, out highp vec4 OutGBufferA, out highp vec4 OutGBufferB, out highp vec4 OutGBufferC) {
 	OutGBufferA.rgb = EncodeNormal(InGBuffer.worldNormal);
 	OutGBufferB.r = InGBuffer.metallic;
 	OutGBufferB.g = InGBuffer.specular;
@@ -42,7 +42,7 @@ void EncodeGBufferData(PGBufferData InGBuffer, out highp vec4 OutGBufferA, out h
 	OutGBufferC.rgb = EncodeBaseColor(InGBuffer.baseColor);
 }
 
-void DecodeGBufferData(out PGBufferData OutGBuffer, highp vec4 InGBufferA, highp vec4 InGBufferB, highp vec4 InGBufferC) {
+void DecodeGBufferData(out GBufferData OutGBuffer, highp vec4 InGBufferA, highp vec4 InGBufferB, highp vec4 InGBufferC) {
 	OutGBuffer.worldNormal = DecodeNormal(InGBufferA.xyz);
 	OutGBuffer.metallic = InGBufferB.r;
 	OutGBuffer.specular = InGBufferB.g;
