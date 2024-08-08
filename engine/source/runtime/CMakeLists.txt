@@ -32,6 +32,10 @@ target_link_libraries(${TARGET_NAME} PUBLIC json11)
 target_link_libraries(${TARGET_NAME} PRIVATE stb)
 target_link_libraries(${TARGET_NAME} PRIVATE tinyobjloader)
 
+add_dependencies(${TARGET_NAME} ${SHADER_COMPILE_TARGET})
+
+target_include_directories(${TARGET_NAME} PUBLIC ${ENGINE_ROOT_DIR}/shader/_generated/cpp)
+
 target_include_directories(${TARGET_NAME} PUBLIC ${VULKAN_INCLUDE_DIR})
 
 target_include_directories(${TARGET_NAME} PUBLIC ${ENGINE_ROOT_DIR}/source)

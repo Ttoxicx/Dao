@@ -1,4 +1,4 @@
-﻿#version 450
+#version 450
 
 #define POINT_TYPE_EMITTER 0
 #define MESH_TYPE_EMITTER 1

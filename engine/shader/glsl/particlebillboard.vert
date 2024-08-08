@@ -24,7 +24,7 @@ struct Particle{
 layout(set=0,binding=1) readonly buffer unused_name_perdrawcall{Particle particles[];};
 
 layout(location=0) out vec4 out_color;
-layout(location=1) out vec4 out_uv;
+layout(location=1) out vec2 out_uv;
 
 void main(){
 	const vec2 vertex_buffer[4]=vec2[4](vec2(-0.5,0.5),vec2(0.5,0.5),vec2(-0.5,-0.5),vec2(0.5,-0.5));

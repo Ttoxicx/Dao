@@ -77,12 +77,12 @@ void main(){
 
 	highp vec3 result_color=vec3(0.0,0.0,0.0);
 
-	if(SHADINGMODELID_UINT==gbuffer.shadingModelID){
+	if(SHADINGMODELID_UNLIT==gbuffer.shadingModelID){
 		//skybox
 		highp vec3 in_UVM=normalize(in_world_position-camera_position);
 		highp vec3 origin_sample_UVM=vec3(in_UVM.x,in_UVM.z,in_UVM.y);
 		result_color=textureLod(skybox_sampler,origin_sample_UVM,0.0).rgb;
-	}else if(SHADINGMODELID_DEFAULT==gbuffer.shadingModelID){
+	}else if(SHADINGMODELID_DEFAULT_LIT==gbuffer.shadingModelID){
 #include "mesh_lighting.inl"
 	}
 	out_color=vec4(result_color,1.0f);

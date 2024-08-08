@@ -3,3 +3,4 @@ out
 CMakeSettings.json
 engine/bin
 engine/source/_generated
+engine/shader/_generated

@@ -5,26 +5,26 @@
 #include "constants.h"
 
 struct DirectionalLight{
-	vec3 direction;
-	float padding_direction;
-	vec3 color;
-	float padding_color;
+	highp vec3 direction;
+	lowp float padding_direction;
+	highp vec3 color;
+	lowp float padding_color;
 };
 
 struct PointLight{
-	vec3 position;
-	float radius;
-	vec3 intensity;
-	float padding_intensity;
+	highp vec3 position;
+	highp float radius;
+	highp vec3 intensity;
+	lowp float padding_intensity;
 };
 
 layout(set=0,binding=0) readonly buffer unused_name_perframe{
-	mat4 proj_view_matrix;
-	vec3 camera_position;
-	float padding_camera_position;
-	vec3 ambient_light;
-	float padding_ambient_light;
-	uint point_light_num;
+	highp mat4 proj_view_matrix;
+	highp vec3 camera_position;
+	lowp float padding_camera_position;
+	highp vec3 ambient_light;
+	lowp float padding_ambient_light;
+	highp uint point_light_num;
 	uint padding_point_light_num_1;
 	uint padding_point_light_num_2;
 	uint padding_point_light_num_3;
