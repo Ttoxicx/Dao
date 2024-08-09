@@ -316,7 +316,7 @@ namespace Dao {
 				emissive_image_format = material_data.m_emissive_texture->m_format;
 			}
 
-			VulkanPBRMaterial material = res.first->second;
+			VulkanPBRMaterial& material = res.first->second;
 			//similiarly to the vertex/index buffer, we should allocate the uniform
 			//buffer in DEVICE_LOCAL memory and use the temp stage buffer to copy the
 			//data
