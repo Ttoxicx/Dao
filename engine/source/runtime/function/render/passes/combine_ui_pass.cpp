@@ -12,6 +12,7 @@ namespace Dao {
 		RenderPass::initialize(nullptr);
 		const CombineUIPassInitInfo* info = static_cast<const CombineUIPassInitInfo*>(init_info);
 		m_framebuffer.render_pass = info->render_pass;
+
 		setupDescriptorSetLayout();
 		setupPipelines();
 		setupDescriptorSet();
