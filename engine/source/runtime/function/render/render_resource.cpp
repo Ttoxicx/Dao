@@ -634,7 +634,7 @@ namespace Dao {
 			mesh_vertex_joint_binding_storage_buffer_info.offset = 0;
 			mesh_vertex_joint_binding_storage_buffer_info.range = vertex_joint_binding_buffer_size;
 			mesh_vertex_joint_binding_storage_buffer_info.buffer = mesh.mesh_vertex_joint_binding_buffer;
-			ASSERT(mesh_vertex_joint_binding_storage_buffer_info.range < m_global_render_resource.m_storage_buffer.m_max_storage_buffer_rage);
+			ASSERT(mesh_vertex_joint_binding_storage_buffer_info.range < m_global_render_resource.m_storage_buffer.m_max_storage_buffer_range);
 
 			RHIDescriptorSet* descriptor_set_to_write = mesh.mesh_vertex_blending_descriptor_set;
 
@@ -766,7 +766,7 @@ namespace Dao {
 			mesh_vertex_joint_binding_storage_buffer_info.offset = 0;
 			mesh_vertex_joint_binding_storage_buffer_info.range = 1;
 			mesh_vertex_joint_binding_storage_buffer_info.buffer = m_global_render_resource.m_storage_buffer.m_global_null_descriptor_storage_buffer;
-			ASSERT(mesh_vertex_joint_binding_storage_buffer_info.range < m_global_render_resource.m_storage_buffer.m_max_storage_buffer_rage);
+			ASSERT(mesh_vertex_joint_binding_storage_buffer_info.range < m_global_render_resource.m_storage_buffer.m_max_storage_buffer_range);
 
 			RHIDescriptorSet* descriptor_set_to_write = mesh.mesh_vertex_blending_descriptor_set;
 
@@ -906,7 +906,7 @@ namespace Dao {
 
 		storage_buffer.m_min_uniform_buffer_offset_aligment = static_cast<uint32_t>(properties.limits.minUniformBufferOffsetAlignment);
 		storage_buffer.m_min_storage_buffer_offset_aligment = static_cast<uint32_t>(properties.limits.minStorageBufferOffsetAlignment);
-		storage_buffer.m_max_storage_buffer_rage = properties.limits.maxStorageBufferRange;
+		storage_buffer.m_max_storage_buffer_range = properties.limits.maxStorageBufferRange;
 		storage_buffer.m_non_coherent_atom_size = properties.limits.nonCoherentAtomSize;
 
 		//In Vulkan, the storage buffer should be pre-allocated.

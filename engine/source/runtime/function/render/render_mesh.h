@@ -49,7 +49,7 @@ namespace Dao {
 			return binding_descriptions;
 		}
 
-		static std::array<RHIVertexInputAttributeDescription, 4> getAttributeDescription() {
+		static std::array<RHIVertexInputAttributeDescription, 4> getAttributeDescriptions() {
 			std::array<RHIVertexInputAttributeDescription, 4> attribute_descriptions{};
 
 			attribute_descriptions[0].binding = 0;

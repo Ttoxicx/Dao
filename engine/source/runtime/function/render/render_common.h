@@ -13,7 +13,7 @@
 namespace Dao {
 
 	static constexpr uint32_t s_point_light_shadow_map_dimension = 2048;
-	static constexpr uint32_t s_drectional_light_shadow_map_dimension = 4096;
+	static constexpr uint32_t s_directional_light_shadow_map_dimension = 4096;
 	static constexpr uint32_t s_mesh_per_drawcall_max_instance_count = 64;
 	static constexpr uint32_t s_mesh_vertex_blending_max_joint_count = 1024;
 	static constexpr uint32_t s_max_point_light_count = 15;
