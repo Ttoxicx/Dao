@@ -27,12 +27,15 @@ namespace Dao {
 	void DirectionalLightShadowPass::preparePassData(std::shared_ptr<RenderResourceBase> render_resource) {
 		const RenderResource* vulkan_resource = static_cast<const RenderResource*>(render_resource.get());
 		if (vulkan_resource) {
-			m_mesh_directional_light_shadow_perframe_storage_buffer_object = vulkan_resource->m_mesh_directional_light_shadow_perframe_storage_buffer_object;
+			_mesh_directional_light_shadow_perframe_storage_buffer_object = vulkan_resource->m_mesh_directional_light_shadow_perframe_storage_buffer_object;
 		}
 	}
 
 	void DirectionalLightShadowPass::draw() {
+		float color[4] = { 1.0f,1.0f,1.0f,1.0f };
+		m_rhi->pushEvent(m_rhi->getCurrentCommandBuffer(), "Directional Light Shadow", color);
 		drawModel();
+		m_rhi->popEvent(m_rhi->getCurrentCommandBuffer());
 	}
 
 	void DirectionalLightShadowPass::setupAttachments() {
@@ -215,7 +218,7 @@ namespace Dao {
 	void DirectionalLightShadowPass::setupPipelines() {
 		m_render_pipelines.resize(1);
 
-		RHIDescriptorSetLayout* descriptor_layouts[] = { m_descriptor_infos[0].layout,m_per_mesh_layout };
+		RHIDescriptorSetLayout* descriptor_layouts[] = { m_descriptor_infos[0].layout,_per_mesh_layout };
 		RHIPipelineLayoutCreateInfo pipeline_layout_create_info{};
 		pipeline_layout_create_info.sType = RHI_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 		pipeline_layout_create_info.setLayoutCount = sizeof(descriptor_layouts) / sizeof(descriptor_layouts[0]);
@@ -449,28 +452,24 @@ namespace Dao {
 			mesh_nodes.push_back(temp);
 		}
 		//directional light shadow begin pass
-		{
-			RHIRenderPassBeginInfo renderpass_begin_info{};
-			renderpass_begin_info.sType = RHI_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-			renderpass_begin_info.renderPass = m_framebuffer.render_pass;
-			renderpass_begin_info.framebuffer = m_framebuffer.framebuffer;
-			renderpass_begin_info.renderArea.offset = { 0,0 };
-			renderpass_begin_info.renderArea.extent = {
-				s_directional_light_shadow_map_dimension,
-				s_directional_light_shadow_map_dimension
-			};
+		RHIRenderPassBeginInfo renderpass_begin_info{};
+		renderpass_begin_info.sType = RHI_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		renderpass_begin_info.renderPass = m_framebuffer.render_pass;
+		renderpass_begin_info.framebuffer = m_framebuffer.framebuffer;
+		renderpass_begin_info.renderArea.offset = { 0,0 };
+		renderpass_begin_info.renderArea.extent = {
+			s_directional_light_shadow_map_dimension,
+			s_directional_light_shadow_map_dimension
+		};
 
-			RHIClearValue clear_values[2];
-			clear_values[0].color = { 1.0f };
-			clear_values[1].depthStencil = { 1.0f,0 };
-			renderpass_begin_info.clearValueCount = sizeof(clear_values) / sizeof(clear_values[0]);
-			renderpass_begin_info.pClearValues = clear_values;
+		RHIClearValue clear_values[2];
+		clear_values[0].color = { 1.0f };
+		clear_values[1].depthStencil = { 1.0f,0 };
+		renderpass_begin_info.clearValueCount = sizeof(clear_values) / sizeof(clear_values[0]);
+		renderpass_begin_info.pClearValues = clear_values;
 
-			m_rhi->cmdBeginRenderPassPFN(m_rhi->getCurrentCommandBuffer(), &renderpass_begin_info, RHI_SUBPASS_CONTENTS_INLINE);
+		m_rhi->cmdBeginRenderPassPFN(m_rhi->getCurrentCommandBuffer(), &renderpass_begin_info, RHI_SUBPASS_CONTENTS_INLINE);
 
-			float color[4] = { 1.0f,1.0f,1.0f,1.0f };
-			m_rhi->pushEvent(m_rhi->getCurrentCommandBuffer(), "Directional Light Shadow", color);
-		}
 		//mesh
 		if (m_rhi->isPointLightShadowEnabled()) {
 			float color[4] = { 1.0f,1.0f,1.0f,1.0f };
@@ -479,7 +478,7 @@ namespace Dao {
 			//perframe storage buffer
 			uint32_t perframe_dynamic_offset = roundUp(
 				m_global_render_resource->m_storage_buffer.m_global_upload_ringbuffers_end[m_rhi->getCurrentFrameIndex()],
-				m_global_render_resource->m_storage_buffer.m_min_storage_buffer_offset_aligment
+				m_global_render_resource->m_storage_buffer.m_min_storage_buffer_offset_alignment
 			);
 			m_global_render_resource->m_storage_buffer.m_global_upload_ringbuffers_end[m_rhi->getCurrentFrameIndex()] = perframe_dynamic_offset + sizeof(MeshPerframeStorageBufferObject);
 
@@ -490,11 +489,10 @@ namespace Dao {
 			);
 
 			MeshDirectionalLightShadowPerframeStorageBufferObject& perframe_storage_buffer_object = (*reinterpret_cast<MeshDirectionalLightShadowPerframeStorageBufferObject*>(
-				reinterpret_cast<uintptr_t>(m_global_render_resource->m_storage_buffer.m_global_upload_ringbuffer_memory_pointer) + perframe_dynamic_offset)
-			);
+				reinterpret_cast<uintptr_t>(m_global_render_resource->m_storage_buffer.m_global_upload_ringbuffer_memory_pointer) + perframe_dynamic_offset));
 
-			perframe_storage_buffer_object = m_mesh_directional_light_shadow_perframe_storage_buffer_object;
-			
+			perframe_storage_buffer_object = _mesh_directional_light_shadow_perframe_storage_buffer_object;
+
 			for (auto& [material, mesh_instanced] : directional_light_mesh_drawcall_batch) {
 				//TODO(render form near to far)
 				for (auto& [mesh, mesh_nodes] : mesh_instanced) {
@@ -524,7 +522,7 @@ namespace Dao {
 							//perdrawcall storage buffer
 							uint32_t perdrawcall_dynamic_offset = roundUp(
 								m_global_render_resource->m_storage_buffer.m_global_upload_ringbuffers_end[m_rhi->getCurrentFrameIndex()],
-								m_global_render_resource->m_storage_buffer.m_min_storage_buffer_offset_aligment
+								m_global_render_resource->m_storage_buffer.m_min_storage_buffer_offset_alignment
 							);
 							m_global_render_resource->m_storage_buffer.m_global_upload_ringbuffers_end[m_rhi->getCurrentFrameIndex()] = perdrawcall_dynamic_offset + sizeof(MeshDirectionalLightShadowPerdrawcallStorageBufferObject);
 
@@ -554,7 +552,7 @@ namespace Dao {
 							if (enable_vertex_blending) {
 								per_drawcall_vertex_blending_dynamic_offset = roundUp(
 									m_global_render_resource->m_storage_buffer.m_global_upload_ringbuffers_end[m_rhi->getCurrentFrameIndex()],
-									m_global_render_resource->m_storage_buffer.m_min_storage_buffer_offset_aligment
+									m_global_render_resource->m_storage_buffer.m_min_storage_buffer_offset_alignment
 								);
 								m_global_render_resource->m_storage_buffer.m_global_upload_ringbuffers_end[m_rhi->getCurrentFrameIndex()] = per_drawcall_vertex_blending_dynamic_offset + sizeof(MeshDirectionalLightShadowPerDrawcallVertexBlendingStorageBufferObject);
 
@@ -603,9 +601,6 @@ namespace Dao {
 		}
 
 		//directional light shadow end pass
-		{
-			m_rhi->popEvent(m_rhi->getCurrentCommandBuffer());
-			m_rhi->cmdEndRenderPassPFN(m_rhi->getCurrentCommandBuffer());
-		}
+		m_rhi->cmdEndRenderPassPFN(m_rhi->getCurrentCommandBuffer());
 	}
 }

@@ -6,7 +6,7 @@ namespace Dao {
 	
 	class RenderResourceBase;
 
-	class DirectionalLightShadowPass :public RenderPass {
+	class PointLightShadowPass :public RenderPass {
 	public:
 		void initialize(const RenderPassInitInfo* init_info) override final;
 		void postInitialize() override final;
@@ -16,7 +16,7 @@ namespace Dao {
 		void setPerMeshLayout(RHIDescriptorSetLayout* layout) { _per_mesh_layout = layout; }
 
 	private:
-		void setupAttachments();
+		void setupAttachment();
 		void setupRenderPass();
 		void setupFramebuffer();
 		void setupDescriptorSetLayout();
@@ -26,6 +26,6 @@ namespace Dao {
 
 	private:
 		RHIDescriptorSetLayout* _per_mesh_layout;
-		MeshDirectionalLightShadowPerframeStorageBufferObject _mesh_directional_light_shadow_perframe_storage_buffer_object;
+		MeshPointLightShadowPerframeStorageBufferObject _mesh_point_light_shadow_perframe_storage_buffer_object;
 	};
 }

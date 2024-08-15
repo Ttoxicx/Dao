@@ -350,7 +350,7 @@ namespace Dao {
 				alloc_info.usage = VMA_MEMORY_USAGE_CPU_ONLY;
 				rhi->createBufferWithAlignmentVMA(
 					vulkan_context->m_assets_allocator, &buffer_info, &alloc_info,
-					m_global_render_resource.m_storage_buffer.m_min_uniform_buffer_offset_aligment,
+					m_global_render_resource.m_storage_buffer.m_min_uniform_buffer_offset_alignment,
 					material.material_uniform_buffer, &material.material_uniform_buffer_allocation, nullptr
 				);
 
@@ -904,8 +904,8 @@ namespace Dao {
 		RHIPhysicalDeviceProperties properties;
 		rhi->getPhysicalDeviceProperties(&properties);
 
-		storage_buffer.m_min_uniform_buffer_offset_aligment = static_cast<uint32_t>(properties.limits.minUniformBufferOffsetAlignment);
-		storage_buffer.m_min_storage_buffer_offset_aligment = static_cast<uint32_t>(properties.limits.minStorageBufferOffsetAlignment);
+		storage_buffer.m_min_uniform_buffer_offset_alignment = static_cast<uint32_t>(properties.limits.minUniformBufferOffsetAlignment);
+		storage_buffer.m_min_storage_buffer_offset_alignment = static_cast<uint32_t>(properties.limits.minStorageBufferOffsetAlignment);
 		storage_buffer.m_max_storage_buffer_range = properties.limits.maxStorageBufferRange;
 		storage_buffer.m_non_coherent_atom_size = properties.limits.nonCoherentAtomSize;
 

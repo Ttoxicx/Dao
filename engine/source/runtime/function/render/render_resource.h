@@ -69,8 +69,8 @@ namespace Dao {
 
 	struct StorageBuffer {
 		//limits
-		uint32_t m_min_uniform_buffer_offset_aligment{ 256 };
-		uint32_t m_min_storage_buffer_offset_aligment{ 256 };
+		uint32_t m_min_uniform_buffer_offset_alignment{ 256 };
+		uint32_t m_min_storage_buffer_offset_alignment{ 256 };
 		uint32_t m_max_storage_buffer_range{ 1 << 27 };
 		uint32_t m_non_coherent_atom_size{ 256 };
 
