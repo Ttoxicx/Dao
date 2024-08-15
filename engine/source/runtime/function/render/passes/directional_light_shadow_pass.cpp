@@ -1,4 +1,4 @@
-#include "runtime/function/render/passes/directional_light_pass.h"
+#include "runtime/function/render/passes/directional_light_shadow_pass.h"
 
 #include "runtime/function/render/render_helper.h"
 #include "runtime/function/render/render_mesh.h"
