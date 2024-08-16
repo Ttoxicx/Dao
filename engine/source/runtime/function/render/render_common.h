@@ -134,11 +134,11 @@ namespace Dao {
 
 	struct MeshInefficientPickPerdrawcallStorageBufferObject {
 		Matrix4x4 model_matrices[s_mesh_per_drawcall_max_instance_count];
-		uint32_t node_is[s_mesh_per_drawcall_max_instance_count];
+		uint32_t node_ids[s_mesh_per_drawcall_max_instance_count];
 		float enable_vertex_blending[s_mesh_per_drawcall_max_instance_count];
 	};
 
-	struct MeshInefficeentPickPerdrawcallVertexBlendingStorageBufferObject {
+	struct MeshInefficientPickPerdrawcallVertexBlendingStorageBufferObject {
 		Matrix4x4 joint_matrices[s_mesh_vertex_blending_max_joint_count * s_mesh_per_drawcall_max_instance_count];
 	};
 
