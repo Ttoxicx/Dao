@@ -134,13 +134,13 @@ namespace Dao {
 		color_blend_state_create_info.blendConstants[2] = 0.0f;
 		color_blend_state_create_info.blendConstants[3] = 0.0f;
 
-		RHIPipelineDepthStencilStateCreateInfo depth_stencil_create_info{};
-		depth_stencil_create_info.sType = RHI_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-		depth_stencil_create_info.depthTestEnable = RHI_TRUE;
-		depth_stencil_create_info.depthWriteEnable = RHI_TRUE;
-		depth_stencil_create_info.depthCompareOp = RHI_COMPARE_OP_LESS;
-		depth_stencil_create_info.depthBoundsTestEnable = RHI_FALSE;
-		depth_stencil_create_info.stencilTestEnable = RHI_FALSE;
+		RHIPipelineDepthStencilStateCreateInfo depth_stencil_state_create_info{};
+		depth_stencil_state_create_info.sType = RHI_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+		depth_stencil_state_create_info.depthTestEnable = RHI_TRUE;
+		depth_stencil_state_create_info.depthWriteEnable = RHI_TRUE;
+		depth_stencil_state_create_info.depthCompareOp = RHI_COMPARE_OP_LESS;
+		depth_stencil_state_create_info.depthBoundsTestEnable = RHI_FALSE;
+		depth_stencil_state_create_info.stencilTestEnable = RHI_FALSE;
 
 		RHIDynamicState dynaminc_state[] = { RHI_DYNAMIC_STATE_VIEWPORT,RHI_DYNAMIC_STATE_SCISSOR };
 		RHIPipelineDynamicStateCreateInfo dynaminc_state_create_info{};
@@ -158,7 +158,7 @@ namespace Dao {
 		pipeline_info.pRasterizationState = &rasterization_state_create_info;
 		pipeline_info.pMultisampleState = &multisample_state_create_info;
 		pipeline_info.pColorBlendState = &color_blend_state_create_info;
-		pipeline_info.pDepthStencilState = &depth_stencil_create_info;
+		pipeline_info.pDepthStencilState = &depth_stencil_state_create_info;
 		pipeline_info.pDynamicState = &dynaminc_state_create_info;
 		pipeline_info.layout = m_render_pipelines[0].layout;
 		pipeline_info.renderPass = m_framebuffer.render_pass;
