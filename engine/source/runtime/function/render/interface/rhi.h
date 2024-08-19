@@ -349,7 +349,7 @@ namespace Dao {
 		virtual QueueFamilyIndices getQueueFamilyIndices() const = 0;
 		virtual RHIQueue* getGraphicsQueue() const = 0;
 		virtual RHIQueue* getComputeQueue() const = 0;
-		virtual RHISwapChainDesc getSwapChainInfo() = 0;
+		virtual RHISwapChainDesc getSwapchainInfo() = 0;
 		virtual RHIDepthImageDesc getDepthImageInfo() const = 0;
 		virtual uint8_t getMaxFramesInFlight() const = 0;
 		virtual uint8_t getCurrentFrameIndex() const = 0;

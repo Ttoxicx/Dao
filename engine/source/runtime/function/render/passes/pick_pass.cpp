@@ -31,8 +31,8 @@ namespace Dao {
 		const RenderResource* vulkan_resource = static_cast<const RenderResource*>(render_resource.get());
 		if (vulkan_resource) {
 			_mesh_inefficient_pick_perframe_storage_buffer_object.proj_view_matrix = vulkan_resource->m_mesh_inefficient_pick_perframe_storage_buffer_object.proj_view_matrix;
-			_mesh_inefficient_pick_perframe_storage_buffer_object.rt_width = m_rhi->getSwapChainInfo().extent.width;
-			_mesh_inefficient_pick_perframe_storage_buffer_object.rt_height = m_rhi->getSwapChainInfo().extent.height;
+			_mesh_inefficient_pick_perframe_storage_buffer_object.rt_width = m_rhi->getSwapchainInfo().extent.width;
+			_mesh_inefficient_pick_perframe_storage_buffer_object.rt_height = m_rhi->getSwapchainInfo().extent.height;
 		}
 	}
 
@@ -43,8 +43,8 @@ namespace Dao {
 		m_framebuffer.attachments[0].format = RHI_FORMAT_R32_UINT;
 
 		m_rhi->createImage(
-			m_rhi->getSwapChainInfo().extent.width,
-			m_rhi->getSwapChainInfo().extent.height,
+			m_rhi->getSwapchainInfo().extent.width,
+			m_rhi->getSwapchainInfo().extent.height,
 			m_framebuffer.attachments[0].format,
 			RHI_IMAGE_TILING_OPTIMAL,
 			RHI_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | RHI_IMAGE_USAGE_TRANSFER_SRC_BIT,
@@ -120,8 +120,8 @@ namespace Dao {
 		framebuffer_create_info.renderPass = m_framebuffer.render_pass;
 		framebuffer_create_info.attachmentCount = sizeof(attachments) / sizeof(attachments[0]);
 		framebuffer_create_info.pAttachments = attachments;
-		framebuffer_create_info.width = m_rhi->getSwapChainInfo().extent.width;
-		framebuffer_create_info.height = m_rhi->getSwapChainInfo().extent.height;
+		framebuffer_create_info.width = m_rhi->getSwapchainInfo().extent.width;
+		framebuffer_create_info.height = m_rhi->getSwapchainInfo().extent.height;
 		framebuffer_create_info.layers = 1;
 
 		if (m_rhi->createFramebuffer(&framebuffer_create_info, m_framebuffer.framebuffer) != RHI_SUCCESS) {
@@ -213,9 +213,9 @@ namespace Dao {
 		RHIPipelineViewportStateCreateInfo viewport_state_create_info{};
 		viewport_state_create_info.sType = RHI_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
 		viewport_state_create_info.viewportCount = 1;
-		viewport_state_create_info.pViewports = m_rhi->getSwapChainInfo().viewport;
+		viewport_state_create_info.pViewports = m_rhi->getSwapchainInfo().viewport;
 		viewport_state_create_info.scissorCount = 1;
-		viewport_state_create_info.pScissors = m_rhi->getSwapChainInfo().scissor;
+		viewport_state_create_info.pScissors = m_rhi->getSwapchainInfo().scissor;
 
 		RHIPipelineRasterizationStateCreateInfo rasterization_state_create_info{};
 		rasterization_state_create_info.sType = RHI_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -375,10 +375,10 @@ namespace Dao {
 	}
 
 	uint32_t PickPass::pick(const Vector2& picked_uv) {
-		uint32_t pixel_x = static_cast<uint32_t>(picked_uv.x * m_rhi->getSwapChainInfo().viewport->width + m_rhi->getSwapChainInfo().viewport->x);
-		uint32_t pixel_y = static_cast<uint32_t>(picked_uv.y * m_rhi->getSwapChainInfo().viewport->height + m_rhi->getSwapChainInfo().viewport->y);
-		uint32_t picked_pixel_index = m_rhi->getSwapChainInfo().extent.width * pixel_y + pixel_x;
-		if (pixel_x >= m_rhi->getSwapChainInfo().extent.width || pixel_y >= m_rhi->getSwapChainInfo().extent.height) {
+		uint32_t pixel_x = static_cast<uint32_t>(picked_uv.x * m_rhi->getSwapchainInfo().viewport->width + m_rhi->getSwapchainInfo().viewport->x);
+		uint32_t pixel_y = static_cast<uint32_t>(picked_uv.y * m_rhi->getSwapchainInfo().viewport->height + m_rhi->getSwapchainInfo().viewport->y);
+		uint32_t picked_pixel_index = m_rhi->getSwapchainInfo().extent.width * pixel_y + pixel_x;
+		if (pixel_x >= m_rhi->getSwapchainInfo().extent.width || pixel_y >= m_rhi->getSwapchainInfo().extent.height) {
 			return 0;
 		}
 
@@ -443,15 +443,15 @@ namespace Dao {
 			);
 		}
 
-		m_rhi->cmdSetViewportPFN(m_rhi->getCurrentCommandBuffer(), 0, 1, m_rhi->getSwapChainInfo().viewport);
-		m_rhi->cmdSetScissorPFN(m_rhi->getCurrentCommandBuffer(), 0, 1, m_rhi->getSwapChainInfo().scissor);
+		m_rhi->cmdSetViewportPFN(m_rhi->getCurrentCommandBuffer(), 0, 1, m_rhi->getSwapchainInfo().viewport);
+		m_rhi->cmdSetScissorPFN(m_rhi->getCurrentCommandBuffer(), 0, 1, m_rhi->getSwapchainInfo().scissor);
 
 		RHIRenderPassBeginInfo renderpass_begin_info{};
 		renderpass_begin_info.sType = RHI_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 		renderpass_begin_info.renderPass = m_framebuffer.render_pass;
 		renderpass_begin_info.framebuffer = m_framebuffer.framebuffer;
 		renderpass_begin_info.renderArea.offset = { 0,0 };
-		renderpass_begin_info.renderArea.extent = m_rhi->getSwapChainInfo().extent;
+		renderpass_begin_info.renderArea.extent = m_rhi->getSwapchainInfo().extent;
 
 		RHIClearValue clear_values[2] = {};
 		clear_values[0] = { 0,0,0,0 };
@@ -463,8 +463,8 @@ namespace Dao {
 		float color[4] = { 1.0f,1.0f,1.0f,1.0f };
 		m_rhi->pushEvent(m_rhi->getCurrentCommandBuffer(), "Mesh Inefficient Pick", color);
 		m_rhi->cmdBindPipelinePFN(m_rhi->getCurrentCommandBuffer(), RHI_PIPELINE_BIND_POINT_GRAPHICS, m_render_pipelines[0].pipeline);
-		m_rhi->cmdSetViewportPFN(m_rhi->getCurrentCommandBuffer(), 0, 1, m_rhi->getSwapChainInfo().viewport);
-		m_rhi->cmdSetScissorPFN(m_rhi->getCurrentCommandBuffer(), 0, 1, m_rhi->getSwapChainInfo().scissor);
+		m_rhi->cmdSetViewportPFN(m_rhi->getCurrentCommandBuffer(), 0, 1, m_rhi->getSwapchainInfo().viewport);
+		m_rhi->cmdSetScissorPFN(m_rhi->getCurrentCommandBuffer(), 0, 1, m_rhi->getSwapchainInfo().scissor);
 
 		//perframe storage buffer
 		uint32_t perframe_dynamic_offset = roundUp(
@@ -619,9 +619,9 @@ namespace Dao {
 		region.imageSubresource.baseArrayLayer = 0;
 		region.imageSubresource.layerCount = 1;
 		region.imageOffset = { 0,0,0 };
-		region.imageExtent = { m_rhi->getSwapChainInfo().extent.width,m_rhi->getSwapChainInfo().extent.height,1 };
+		region.imageExtent = { m_rhi->getSwapchainInfo().extent.width,m_rhi->getSwapchainInfo().extent.height,1 };
 
-		uint32_t buffer_size = m_rhi->getSwapChainInfo().extent.width * m_rhi->getSwapChainInfo().extent.height * 4;
+		uint32_t buffer_size = m_rhi->getSwapchainInfo().extent.width * m_rhi->getSwapchainInfo().extent.height * 4;
 		RHIBuffer* inefficient_staging_buffer;
 		RHIDeviceMemory* inefficient_staging_buffer_memory;
 		m_rhi->createBuffer(

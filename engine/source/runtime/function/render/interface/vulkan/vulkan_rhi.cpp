@@ -3124,7 +3124,7 @@ namespace Dao {
         return m_compute_queue;
     }
 
-    RHISwapChainDesc VulkanRHI::getSwapChainInfo() {
+    RHISwapChainDesc VulkanRHI::getSwapchainInfo() {
         RHISwapChainDesc desc{};
         desc.image_format = m_swapchian_image_format;
         desc.extent = m_swapchain_extent;

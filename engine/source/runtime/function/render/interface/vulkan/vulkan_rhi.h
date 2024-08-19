@@ -346,7 +346,7 @@ namespace Dao {
 		QueueFamilyIndices getQueueFamilyIndices() const override;
 		RHIQueue* getGraphicsQueue() const override;
 		RHIQueue* getComputeQueue() const override;
-		RHISwapChainDesc getSwapChainInfo() override;
+		RHISwapChainDesc getSwapchainInfo() override;
 		RHIDepthImageDesc getDepthImageInfo() const override;
 		uint8_t getMaxFramesInFlight() const override;
 		uint8_t getCurrentFrameIndex() const override;

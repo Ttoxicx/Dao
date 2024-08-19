@@ -91,9 +91,9 @@ namespace Dao {
 		RHIPipelineViewportStateCreateInfo viewport_state_create_info{};
 		viewport_state_create_info.sType = RHI_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
 		viewport_state_create_info.viewportCount = 1;
-		viewport_state_create_info.pViewports = m_rhi->getSwapChainInfo().viewport;
+		viewport_state_create_info.pViewports = m_rhi->getSwapchainInfo().viewport;
 		viewport_state_create_info.scissorCount = 1;
-		viewport_state_create_info.pScissors = m_rhi->getSwapChainInfo().scissor;
+		viewport_state_create_info.pScissors = m_rhi->getSwapchainInfo().scissor;
 
 		RHIPipelineRasterizationStateCreateInfo rasterization_state_create_info{};
 		rasterization_state_create_info.sType = RHI_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -230,14 +230,14 @@ namespace Dao {
 		m_rhi->pushEvent(m_rhi->getCurrentCommandBuffer(), "Combine UI", color);
 		RHIViewport viewport = {
 			0.0,0.0,
-			static_cast<float>(m_rhi->getSwapChainInfo().extent.width),
-			static_cast<float>(m_rhi->getSwapChainInfo().extent.height),
+			static_cast<float>(m_rhi->getSwapchainInfo().extent.width),
+			static_cast<float>(m_rhi->getSwapchainInfo().extent.height),
 			0.0,1.0
 		};
 		RHIRect2D scissor = {
 			0,0,
-			m_rhi->getSwapChainInfo().extent.width,
-			m_rhi->getSwapChainInfo().extent.height,
+			m_rhi->getSwapchainInfo().extent.width,
+			m_rhi->getSwapchainInfo().extent.height,
 		};
 		m_rhi->cmdBindPipelinePFN(m_rhi->getCurrentCommandBuffer(), RHI_PIPELINE_BIND_POINT_GRAPHICS, m_render_pipelines[0].pipeline);
 		m_rhi->cmdSetViewportPFN(m_rhi->getCurrentCommandBuffer(), 0, 1, &viewport);
