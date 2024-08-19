@@ -3,6 +3,7 @@
 #include "core/log/log_system.h"
 #include "resource/asset_manager/asset_manager.h"
 #include "resource/config_manager/config_manager.h"
+#include "runtime/function/render/render_system.h"
 
 namespace Dao {
 	RuntimeGlobalContext g_runtime_global_context;
@@ -11,6 +12,7 @@ namespace Dao {
 		m_log_system = std::make_shared<LogSystem>();
 		m_asset_manager = std::make_shared<AssetManager>();
 		m_config_manager = std::make_shared<ConfigManager>();
+		m_render_system = std::make_shared<RenderSystem>();
 
 		m_log_system->log(LogSystem::LogLevel::warn, "Global context is not complete");
 	}
