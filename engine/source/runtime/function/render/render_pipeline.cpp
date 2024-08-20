@@ -112,13 +112,13 @@ namespace Dao {
 		static_cast<DirectionalLightShadowPass*>(m_directional_light_shadow_pass.get())->draw();
 		static_cast<PointLightShadowPass*>(m_point_light_shadow_pass.get())->draw();
 
-		ColorGradingPass& color_grading_pass = (*static_cast<ColorGradingPass*>(m_color_grading_pass.get()));
-		FXAAPass& fxaa_pass = (*static_cast<FXAAPass*>(m_fxaa_pass.get()));
-		ToneMappingPass& tone_mapping_pass = (*static_cast<ToneMappingPass*>(m_tone_mapping_pass.get()));
-		UIPass& ui_pass = (*static_cast<UIPass*>(m_ui_pass.get()));
-		CombineUIPass& combine_ui_pass = (*static_cast<CombineUIPass*>(m_combine_ui_pass.get()));
-		ParticlePass& particle_pass = (*static_cast<ParticlePass*>(m_particle_pass.get()));
-		MainCameraPass& main_camera_pass = (*static_cast<MainCameraPass*>(m_main_camera_pass.get()));
+		ColorGradingPass& color_grading_pass = *(static_cast<ColorGradingPass*>(m_color_grading_pass.get()));
+		FXAAPass& fxaa_pass = *(static_cast<FXAAPass*>(m_fxaa_pass.get()));
+		ToneMappingPass& tone_mapping_pass = *(static_cast<ToneMappingPass*>(m_tone_mapping_pass.get()));
+		UIPass& ui_pass = *(static_cast<UIPass*>(m_ui_pass.get()));
+		CombineUIPass& combine_ui_pass = *(static_cast<CombineUIPass*>(m_combine_ui_pass.get()));
+		ParticlePass& particle_pass = *(static_cast<ParticlePass*>(m_particle_pass.get()));
+		MainCameraPass& main_camera_pass = *(static_cast<MainCameraPass*>(m_main_camera_pass.get()));
 
 		static_cast<ParticlePass*>(m_particle_pass.get())->setRenderCommandBufferHandle(main_camera_pass.getRenderCommandBuffer());
 		static_cast<MainCameraPass*>(m_main_camera_pass.get())->drawForward(color_grading_pass, fxaa_pass, tone_mapping_pass, ui_pass, combine_ui_pass, particle_pass, vk_rhi->m_current_swapchain_image_index);
@@ -142,13 +142,13 @@ namespace Dao {
 		static_cast<DirectionalLightShadowPass*>(m_directional_light_shadow_pass.get())->draw();
 		static_cast<PointLightShadowPass*>(m_point_light_shadow_pass.get())->draw();
 
-		ColorGradingPass& color_grading_pass = (*static_cast<ColorGradingPass*>(m_color_grading_pass.get()));
-		FXAAPass& fxaa_pass = (*static_cast<FXAAPass*>(m_fxaa_pass.get()));
-		ToneMappingPass& tone_mapping_pass = (*static_cast<ToneMappingPass*>(m_tone_mapping_pass.get()));
-		UIPass& ui_pass = (*static_cast<UIPass*>(m_ui_pass.get()));
-		CombineUIPass& combine_ui_pass = (*static_cast<CombineUIPass*>(m_combine_ui_pass.get()));
-		ParticlePass& particle_pass = (*static_cast<ParticlePass*>(m_particle_pass.get()));
-		MainCameraPass& main_camera_pass = (*static_cast<MainCameraPass*>(m_main_camera_pass.get()));
+		ColorGradingPass& color_grading_pass = *(static_cast<ColorGradingPass*>(m_color_grading_pass.get()));
+		FXAAPass& fxaa_pass = *(static_cast<FXAAPass*>(m_fxaa_pass.get()));
+		ToneMappingPass& tone_mapping_pass = *(static_cast<ToneMappingPass*>(m_tone_mapping_pass.get()));
+		UIPass& ui_pass = *(static_cast<UIPass*>(m_ui_pass.get()));
+		CombineUIPass& combine_ui_pass = *(static_cast<CombineUIPass*>(m_combine_ui_pass.get()));
+		ParticlePass& particle_pass = *(static_cast<ParticlePass*>(m_particle_pass.get()));
+		MainCameraPass& main_camera_pass = *(static_cast<MainCameraPass*>(m_main_camera_pass.get()));
 
 		static_cast<ParticlePass*>(m_particle_pass.get())->setRenderCommandBufferHandle(main_camera_pass.getRenderCommandBuffer());
 		static_cast<MainCameraPass*>(m_main_camera_pass.get())->draw(color_grading_pass, fxaa_pass, tone_mapping_pass, ui_pass, combine_ui_pass, particle_pass, vk_rhi->m_current_swapchain_image_index);
@@ -159,13 +159,13 @@ namespace Dao {
 	}
 
 	void RenderPipeline::passUpdateAfterRecreateSwapchain() {
-		ColorGradingPass& color_grading_pass = (*static_cast<ColorGradingPass*>(m_color_grading_pass.get()));
-		FXAAPass& fxaa_pass = (*static_cast<FXAAPass*>(m_fxaa_pass.get()));
-		ToneMappingPass& tone_mapping_pass = (*static_cast<ToneMappingPass*>(m_tone_mapping_pass.get()));
-		PickPass& pick_pass = (*static_cast<PickPass*>(m_ui_pass.get()));
-		CombineUIPass& combine_ui_pass = (*static_cast<CombineUIPass*>(m_combine_ui_pass.get()));
-		ParticlePass& particle_pass = (*static_cast<ParticlePass*>(m_particle_pass.get()));
-		MainCameraPass& main_camera_pass = (*static_cast<MainCameraPass*>(m_main_camera_pass.get()));
+		ColorGradingPass& color_grading_pass = *(static_cast<ColorGradingPass*>(m_color_grading_pass.get()));
+		FXAAPass& fxaa_pass = *(static_cast<FXAAPass*>(m_fxaa_pass.get()));
+		ToneMappingPass& tone_mapping_pass = *(static_cast<ToneMappingPass*>(m_tone_mapping_pass.get()));
+		PickPass& pick_pass = *(static_cast<PickPass*>(m_ui_pass.get()));
+		CombineUIPass& combine_ui_pass = *(static_cast<CombineUIPass*>(m_combine_ui_pass.get()));
+		ParticlePass& particle_pass = *(static_cast<ParticlePass*>(m_particle_pass.get()));
+		MainCameraPass& main_camera_pass = *(static_cast<MainCameraPass*>(m_main_camera_pass.get()));
 
 		main_camera_pass.updateAfterFramebufferRecreate();
 		tone_mapping_pass.updateAfterFramebufferRecreate(main_camera_pass.getFrameBufferImageViews()[main_camera_pass_backup_buffer_odd]);
