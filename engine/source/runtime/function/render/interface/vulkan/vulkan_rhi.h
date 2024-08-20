@@ -313,7 +313,7 @@ namespace Dao {
 			uint32_t image_memory_barrier_count,
 			const RHIImageMemoryBarrier* image_memory_barriers
 		) override;
-		bool endCommandBuffer(RHICommandBuffer* command_buffer) = 0;
+		bool endCommandBuffer(RHICommandBuffer* command_buffer) override;
 		void updateDescriptorSets(
 			uint32_t descriptor_write_count,
 			const RHIWriteDescriptorSet* descriptor_writes,

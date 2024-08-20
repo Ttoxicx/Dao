@@ -19,7 +19,7 @@ namespace Dao {
 	class RenderCamera;
 	class WindowUI;
 
-	class RenderSystemnInitInfo {
+	struct RenderSystemnInitInfo {
 		std::shared_ptr<WindowSystem> window_system;
 	};
 
@@ -44,11 +44,11 @@ namespace Dao {
 		std::shared_ptr<RenderCamera> getRenderCamera() const;
 		std::shared_ptr<RHI> getRHI() const;
 
-		void setRenderPipeline(RENDER_PIPELINE_TYPE pipeline_type);
+		void setRenderPipelineType(RENDER_PIPELINE_TYPE pipeline_type);
 		void initializeUIRenderBackend(WindowUI* window_ui);
 		void updateEngineContentViewport(float offset_x, float offset_y, float width, float height);
 		uint32_t getGuidOfPickedMesh(const Vector2& picked_uv);
-		GObjectID getGObjectIDByMesID(uint32_t mesh_id) const;
+		GObjectID getGObjectIDByMeshID(uint32_t mesh_id) const;
 
 		EngineContentViewport getEngineContentViewport() const;
 

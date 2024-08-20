@@ -26,12 +26,12 @@ namespace Dao {
 		virtual void preparePassData(std::shared_ptr<RenderResourceBase> render_resource);
 		virtual void forwardRender(std::shared_ptr<RHI> rhi, std::shared_ptr<RenderResourceBase> render_resource);
 		virtual void deferredRender(std::shared_ptr<RHI> rhi, std::shared_ptr<RenderResourceBase> render_resource);
-		virtual void getGuidOfPickedMesh(const Vector2& picked_uv) = 0;
+		virtual uint32_t getGuidOfPickedMesh(const Vector2& picked_uv) = 0;
 		void initializeUIRenderBackend(WindowUI* window_ui);
 
 	protected:
 		std::shared_ptr<RHI>			m_rhi;
-		std::shared_ptr<RenderPassBase> m_directional_light_pass;
+		std::shared_ptr<RenderPassBase> m_directional_light_shadow_pass;
 		std::shared_ptr<RenderPassBase> m_point_light_shadow_pass;
 		std::shared_ptr<RenderPassBase> m_main_camera_pass;
 		std::shared_ptr<RenderPassBase> m_color_grading_pass;
