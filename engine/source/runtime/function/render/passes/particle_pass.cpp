@@ -41,7 +41,7 @@ namespace Dao {
     void ParticlePass::initialize(const RenderPassInitInfo* init_info) {
         RenderPass::initialize(nullptr);
         const ParticlePassInitInfo* info = static_cast<const ParticlePassInitInfo*>(init_info);
-        m_particle_manager = info->m_particle_manager;
+        _particle_manager = info->m_particle_manager;
     }
 
     void ParticlePass::copyNormalAndDepthImage() {
@@ -54,11 +54,11 @@ namespace Dao {
         command_buffer_begin_info.flags = 0;
         command_buffer_begin_info.pInheritanceInfo = nullptr;
 
-        bool res_begin_command_buffer = m_rhi->beginCommandBufferPFN(m_copy_command_buffer, &command_buffer_begin_info);
+        bool res_begin_command_buffer = m_rhi->beginCommandBufferPFN(_copy_command_buffer, &command_buffer_begin_info);
         ASSERT(res_begin_command_buffer == RHI_SUCCESS);
 
         float color[4] = { 1.0f,1.0f,1.0f,1.0f };
-        m_rhi->pushEvent(m_copy_command_buffer, "Copy Depth Image for Particle", color);
+        m_rhi->pushEvent(_copy_command_buffer, "Copy Depth Image for Particle", color);
         //depth image
         RHIImageSubresourceRange subresource_range = { RHI_IMAGE_ASPECT_DEPTH_BIT,0,1,0,1 };
         RHIImageMemoryBarrier image_memory_barrier{};
@@ -71,9 +71,9 @@ namespace Dao {
             image_memory_barrier.newLayout = RHI_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
             image_memory_barrier.srcAccessMask = 0;
             image_memory_barrier.dstAccessMask = RHI_ACCESS_TRANSFER_WRITE_BIT;
-            image_memory_barrier.image = m_dst_depth_image;
+            image_memory_barrier.image = _dst_depth_image;
             m_rhi->cmdPipelineBarrier(
-                m_copy_command_buffer,
+                _copy_command_buffer,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr, 0, nullptr,
@@ -83,19 +83,19 @@ namespace Dao {
             image_memory_barrier.newLayout = RHI_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
             image_memory_barrier.srcAccessMask = RHI_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
             image_memory_barrier.dstAccessMask = RHI_ACCESS_TRANSFER_READ_BIT;
-            image_memory_barrier.image = m_src_depth_image;
+            image_memory_barrier.image = _src_depth_image;
             m_rhi->cmdPipelineBarrier(
-                m_copy_command_buffer,
+                _copy_command_buffer,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr, 0, nullptr,
                 1, &image_memory_barrier
             );
             m_rhi->cmdCopyImageToImage(
-                m_copy_command_buffer,
-                m_src_depth_image,
+                _copy_command_buffer,
+                _src_depth_image,
                 RHI_IMAGE_ASPECT_DEPTH_BIT,
-                m_dst_depth_image,
+                _dst_depth_image,
                 RHI_IMAGE_ASPECT_DEPTH_BIT,
                 m_rhi->getSwapchainInfo().extent.width,
                 m_rhi->getSwapchainInfo().extent.height
@@ -105,7 +105,7 @@ namespace Dao {
             image_memory_barrier.srcAccessMask = RHI_ACCESS_TRANSFER_READ_BIT;
             image_memory_barrier.dstAccessMask = RHI_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | RHI_ACCESS_SHADER_READ_BIT;
             m_rhi->cmdPipelineBarrier(
-                m_copy_command_buffer,
+                _copy_command_buffer,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr, 0, nullptr,
@@ -115,9 +115,9 @@ namespace Dao {
             image_memory_barrier.newLayout = RHI_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
             image_memory_barrier.srcAccessMask = RHI_ACCESS_TRANSFER_WRITE_BIT;
             image_memory_barrier.dstAccessMask = RHI_ACCESS_SHADER_READ_BIT;
-            image_memory_barrier.image = m_dst_depth_image;
+            image_memory_barrier.image = _dst_depth_image;
             m_rhi->cmdPipelineBarrier(
-                m_copy_command_buffer,
+                _copy_command_buffer,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr, 0, nullptr,
@@ -125,9 +125,9 @@ namespace Dao {
             );
         }
 
-        m_rhi->popEvent(m_copy_command_buffer);
+        m_rhi->popEvent(_copy_command_buffer);
 
-        m_rhi->pushEvent(m_copy_command_buffer, "Copy Normal Image for Particle", color);
+        m_rhi->pushEvent(_copy_command_buffer, "Copy Normal Image for Particle", color);
         //color image
         subresource_range = { RHI_IMAGE_ASPECT_COLOR_BIT,0,1,0,1 };
         image_memory_barrier.subresourceRange = subresource_range;
@@ -136,9 +136,9 @@ namespace Dao {
             image_memory_barrier.newLayout = RHI_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
             image_memory_barrier.srcAccessMask = 0;
             image_memory_barrier.dstAccessMask = RHI_ACCESS_TRANSFER_WRITE_BIT;
-            image_memory_barrier.image = m_dst_normal_image;
+            image_memory_barrier.image = _dst_normal_image;
             m_rhi->cmdPipelineBarrier(
-                m_copy_command_buffer,
+                _copy_command_buffer,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr, 0, nullptr,
@@ -148,19 +148,19 @@ namespace Dao {
             image_memory_barrier.newLayout = RHI_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
             image_memory_barrier.srcAccessMask = RHI_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
             image_memory_barrier.dstAccessMask = RHI_ACCESS_TRANSFER_READ_BIT;
-            image_memory_barrier.image = m_src_normal_image;
+            image_memory_barrier.image = _src_normal_image;
             m_rhi->cmdPipelineBarrier(
-                m_copy_command_buffer,
+                _copy_command_buffer,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr, 0, nullptr,
                 1, &image_memory_barrier
             );
             m_rhi->cmdCopyImageToImage(
-                m_copy_command_buffer,
-                m_src_normal_image,
+                _copy_command_buffer,
+                _src_normal_image,
                 RHI_IMAGE_ASPECT_COLOR_BIT,
-                m_dst_normal_image,
+                _dst_normal_image,
                 RHI_IMAGE_ASPECT_COLOR_BIT,
                 m_rhi->getSwapchainInfo().extent.width,
                 m_rhi->getSwapchainInfo().extent.height
@@ -170,7 +170,7 @@ namespace Dao {
             image_memory_barrier.srcAccessMask = RHI_ACCESS_TRANSFER_READ_BIT;
             image_memory_barrier.dstAccessMask = RHI_ACCESS_COLOR_ATTACHMENT_READ_BIT | RHI_ACCESS_SHADER_READ_BIT;
             m_rhi->cmdPipelineBarrier(
-                m_copy_command_buffer,
+                _copy_command_buffer,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr, 0, nullptr,
@@ -180,9 +180,9 @@ namespace Dao {
             image_memory_barrier.newLayout = RHI_IMAGE_LAYOUT_GENERAL;
             image_memory_barrier.srcAccessMask = RHI_ACCESS_TRANSFER_WRITE_BIT;
             image_memory_barrier.dstAccessMask = RHI_ACCESS_SHADER_READ_BIT;
-            image_memory_barrier.image = m_dst_normal_image;
+            image_memory_barrier.image = _dst_normal_image;
             m_rhi->cmdPipelineBarrier(
-                m_copy_command_buffer,
+                _copy_command_buffer,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr, 0, nullptr,
@@ -190,9 +190,9 @@ namespace Dao {
             );
         }
 
-        m_rhi->popEvent(m_copy_command_buffer);
+        m_rhi->popEvent(_copy_command_buffer);
 
-        bool res_end_command_buffer = m_rhi->endCommandBufferPFN(m_copy_command_buffer);
+        bool res_end_command_buffer = m_rhi->endCommandBufferPFN(_copy_command_buffer);
         ASSERT(res_end_command_buffer == RHI_SUCCESS);
 
         bool res_reset_fences = m_rhi->resetFencesPFN(1, &m_rhi->getFenceList()[index]);
@@ -205,7 +205,7 @@ namespace Dao {
         submit_info.pWaitSemaphores = &(m_rhi->getTextureCopySemaphore(index));
         submit_info.pWaitDstStageMask = wait_stages;
         submit_info.commandBufferCount = 1;
-        submit_info.pCommandBuffers = &m_copy_command_buffer;
+        submit_info.pCommandBuffers = &_copy_command_buffer;
         submit_info.signalSemaphoreCount = 0;
         submit_info.pSignalSemaphores = nullptr;
 
@@ -216,8 +216,8 @@ namespace Dao {
     }
 
     void ParticlePass::updateAfterFramebufferRecreate() {
-        m_rhi->destroyImage(m_dst_depth_image);
-        m_rhi->freeMemory(m_dst_depth_image_memory);
+        m_rhi->destroyImage(_dst_depth_image);
+        m_rhi->freeMemory(_dst_depth_image_memory);
         m_rhi->createImage(
             m_rhi->getSwapchainInfo().extent.width,
             m_rhi->getSwapchainInfo().extent.height,
@@ -225,21 +225,21 @@ namespace Dao {
             RHI_IMAGE_TILING_OPTIMAL,
             RHI_IMAGE_USAGE_SAMPLED_BIT | RHI_IMAGE_USAGE_TRANSFER_DST_BIT,
             RHI_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-            m_dst_depth_image,
-            m_dst_depth_image_memory,
+            _dst_depth_image,
+            _dst_depth_image_memory,
             0, 1, 1
         );
         m_rhi->createImageView(
-            m_dst_depth_image,
+            _dst_depth_image,
             m_rhi->getDepthImageInfo().depth_image_format,
             RHI_IMAGE_ASPECT_DEPTH_BIT,
             RHI_IMAGE_VIEW_TYPE_2D,
             1, 1,
-            m_src_depth_image_view
+            _src_depth_image_view
         );
 
-        m_rhi->destroyImage(m_dst_normal_image);
-        m_rhi->freeMemory(m_dst_normal_image_memory);
+        m_rhi->destroyImage(_dst_normal_image);
+        m_rhi->freeMemory(_dst_normal_image_memory);
         m_rhi->createImage(
             m_rhi->getSwapchainInfo().extent.width,
             m_rhi->getSwapchainInfo().extent.height,
@@ -247,50 +247,50 @@ namespace Dao {
             RHI_IMAGE_TILING_OPTIMAL,
             RHI_IMAGE_USAGE_STORAGE_BIT | RHI_IMAGE_USAGE_TRANSFER_DST_BIT,
             RHI_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-            m_dst_normal_image,
-            m_dst_normal_image_memory,
+            _dst_normal_image,
+            _dst_normal_image_memory,
             0, 1, 1
         );
         m_rhi->createImageView(
-            m_dst_normal_image,
+            _dst_normal_image,
             RHI_FORMAT_R8G8B8A8_UNORM,
             RHI_IMAGE_ASPECT_COLOR_BIT,
             RHI_IMAGE_VIEW_TYPE_2D,
             1, 1,
-            m_src_normal_image_view
+            _src_normal_image_view
         );
 
         updateDescriptorSet();
     }
 
     void ParticlePass::draw() {
-        for (int i = 0; i < m_emitter_count; ++i) {
+        for (int i = 0; i < _emitter_count; ++i) {
             float color[4] = { 1.0f,1.0f,1.0f,1.0f };
-            m_rhi->pushEvent(m_render_command_buffer, "ParticleBillboard", color);
-            m_rhi->cmdBindPipelinePFN(m_render_command_buffer, RHI_PIPELINE_BIND_POINT_GRAPHICS, m_render_pipelines[1].pipeline);
-            m_rhi->cmdSetViewportPFN(m_render_command_buffer, 0, 1, m_rhi->getSwapchainInfo().viewport);
-            m_rhi->cmdSetScissorPFN(m_render_command_buffer, 0, 1, m_rhi->getSwapchainInfo().scissor);
+            m_rhi->pushEvent(_render_command_buffer, "ParticleBillboard", color);
+            m_rhi->cmdBindPipelinePFN(_render_command_buffer, RHI_PIPELINE_BIND_POINT_GRAPHICS, m_render_pipelines[1].pipeline);
+            m_rhi->cmdSetViewportPFN(_render_command_buffer, 0, 1, m_rhi->getSwapchainInfo().viewport);
+            m_rhi->cmdSetScissorPFN(_render_command_buffer, 0, 1, m_rhi->getSwapchainInfo().scissor);
             m_rhi->cmdBindDescriptorSetsPFN(
-                m_render_command_buffer,
+                _render_command_buffer,
                 RHI_PIPELINE_BIND_POINT_GRAPHICS,
                 m_render_pipelines[1].layout,
                 0, 1,
                 &m_descriptor_infos[i * 3 + 2].descriptor_set,
                 0, nullptr
             );
-            m_rhi->cmdDraw(m_render_command_buffer, 4, m_emitter_buffer_batches[i].m_num_particle, 0, 0);
-            m_rhi->popEvent(m_render_command_buffer);
+            m_rhi->cmdDraw(_render_command_buffer, 4, _emitter_buffer_batches[i].m_num_particle, 0, 0);
+            m_rhi->popEvent(_render_command_buffer);
         }
     }
 
     void ParticlePass::setupAttachments() {
         //billboard texture
         {
-            std::shared_ptr<TextureData> m_particle_billboard_texture_resource = m_render_resource->loadTextureHDR(m_particle_manager->getGlobalParticleRes().m_particle_billboard_texture_path);
+            std::shared_ptr<TextureData> m_particle_billboard_texture_resource = m_render_resource->loadTextureHDR(_particle_manager->getGlobalParticleRes().m_particle_billboard_texture_path);
             m_rhi->createGlobalImage(
-                m_particle_billboard_texture_image,
-                m_particle_billboard_texture_image_view,
-                m_particle_billboard_texture_vma_allocation,
+                _particle_billboard_texture_image,
+                _particle_billboard_texture_image_view,
+                _particle_billboard_texture_vma_allocation,
                 m_particle_billboard_texture_resource->m_width,
                 m_particle_billboard_texture_resource->m_height,
                 m_particle_billboard_texture_resource->m_pixels,
@@ -299,11 +299,11 @@ namespace Dao {
         }
         //dao texture
         {
-            std::shared_ptr<TextureData> m_dao_logo_texture_resource = m_render_resource->loadTexture(m_particle_manager->getGlobalParticleRes().m_dao_logo_texture_path, true);
+            std::shared_ptr<TextureData> m_dao_logo_texture_resource = m_render_resource->loadTexture(_particle_manager->getGlobalParticleRes().m_dao_logo_texture_path, true);
             m_rhi->createGlobalImage(
-                m_dao_logo_texture_image,
-                m_dao_logo_texture_image_view,
-                m_dao_logo_texture_vma_allocation,
+                _dao_logo_texture_image,
+                _dao_logo_texture_image_view,
+                _dao_logo_texture_vma_allocation,
                 m_dao_logo_texture_resource->m_width,
                 m_dao_logo_texture_resource->m_height,
                 m_dao_logo_texture_resource->m_pixels,
@@ -318,17 +318,17 @@ namespace Dao {
             RHI_IMAGE_TILING_OPTIMAL,
             RHI_IMAGE_USAGE_SAMPLED_BIT | RHI_IMAGE_USAGE_TRANSFER_DST_BIT,
             RHI_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-            m_dst_depth_image,
-            m_dst_depth_image_memory,
+            _dst_depth_image,
+            _dst_depth_image_memory,
             0, 1, 1
         );
         m_rhi->createImageView(
-            m_dst_depth_image,
+            _dst_depth_image,
             m_rhi->getDepthImageInfo().depth_image_format,
             RHI_IMAGE_ASPECT_DEPTH_BIT,
             RHI_IMAGE_VIEW_TYPE_2D,
             1, 1,
-            m_src_depth_image_view
+            _src_depth_image_view
         );
 
         m_rhi->createImage(
@@ -338,22 +338,22 @@ namespace Dao {
             RHI_IMAGE_TILING_OPTIMAL,
             RHI_IMAGE_USAGE_STORAGE_BIT | RHI_IMAGE_USAGE_TRANSFER_DST_BIT,
             RHI_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-            m_dst_normal_image,
-            m_dst_normal_image_memory,
+            _dst_normal_image,
+            _dst_normal_image_memory,
             0, 1, 1
         );
         m_rhi->createImageView(
-            m_dst_normal_image,
+            _dst_normal_image,
             RHI_FORMAT_R8G8B8A8_UNORM,
             RHI_IMAGE_ASPECT_COLOR_BIT,
             RHI_IMAGE_VIEW_TYPE_2D,
             1, 1,
-            m_src_normal_image_view
+            _src_normal_image_view
         );
     }
 
     void ParticlePass::setupParticleDescriptorSet() {
-        for (int eid = 0; eid < m_emitter_count; ++eid) {
+        for (int eid = 0; eid < _emitter_count; ++eid) {
             RHIDescriptorSetAllocateInfo particlebillboard_global_descriptorset_alloc_info{};
             particlebillboard_global_descriptorset_alloc_info.sType = RHI_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
             particlebillboard_global_descriptorset_alloc_info.pNext = nullptr;
@@ -367,12 +367,12 @@ namespace Dao {
             RHIDescriptorBufferInfo particlebillboard_perframe_storage_buffer_info = {};
             particlebillboard_perframe_storage_buffer_info.offset = 0;
             particlebillboard_perframe_storage_buffer_info.range = RHI_WHOLE_SIZE;
-            particlebillboard_perframe_storage_buffer_info.buffer = m_particle_billboard_uniform_buffer;
+            particlebillboard_perframe_storage_buffer_info.buffer = _particle_billboard_uniform_buffer;
 
             RHIDescriptorBufferInfo particlebillboard_perdrawcall_storage_buffer_info = {};
             particlebillboard_perdrawcall_storage_buffer_info.offset = 0;
             particlebillboard_perdrawcall_storage_buffer_info.range = RHI_WHOLE_SIZE;
-            particlebillboard_perdrawcall_storage_buffer_info.buffer = m_emitter_buffer_batches[eid].m_position_render_buffer;
+            particlebillboard_perdrawcall_storage_buffer_info.buffer = _emitter_buffer_batches[eid].m_position_render_buffer;
 
             RHIWriteDescriptorSet particlebillboard_descriptor_writes_info[3];
 
@@ -416,7 +416,7 @@ namespace Dao {
 
             RHIDescriptorImageInfo particle_texture_image_info{};
             particle_texture_image_info.sampler = sampler;
-            particle_texture_image_info.imageView = m_particle_billboard_texture_image_view;
+            particle_texture_image_info.imageView = _particle_billboard_texture_image_view;
             particle_texture_image_info.imageLayout = RHI_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
             particlebillboard_descriptor_writes_info[2].sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -433,21 +433,21 @@ namespace Dao {
     }
 
     void ParticlePass::setEmitterCount(int count) {
-        for (int i = 0; i < m_emitter_buffer_batches.size(); ++i) {
-            m_emitter_buffer_batches[i].freeUpBatch(m_rhi);
+        for (int i = 0; i < _emitter_buffer_batches.size(); ++i) {
+            _emitter_buffer_batches[i].freeUpBatch(m_rhi);
         }
-        m_emitter_count = count;
-        m_emitter_buffer_batches.resize(m_emitter_count);
+        _emitter_count = count;
+        _emitter_buffer_batches.resize(_emitter_count);
     }
 
 
     void ParticlePass::createEmitter(int id, const ParticleEmitterDesc& desc) {
         const RHIDeviceSize counter_buffer_size = sizeof(ParticleCounter);
         ParticleCounter counter;
-        counter.alive_count = m_emitter_buffer_batches[id].m_num_particle;
-        counter.dead_count = s_max_particles - m_emitter_buffer_batches[id].m_num_particle;
+        counter.alive_count = _emitter_buffer_batches[id].m_num_particle;
+        counter.dead_count = s_max_particles - _emitter_buffer_batches[id].m_num_particle;
         counter.emit_count = 0;
-        counter.alive_count_after_sim = m_emitter_buffer_batches[id].m_num_particle;
+        counter.alive_count_after_sim = _emitter_buffer_batches[id].m_num_particle;
 
         if constexpr (s_verbose_particle_alive_info) {
             LOG_INFO("Emitter {} info:", id);
@@ -467,8 +467,8 @@ namespace Dao {
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_STORAGE_BUFFER_BIT | RHI_BUFFER_USAGE_INDIRECT_BUFFER_BIT,
                 RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-                m_emitter_buffer_batches[id].m_indirect_dispatch_argument_buffer,
-                m_emitter_buffer_batches[id].m_indirect_dispatch_argument_memory,
+                _emitter_buffer_batches[id].m_indirect_dispatch_argument_buffer,
+                _emitter_buffer_batches[id].m_indirect_dispatch_argument_memory,
                 indirect_argument_size,
                 &indirectargument,
                 indirect_argument_size
@@ -482,8 +482,8 @@ namespace Dao {
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_STORAGE_BUFFER_BIT,
                 RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-                m_emitter_buffer_batches[id].m_alive_list_buffer,
-                m_emitter_buffer_batches[id].m_alive_list_memory,
+                _emitter_buffer_batches[id].m_alive_list_buffer,
+                _emitter_buffer_batches[id].m_alive_list_memory,
                 alive_list_size,
                 alive_indices.data(),
                 alive_list_size
@@ -492,8 +492,8 @@ namespace Dao {
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_STORAGE_BUFFER_BIT,
                 RHI_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-                m_emitter_buffer_batches[id].m_alive_list_next_buffer,
-                m_emitter_buffer_batches[id].m_alive_list_next_memory,
+                _emitter_buffer_batches[id].m_alive_list_next_buffer,
+                _emitter_buffer_batches[id].m_alive_list_next_memory,
                 alive_list_size
             );
 
@@ -506,8 +506,8 @@ namespace Dao {
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_STORAGE_BUFFER_BIT,
                 RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-                m_emitter_buffer_batches[id].m_dead_list_buffer,
-                m_emitter_buffer_batches[id].m_dead_list_memory,
+                _emitter_buffer_batches[id].m_dead_list_buffer,
+                _emitter_buffer_batches[id].m_dead_list_memory,
                 dead_list_size,
                 dead_indices.data(),
                 dead_list_size
@@ -520,8 +520,8 @@ namespace Dao {
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_TRANSFER_SRC_BIT | RHI_BUFFER_USAGE_TRANSFER_DST_BIT,
                 RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-                m_emitter_buffer_batches[id].m_counter_host_buffer,
-                m_emitter_buffer_batches[id].m_counter_host_memory,
+                _emitter_buffer_batches[id].m_counter_host_buffer,
+                _emitter_buffer_batches[id].m_counter_host_memory,
                 counter_buffer_size,
                 &counter,
                 sizeof(counter)
@@ -530,18 +530,18 @@ namespace Dao {
             //flush writes to host visible buffer
             void* mapped;
 
-            m_rhi->mapMemory(m_emitter_buffer_batches[id].m_counter_host_memory, 0, RHI_WHOLE_SIZE, 0, &mapped);
+            m_rhi->mapMemory(_emitter_buffer_batches[id].m_counter_host_memory, 0, RHI_WHOLE_SIZE, 0, &mapped);
 
-            m_rhi->flushMappedMemoryRanges(nullptr, m_emitter_buffer_batches[id].m_counter_host_memory, 0, RHI_WHOLE_SIZE);
+            m_rhi->flushMappedMemoryRanges(nullptr, _emitter_buffer_batches[id].m_counter_host_memory, 0, RHI_WHOLE_SIZE);
 
-            m_rhi->unmapMemory(m_emitter_buffer_batches[id].m_counter_host_memory);
+            m_rhi->unmapMemory(_emitter_buffer_batches[id].m_counter_host_memory);
 
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_STORAGE_BUFFER_BIT | RHI_BUFFER_USAGE_TRANSFER_SRC_BIT |
                 RHI_BUFFER_USAGE_TRANSFER_DST_BIT,
                 RHI_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-                m_emitter_buffer_batches[id].m_counter_device_buffer,
-                m_emitter_buffer_batches[id].m_counter_device_memory,
+                _emitter_buffer_batches[id].m_counter_device_buffer,
+                _emitter_buffer_batches[id].m_counter_device_memory,
                 counter_buffer_size
             );
 
@@ -568,10 +568,9 @@ namespace Dao {
             copy_region.size = counter_buffer_size;
             m_rhi->cmdCopyBuffer(
                 copy_command,
-                m_emitter_buffer_batches[id].m_counter_host_buffer,
-                m_emitter_buffer_batches[id].m_counter_device_buffer,
-                1,
-                &copy_region
+                _emitter_buffer_batches[id].m_counter_host_buffer,
+                _emitter_buffer_batches[id].m_counter_device_buffer,
+                1, &copy_region
             );
 
             if (m_rhi->endCommandBuffer(copy_command) != RHI_SUCCESS) {
@@ -603,7 +602,7 @@ namespace Dao {
         }
 
         const VkDeviceSize stagging_buffer_size = s_max_particles * sizeof(Particle);
-        m_emitter_buffer_batches[id].m_emitter_desc = desc;
+        _emitter_buffer_batches[id].m_emitter_desc = desc;
 
         //fill in data
         {
@@ -611,18 +610,18 @@ namespace Dao {
                 RHI_BUFFER_USAGE_STORAGE_BUFFER_BIT,
                 RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
                 RHI_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-                m_emitter_buffer_batches[id].m_particle_component_res_buffer,
-                m_emitter_buffer_batches[id].m_particle_component_res_memory,
+                _emitter_buffer_batches[id].m_particle_component_res_buffer,
+                _emitter_buffer_batches[id].m_particle_component_res_memory,
                 sizeof(ParticleEmitterDesc),
-                &m_emitter_buffer_batches[id].m_emitter_desc,
+                &_emitter_buffer_batches[id].m_emitter_desc,
                 sizeof(ParticleEmitterDesc)
             );
 
-            if (m_rhi->mapMemory(m_emitter_buffer_batches[id].m_particle_component_res_memory,
+            if (m_rhi->mapMemory(_emitter_buffer_batches[id].m_particle_component_res_memory,
                 0,
                 RHI_WHOLE_SIZE,
                 0,
-                &m_emitter_buffer_batches[id].m_emitter_desc_mapped) != RHI_SUCCESS)
+                &_emitter_buffer_batches[id].m_emitter_desc_mapped) != RHI_SUCCESS)
             {
                 LOG_FATAL("failed to map emitter component res buffer");
             }
@@ -630,25 +629,25 @@ namespace Dao {
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_TRANSFER_SRC_BIT | RHI_BUFFER_USAGE_TRANSFER_DST_BIT,
                 RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-                m_emitter_buffer_batches[id].m_position_host_buffer,
-                m_emitter_buffer_batches[id].m_position_host_memory,
+                _emitter_buffer_batches[id].m_position_host_buffer,
+                _emitter_buffer_batches[id].m_position_host_memory,
                 stagging_buffer_size
             );
 
             //flush writes to host visible buffer
             void* mapped;
-            m_rhi->mapMemory(m_emitter_buffer_batches[id].m_position_host_memory, 0, RHI_WHOLE_SIZE, 0, &mapped);
+            m_rhi->mapMemory(_emitter_buffer_batches[id].m_position_host_memory, 0, RHI_WHOLE_SIZE, 0, &mapped);
 
-            m_rhi->flushMappedMemoryRanges(nullptr, m_emitter_buffer_batches[id].m_position_host_memory, 0, RHI_WHOLE_SIZE);
+            m_rhi->flushMappedMemoryRanges(nullptr, _emitter_buffer_batches[id].m_position_host_memory, 0, RHI_WHOLE_SIZE);
 
-            m_rhi->unmapMemory(m_emitter_buffer_batches[id].m_position_host_memory);
+            m_rhi->unmapMemory(_emitter_buffer_batches[id].m_position_host_memory);
 
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_STORAGE_BUFFER_BIT | RHI_BUFFER_USAGE_TRANSFER_SRC_BIT |
                 RHI_BUFFER_USAGE_TRANSFER_DST_BIT,
                 RHI_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-                m_emitter_buffer_batches[id].m_position_device_buffer,
-                m_emitter_buffer_batches[id].m_position_device_memory,
+                _emitter_buffer_batches[id].m_position_device_buffer,
+                _emitter_buffer_batches[id].m_position_device_memory,
                 stagging_buffer_size
             );
 
@@ -656,8 +655,8 @@ namespace Dao {
                 RHI_BUFFER_USAGE_STORAGE_BUFFER_BIT | RHI_BUFFER_USAGE_TRANSFER_SRC_BIT |
                 RHI_BUFFER_USAGE_TRANSFER_DST_BIT,
                 RHI_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-                m_emitter_buffer_batches[id].m_position_render_buffer,
-                m_emitter_buffer_batches[id].m_position_render_memory,
+                _emitter_buffer_batches[id].m_position_render_buffer,
+                _emitter_buffer_batches[id].m_position_render_memory,
                 stagging_buffer_size
             );
 
@@ -683,8 +682,8 @@ namespace Dao {
             copy_region.size = stagging_buffer_size;
             m_rhi->cmdCopyBuffer(
                 copy_command,
-                m_emitter_buffer_batches[id].m_position_host_buffer,
-                m_emitter_buffer_batches[id].m_position_device_buffer,
+                _emitter_buffer_batches[id].m_position_host_buffer,
+                _emitter_buffer_batches[id].m_position_device_buffer,
                 1,
                 &copy_region
             );
@@ -735,17 +734,17 @@ namespace Dao {
         cmdbuffer_allocate_info.commandPool = m_rhi->getCommandPool();
         cmdbuffer_allocate_info.level = RHI_COMMAND_BUFFER_LEVEL_PRIMARY;
         cmdbuffer_allocate_info.commandBufferCount = 1;
-        if (m_rhi->allocateCommandBuffers(&cmdbuffer_allocate_info, m_compute_command_buffer) != RHI_SUCCESS) {
+        if (m_rhi->allocateCommandBuffers(&cmdbuffer_allocate_info, _compute_command_buffer) != RHI_SUCCESS) {
             LOG_FATAL("failed to alloc compute command buffer");
         }
-        if (m_rhi->allocateCommandBuffers(&cmdbuffer_allocate_info, m_copy_command_buffer) != RHI_SUCCESS) {
+        if (m_rhi->allocateCommandBuffers(&cmdbuffer_allocate_info, _copy_command_buffer) != RHI_SUCCESS) {
             LOG_FATAL("failed to alloc copy command buffer");
         }
 
         RHIFenceCreateInfo fence_create_info{};
         fence_create_info.sType = RHI_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         fence_create_info.flags = 0;
-        if (m_rhi->createFence(&fence_create_info, m_fence) != RHI_SUCCESS) {
+        if (m_rhi->createFence(&fence_create_info, _fence) != RHI_SUCCESS) {
             LOG_FATAL("failed to create fence");
         }
     }
@@ -852,7 +851,7 @@ namespace Dao {
             particle_descriptor_layout_create_info.pBindings = particle_layout_bindings;
 
             if (m_rhi->createDescriptorSetLayout(&particle_descriptor_layout_create_info, m_descriptor_infos[0].layout) != RHI_SUCCESS) {
-                LOG_FATAL("failed to setup particle compute Descriptor done");
+                LOG_FATAL("failed to setup particle compute Descriptor");
             }
             LOG_INFO("setup particle compute Descriptor done");
         }
@@ -969,8 +968,8 @@ namespace Dao {
             shader_stage.pSpecializationInfo = nullptr;
             ASSERT(shader_stage.module != RHI_NULL_HANDLE);
 
-            compute_pipeline_createInfo.pStages = &shader_stage;
-            if (m_rhi->createComputePipelines(nullptr, 1, &compute_pipeline_createInfo, m_kickoff_pipeline) != RHI_SUCCESS) {
+            compute_pipeline_createInfo.pStage = &shader_stage;
+            if (m_rhi->createComputePipelines(nullptr, 1, &compute_pipeline_createInfo, _kickoff_pipeline) != RHI_SUCCESS) {
                 LOG_FATAL("failed to create particle kickoff pipeline");
             }
         }
@@ -980,8 +979,8 @@ namespace Dao {
             shader_stage.pSpecializationInfo = nullptr;
             ASSERT(shader_stage.module != RHI_NULL_HANDLE);
 
-            compute_pipeline_createInfo.pStages = &shader_stage;
-            if (m_rhi->createComputePipelines(nullptr, 1, &compute_pipeline_createInfo, m_emit_pipeline) != RHI_SUCCESS) {
+            compute_pipeline_createInfo.pStage = &shader_stage;
+            if (m_rhi->createComputePipelines(nullptr, 1, &compute_pipeline_createInfo, _emit_pipeline) != RHI_SUCCESS) {
                 LOG_FATAL("failed to create particle emit pipe");
             }
         }
@@ -991,9 +990,8 @@ namespace Dao {
             shader_stage.pSpecializationInfo = nullptr;
             ASSERT(shader_stage.module != RHI_NULL_HANDLE);
 
-            compute_pipeline_createInfo.pStages = &shader_stage;
-
-            if (m_rhi->createComputePipelines(nullptr, 1, &compute_pipeline_createInfo, m_simulate_pipeline) != RHI_SUCCESS) {
+            compute_pipeline_createInfo.pStage = &shader_stage;
+            if (m_rhi->createComputePipelines(nullptr, 1, &compute_pipeline_createInfo, _simulate_pipeline) != RHI_SUCCESS) {
                 LOG_FATAL("create particle simulate pipe");
             }
         }
@@ -1112,7 +1110,7 @@ namespace Dao {
             pipeline_info.pColorBlendState = &color_blend_state_create_info;
             pipeline_info.pDepthStencilState = &depth_stencil_create_info;
             pipeline_info.layout = m_render_pipelines[1].layout;
-            pipeline_info.renderPass = m_render_pass;
+            pipeline_info.renderPass = _render_pass;
             pipeline_info.subpass = main_camera_subpass_forward_lighting;
             pipeline_info.basePipelineHandle = RHI_NULL_HANDLE;
             pipeline_info.pDynamicState = &dynamic_state_create_info;
@@ -1131,8 +1129,8 @@ namespace Dao {
         particle_descriptor_set_alloc_info.sType = RHI_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
         particle_descriptor_set_alloc_info.descriptorPool = m_rhi->getDescriptorPool();
 
-        m_descriptor_infos.resize(3 * m_emitter_count);
-        for (int eid = 0; eid < m_emitter_count; ++eid) {
+        m_descriptor_infos.resize(3 * _emitter_count);
+        for (int eid = 0; eid < _emitter_count; ++eid) {
             particle_descriptor_set_alloc_info.pSetLayouts = &m_descriptor_infos[0].layout;
             particle_descriptor_set_alloc_info.descriptorSetCount = 1;
             particle_descriptor_set_alloc_info.pNext = nullptr;
@@ -1145,18 +1143,18 @@ namespace Dao {
             particle_descriptor_set_alloc_info.pNext = nullptr;
 
             if (m_rhi->allocateDescriptorSets(&particle_descriptor_set_alloc_info, m_descriptor_infos[eid * 3 + 1].descriptor_set) != RHI_SUCCESS) {
-                LOG_INFO("failed to allocate normal and depth descriptor set done");
+                LOG_INFO("failed to allocate normal and depth descriptor set");
             }
         }
     }
 
     void ParticlePass::updateDescriptorSet() {
-        for (int eid = 0; eid < m_emitter_count; ++eid) {
+        for (int eid = 0; eid < _emitter_count; ++eid) {
             //compute part
             {
                 std::vector<RHIWriteDescriptorSet> compute_write_descriptorSets{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} };
 
-                RHIDescriptorBufferInfo uniform_buffer_descriptor = { m_compute_uniform_buffer, 0, RHI_WHOLE_SIZE };
+                RHIDescriptorBufferInfo uniform_buffer_descriptor = { _compute_uniform_buffer, 0, RHI_WHOLE_SIZE };
                 {
                     RHIWriteDescriptorSet& descriptorset = compute_write_descriptorSets[0];
                     descriptorset.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -1167,7 +1165,7 @@ namespace Dao {
                     descriptorset.descriptorCount = 1;
                 }
 
-                RHIDescriptorBufferInfo position_buffer_descriptor = { m_emitter_buffer_batches[eid].m_position_device_buffer, 0, RHI_WHOLE_SIZE };
+                RHIDescriptorBufferInfo position_buffer_descriptor = { _emitter_buffer_batches[eid].m_position_device_buffer, 0, RHI_WHOLE_SIZE };
                 {
                     RHIWriteDescriptorSet& descriptorset = compute_write_descriptorSets[1];
                     descriptorset.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -1178,7 +1176,7 @@ namespace Dao {
                     descriptorset.descriptorCount = 1;
                 }
 
-                RHIDescriptorBufferInfo counter_buffer_descriptor = { m_emitter_buffer_batches[eid].m_counter_device_buffer, 0, RHI_WHOLE_SIZE };
+                RHIDescriptorBufferInfo counter_buffer_descriptor = { _emitter_buffer_batches[eid].m_counter_device_buffer, 0, RHI_WHOLE_SIZE };
                 {
                     RHIWriteDescriptorSet& descriptorset = compute_write_descriptorSets[2];
                     descriptorset.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -1189,7 +1187,7 @@ namespace Dao {
                     descriptorset.descriptorCount = 1;
                 }
 
-                RHIDescriptorBufferInfo indirect_argument_buffer_descriptor = { m_emitter_buffer_batches[eid].m_indirect_dispatch_argument_buffer, 0, RHI_WHOLE_SIZE };
+                RHIDescriptorBufferInfo indirect_argument_buffer_descriptor = { _emitter_buffer_batches[eid].m_indirect_dispatch_argument_buffer, 0, RHI_WHOLE_SIZE };
                 {
                     RHIWriteDescriptorSet& descriptorset = compute_write_descriptorSets[3];
                     descriptorset.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -1200,7 +1198,7 @@ namespace Dao {
                     descriptorset.descriptorCount = 1;
                 }
 
-                RHIDescriptorBufferInfo alive_list_buffer_descriptor = { m_emitter_buffer_batches[eid].m_alive_list_buffer, 0, RHI_WHOLE_SIZE };
+                RHIDescriptorBufferInfo alive_list_buffer_descriptor = { _emitter_buffer_batches[eid].m_alive_list_buffer, 0, RHI_WHOLE_SIZE };
                 {
                     RHIWriteDescriptorSet& descriptorset = compute_write_descriptorSets[4];
                     descriptorset.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -1211,7 +1209,7 @@ namespace Dao {
                     descriptorset.descriptorCount = 1;
                 }
 
-                RHIDescriptorBufferInfo dead_list_buffer_descriptor = { m_emitter_buffer_batches[eid].m_dead_list_buffer, 0, RHI_WHOLE_SIZE };
+                RHIDescriptorBufferInfo dead_list_buffer_descriptor = { _emitter_buffer_batches[eid].m_dead_list_buffer, 0, RHI_WHOLE_SIZE };
                 {
                     RHIWriteDescriptorSet& descriptorset = compute_write_descriptorSets[5];
                     descriptorset.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -1222,7 +1220,7 @@ namespace Dao {
                     descriptorset.descriptorCount = 1;
                 }
 
-                RHIDescriptorBufferInfo alive_list_next_buffer_descriptor = { m_emitter_buffer_batches[eid].m_alive_list_next_buffer, 0, RHI_WHOLE_SIZE };
+                RHIDescriptorBufferInfo alive_list_next_buffer_descriptor = { _emitter_buffer_batches[eid].m_alive_list_next_buffer, 0, RHI_WHOLE_SIZE };
                 {
                     RHIWriteDescriptorSet& descriptorset = compute_write_descriptorSets[6];
                     descriptorset.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -1233,7 +1231,7 @@ namespace Dao {
                     descriptorset.descriptorCount = 1;
                 }
 
-                RHIDescriptorBufferInfo particle_component_res_buffer_descriptor = { m_emitter_buffer_batches[eid].m_particle_component_res_buffer, 0, RHI_WHOLE_SIZE };
+                RHIDescriptorBufferInfo particle_component_res_buffer_descriptor = { _emitter_buffer_batches[eid].m_particle_component_res_buffer, 0, RHI_WHOLE_SIZE };
                 {
                     RHIWriteDescriptorSet& descriptorset = compute_write_descriptorSets[7];
                     descriptorset.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -1244,7 +1242,7 @@ namespace Dao {
                     descriptorset.descriptorCount = 1;
                 }
 
-                RHIDescriptorBufferInfo particle_scene_uniform_buffer_descriptor = { m_scene_uniform_buffer, 0, RHI_WHOLE_SIZE };
+                RHIDescriptorBufferInfo particle_scene_uniform_buffer_descriptor = { _scene_uniform_buffer, 0, RHI_WHOLE_SIZE };
                 {
                     RHIWriteDescriptorSet& descriptorset = compute_write_descriptorSets[8];
                     descriptorset.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -1255,7 +1253,7 @@ namespace Dao {
                     descriptorset.descriptorCount = 1;
                 }
 
-                RHIDescriptorBufferInfo position_render_buffer_descriptor = { m_emitter_buffer_batches[eid].m_position_render_buffer, 0, RHI_WHOLE_SIZE };
+                RHIDescriptorBufferInfo position_render_buffer_descriptor = { _emitter_buffer_batches[eid].m_position_render_buffer, 0, RHI_WHOLE_SIZE };
                 {
                     RHIWriteDescriptorSet& descriptorset = compute_write_descriptorSets[9];
                     descriptorset.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -1289,7 +1287,7 @@ namespace Dao {
 
                 RHIDescriptorImageInfo dao_texture_image_info = {};
                 dao_texture_image_info.sampler = sampler;
-                dao_texture_image_info.imageView = m_dao_logo_texture_image_view;
+                dao_texture_image_info.imageView = _dao_logo_texture_image_view;
                 dao_texture_image_info.imageLayout = RHI_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
                 {
@@ -1312,7 +1310,7 @@ namespace Dao {
 
                 RHIDescriptorImageInfo gbuffer_normal_descriptor_image_info = {};
                 gbuffer_normal_descriptor_image_info.sampler = nullptr;
-                gbuffer_normal_descriptor_image_info.imageView = m_src_normal_image_view;
+                gbuffer_normal_descriptor_image_info.imageView = _src_normal_image_view;
                 gbuffer_normal_descriptor_image_info.imageLayout = RHI_IMAGE_LAYOUT_GENERAL;
                 {
 
@@ -1349,7 +1347,7 @@ namespace Dao {
 
                 RHIDescriptorImageInfo depth_descriptor_image_info = {};
                 depth_descriptor_image_info.sampler = sampler;
-                depth_descriptor_image_info.imageView = m_src_depth_image_view;
+                depth_descriptor_image_info.imageView = _src_depth_image_view;
                 depth_descriptor_image_info.imageLayout = RHI_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
                 {
@@ -1373,24 +1371,24 @@ namespace Dao {
     }
 
     void ParticlePass::simulate() {
-        for (auto i : m_emitter_tick_indices)
+        for (auto i : _emitter_tick_indices)
         {
-            RHICommandBufferBeginInfo cmdBufInfo{};
-            cmdBufInfo.sType = RHI_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+            RHICommandBufferBeginInfo cmdbuffer_info{};
+            cmdbuffer_info.sType = RHI_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
             // particle compute pass
-            if (m_rhi->beginCommandBuffer(m_compute_command_buffer, &cmdBufInfo) != RHI_SUCCESS) {
+            if (m_rhi->beginCommandBuffer(_compute_command_buffer, &cmdbuffer_info) != RHI_SUCCESS) {
                 LOG_FATAL("failed to begin command buffer");
             }
 
             float color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-            m_rhi->pushEvent(m_compute_command_buffer, "Particle Compute", color);
-            m_rhi->pushEvent(m_compute_command_buffer, "Particle Kickoff", color);
+            m_rhi->pushEvent(_compute_command_buffer, "Particle Compute", color);
+            m_rhi->pushEvent(_compute_command_buffer, "Particle Kickoff", color);
 
-            m_rhi->cmdBindPipelinePFN(m_compute_command_buffer, RHI_PIPELINE_BIND_POINT_COMPUTE, m_kickoff_pipeline);
+            m_rhi->cmdBindPipelinePFN(_compute_command_buffer, RHI_PIPELINE_BIND_POINT_COMPUTE, _kickoff_pipeline);
             RHIDescriptorSet* descriptorsets[2] = { m_descriptor_infos[i * 3].descriptor_set,m_descriptor_infos[i * 3 + 1].descriptor_set };
             m_rhi->cmdBindDescriptorSetsPFN(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_BIND_POINT_COMPUTE,
                 m_render_pipelines[0].layout,
                 0, 2,
@@ -1398,14 +1396,14 @@ namespace Dao {
                 0, 0
             );
 
+            //start compute shader and set workgoup on x,y,z dimension, final workgroup count equals x*y*z
+            m_rhi->cmdDispatch(_compute_command_buffer, 1, 1, 1);
 
-            m_rhi->cmdDispatch(m_compute_command_buffer, 1, 1, 1);
-
-            m_rhi->popEvent(m_compute_command_buffer); //end particle kickoff label
+            m_rhi->popEvent(_compute_command_buffer); //end particle kickoff label
 
             RHIBufferMemoryBarrier buffer_barrier{};
             buffer_barrier.sType = RHI_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
-            buffer_barrier.buffer = m_emitter_buffer_batches[i].m_counter_device_buffer;
+            buffer_barrier.buffer = _emitter_buffer_batches[i].m_counter_device_buffer;
             buffer_barrier.size = RHI_WHOLE_SIZE;
             buffer_barrier.srcAccessMask = RHI_ACCESS_SHADER_WRITE_BIT;
             buffer_barrier.dstAccessMask = RHI_ACCESS_SHADER_READ_BIT;
@@ -1413,7 +1411,7 @@ namespace Dao {
             buffer_barrier.dstQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
 
             m_rhi->cmdPipelineBarrier(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0,
@@ -1422,7 +1420,7 @@ namespace Dao {
                 0, nullptr
             );
 
-            buffer_barrier.buffer = m_emitter_buffer_batches[i].m_indirect_dispatch_argument_buffer;
+            buffer_barrier.buffer = _emitter_buffer_batches[i].m_indirect_dispatch_argument_buffer;
             buffer_barrier.size = RHI_WHOLE_SIZE;
             buffer_barrier.srcAccessMask = RHI_ACCESS_SHADER_WRITE_BIT;
             buffer_barrier.dstAccessMask = RHI_ACCESS_INDIRECT_COMMAND_READ_BIT | RHI_ACCESS_SHADER_READ_BIT;
@@ -1430,7 +1428,7 @@ namespace Dao {
             buffer_barrier.dstQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
 
             m_rhi->cmdPipelineBarrier(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr,
@@ -1438,15 +1436,15 @@ namespace Dao {
                 0, nullptr
             );
 
-            m_rhi->pushEvent(m_compute_command_buffer, "Particle Emit", color);
+            m_rhi->pushEvent(_compute_command_buffer, "Particle Emit", color);
 
-            m_rhi->cmdBindPipelinePFN(m_compute_command_buffer, RHI_PIPELINE_BIND_POINT_COMPUTE, m_emit_pipeline);
+            m_rhi->cmdBindPipelinePFN(_compute_command_buffer, RHI_PIPELINE_BIND_POINT_COMPUTE, _emit_pipeline);
+            //用于启动计算着色器的间接调度，使用缓冲区中的参数来指定工作组的数量
+            m_rhi->cmdDispatchIndirect(_compute_command_buffer, _emitter_buffer_batches[i].m_indirect_dispatch_argument_buffer, s_argument_offset_emit);
 
-            m_rhi->cmdDispatchIndirect(m_compute_command_buffer, m_emitter_buffer_batches[i].m_indirect_dispatch_argument_buffer, s_argument_offset_emit);
+            m_rhi->popEvent(_compute_command_buffer); //end particle emit label
 
-            m_rhi->popEvent(m_compute_command_buffer); //end particle emit label
-
-            buffer_barrier.buffer = m_emitter_buffer_batches[i].m_position_device_buffer;
+            buffer_barrier.buffer = _emitter_buffer_batches[i].m_position_device_buffer;
             buffer_barrier.size = RHI_WHOLE_SIZE;
             buffer_barrier.srcAccessMask = RHI_ACCESS_SHADER_WRITE_BIT;
             buffer_barrier.dstAccessMask = RHI_ACCESS_SHADER_READ_BIT;
@@ -1454,7 +1452,7 @@ namespace Dao {
             buffer_barrier.dstQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
 
             m_rhi->cmdPipelineBarrier(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr,
@@ -1462,7 +1460,7 @@ namespace Dao {
                 0, nullptr
             );
 
-            buffer_barrier.buffer = m_emitter_buffer_batches[i].m_position_render_buffer;
+            buffer_barrier.buffer = _emitter_buffer_batches[i].m_position_render_buffer;
             buffer_barrier.size = RHI_WHOLE_SIZE;
             buffer_barrier.srcAccessMask = RHI_ACCESS_SHADER_WRITE_BIT;
             buffer_barrier.dstAccessMask = RHI_ACCESS_SHADER_READ_BIT;
@@ -1470,7 +1468,7 @@ namespace Dao {
             buffer_barrier.dstQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
 
             m_rhi->cmdPipelineBarrier(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr,
@@ -1478,7 +1476,7 @@ namespace Dao {
                 0, nullptr
             );
 
-            buffer_barrier.buffer = m_emitter_buffer_batches[i].m_counter_device_buffer;
+            buffer_barrier.buffer = _emitter_buffer_batches[i].m_counter_device_buffer;
             buffer_barrier.size = RHI_WHOLE_SIZE;
             buffer_barrier.srcAccessMask = RHI_ACCESS_SHADER_WRITE_BIT;
             buffer_barrier.dstAccessMask = RHI_ACCESS_SHADER_READ_BIT;
@@ -1486,7 +1484,7 @@ namespace Dao {
             buffer_barrier.dstQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
 
             m_rhi->cmdPipelineBarrier(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr,
@@ -1494,7 +1492,7 @@ namespace Dao {
                 0, nullptr
             );
 
-            buffer_barrier.buffer = m_emitter_buffer_batches[i].m_alive_list_buffer;
+            buffer_barrier.buffer = _emitter_buffer_batches[i].m_alive_list_buffer;
             buffer_barrier.size = RHI_WHOLE_SIZE;
             buffer_barrier.srcAccessMask = RHI_ACCESS_SHADER_WRITE_BIT;
             buffer_barrier.dstAccessMask = RHI_ACCESS_SHADER_READ_BIT;
@@ -1502,7 +1500,7 @@ namespace Dao {
             buffer_barrier.dstQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
 
             m_rhi->cmdPipelineBarrier(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr,
@@ -1510,7 +1508,7 @@ namespace Dao {
                 0, nullptr
             );
 
-            buffer_barrier.buffer = m_emitter_buffer_batches[i].m_dead_list_buffer;
+            buffer_barrier.buffer = _emitter_buffer_batches[i].m_dead_list_buffer;
             buffer_barrier.size = RHI_WHOLE_SIZE;
             buffer_barrier.srcAccessMask = RHI_ACCESS_SHADER_WRITE_BIT;
             buffer_barrier.dstAccessMask = RHI_ACCESS_SHADER_READ_BIT;
@@ -1518,7 +1516,7 @@ namespace Dao {
             buffer_barrier.dstQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
 
             m_rhi->cmdPipelineBarrier(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr,
@@ -1526,7 +1524,7 @@ namespace Dao {
                 0, nullptr
             );
 
-            buffer_barrier.buffer = m_emitter_buffer_batches[i].m_alive_list_next_buffer;
+            buffer_barrier.buffer = _emitter_buffer_batches[i].m_alive_list_next_buffer;
             buffer_barrier.size = RHI_WHOLE_SIZE;
             buffer_barrier.srcAccessMask = RHI_ACCESS_SHADER_WRITE_BIT;
             buffer_barrier.dstAccessMask = RHI_ACCESS_SHADER_READ_BIT;
@@ -1534,7 +1532,7 @@ namespace Dao {
             buffer_barrier.dstQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
 
             m_rhi->cmdPipelineBarrier(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                 RHI_PIPELINE_STAGE_ALL_COMMANDS_BIT,
                 0, 0, nullptr,
@@ -1542,48 +1540,48 @@ namespace Dao {
                 0, nullptr
             );
 
-            m_rhi->pushEvent(m_compute_command_buffer, "Particle Simulate", color);
+            m_rhi->pushEvent(_compute_command_buffer, "Particle Simulate", color);
 
-            m_rhi->cmdBindPipelinePFN(m_compute_command_buffer, RHI_PIPELINE_BIND_POINT_COMPUTE, m_simulate_pipeline);
-            m_rhi->cmdDispatchIndirect(m_compute_command_buffer, m_emitter_buffer_batches[i].m_indirect_dispatch_argument_buffer, s_argument_offset_simulate);
+            m_rhi->cmdBindPipelinePFN(_compute_command_buffer, RHI_PIPELINE_BIND_POINT_COMPUTE, _simulate_pipeline);
+            m_rhi->cmdDispatchIndirect(_compute_command_buffer, _emitter_buffer_batches[i].m_indirect_dispatch_argument_buffer, s_argument_offset_simulate);
 
-            m_rhi->popEvent(m_compute_command_buffer); //end particle simulate label
+            m_rhi->popEvent(_compute_command_buffer); //end particle simulate label
 
-            if (m_rhi->endCommandBuffer(m_compute_command_buffer) != RHI_SUCCESS) {
+            if (m_rhi->endCommandBuffer(_compute_command_buffer) != RHI_SUCCESS) {
                 LOG_FATAL("failed to end command buffer");
             }
-            m_rhi->resetFencesPFN(1, &m_fence);
+            m_rhi->resetFencesPFN(1, &_fence);
 
             RHISubmitInfo compute_submit_info{};
             compute_submit_info.sType = RHI_STRUCTURE_TYPE_SUBMIT_INFO;
             compute_submit_info.pWaitDstStageMask = 0;
             compute_submit_info.commandBufferCount = 1;
-            compute_submit_info.pCommandBuffers = &m_compute_command_buffer;
+            compute_submit_info.pCommandBuffers = &_compute_command_buffer;
 
-            if (m_rhi->queueSubmit(m_rhi->getComputeQueue(), 1, &compute_submit_info, m_fence) != RHI_SUCCESS) {
+            if (m_rhi->queueSubmit(m_rhi->getComputeQueue(), 1, &compute_submit_info, _fence) != RHI_SUCCESS) {
                 LOG_FATAL("failed to do compute queue submit");
             }
 
-            if (m_rhi->waitForFencesPFN(1, &m_fence, RHI_TRUE, UINT64_MAX) != RHI_SUCCESS) {
+            if (m_rhi->waitForFencesPFN(1, &_fence, RHI_TRUE, UINT64_MAX) != RHI_SUCCESS) {
                 LOG_FATAL("failed to wait for fence");
             }
 
-            if (m_rhi->beginCommandBuffer(m_compute_command_buffer, &cmdBufInfo) != RHI_SUCCESS) {
+            if (m_rhi->beginCommandBuffer(_compute_command_buffer, &cmdbuffer_info) != RHI_SUCCESS) {
                 LOG_FATAL("failed to begin command buffer");
             }
 
-            m_rhi->pushEvent(m_compute_command_buffer, "Copy Particle Counter Buffer", color);
+            m_rhi->pushEvent(_compute_command_buffer, "Copy Particle Counter Buffer", color);
 
             //barrier to ensure that shader writes are finished before buffer is read back from GPU
             buffer_barrier.srcAccessMask = RHI_ACCESS_SHADER_WRITE_BIT;
             buffer_barrier.dstAccessMask = RHI_ACCESS_TRANSFER_READ_BIT;
-            buffer_barrier.buffer = m_emitter_buffer_batches[i].m_counter_device_buffer;
+            buffer_barrier.buffer = _emitter_buffer_batches[i].m_counter_device_buffer;
             buffer_barrier.size = RHI_WHOLE_SIZE;
             buffer_barrier.srcQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
             buffer_barrier.dstQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
 
             m_rhi->cmdPipelineBarrier(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                 RHI_PIPELINE_STAGE_TRANSFER_BIT,
                 0, 0, nullptr,
@@ -1598,22 +1596,22 @@ namespace Dao {
             copy_region.size = sizeof(ParticleCounter);
 
             m_rhi->cmdCopyBuffer(
-                m_compute_command_buffer,
-                m_emitter_buffer_batches[i].m_counter_device_buffer,
-                m_emitter_buffer_batches[i].m_counter_host_buffer,
+                _compute_command_buffer,
+                _emitter_buffer_batches[i].m_counter_device_buffer,
+                _emitter_buffer_batches[i].m_counter_host_buffer,
                 1, &copy_region
             );
 
             //barrier to ensure that buffer copy is finished before host reading from it
             buffer_barrier.srcAccessMask = RHI_ACCESS_TRANSFER_WRITE_BIT;
             buffer_barrier.dstAccessMask = RHI_ACCESS_HOST_READ_BIT;
-            buffer_barrier.buffer = m_emitter_buffer_batches[i].m_counter_host_buffer;
+            buffer_barrier.buffer = _emitter_buffer_batches[i].m_counter_host_buffer;
             buffer_barrier.size = RHI_WHOLE_SIZE;
             buffer_barrier.srcQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
             buffer_barrier.dstQueueFamilyIndex = RHI_QUEUE_FAMILY_IGNORED;
 
             m_rhi->cmdPipelineBarrier(
-                m_compute_command_buffer,
+                _compute_command_buffer,
                 RHI_PIPELINE_STAGE_TRANSFER_BIT,
                 RHI_PIPELINE_STAGE_HOST_BIT,
                 0, 0, nullptr,
@@ -1621,28 +1619,28 @@ namespace Dao {
                 0, nullptr
             );
 
-            m_rhi->popEvent(m_compute_command_buffer); //end particle counter copy label
+            m_rhi->popEvent(_compute_command_buffer); //end particle counter copy label
 
-            m_rhi->popEvent(m_compute_command_buffer); //end particle compute label
+            m_rhi->popEvent(_compute_command_buffer); //end particle compute label
 
-            if (m_rhi->endCommandBuffer(m_compute_command_buffer) != RHI_SUCCESS) {
+            if (m_rhi->endCommandBuffer(_compute_command_buffer) != RHI_SUCCESS) {
                 LOG_FATAL("failed to end command buffer");
             }
 
             //submit compute work
-            m_rhi->resetFencesPFN(1, &m_fence);
+            m_rhi->resetFencesPFN(1, &_fence);
             compute_submit_info = {};
             const VkPipelineStageFlags waitStageMask = RHI_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
             compute_submit_info.sType = RHI_STRUCTURE_TYPE_SUBMIT_INFO;
             compute_submit_info.pWaitDstStageMask = &waitStageMask;
             compute_submit_info.commandBufferCount = 1;
-            compute_submit_info.pCommandBuffers = &m_compute_command_buffer;
+            compute_submit_info.pCommandBuffers = &_compute_command_buffer;
 
-            if (m_rhi->queueSubmit(m_rhi->getComputeQueue(), 1, &compute_submit_info, m_fence) != RHI_SUCCESS) {
+            if (m_rhi->queueSubmit(m_rhi->getComputeQueue(), 1, &compute_submit_info, _fence) != RHI_SUCCESS) {
                 LOG_FATAL("failed to compute queue submit");
             }
 
-            if (m_rhi->waitForFencesPFN(1, &m_fence, RHI_TRUE, UINT64_MAX) != RHI_SUCCESS) {
+            if (m_rhi->waitForFencesPFN(1, &_fence, RHI_TRUE, UINT64_MAX) != RHI_SUCCESS) {
                 LOG_FATAL("failed to wait for fence");
             }
 
@@ -1650,14 +1648,14 @@ namespace Dao {
 
             //make device writes visible to the host
             void* mapped;
-            m_rhi->mapMemory(m_emitter_buffer_batches[i].m_counter_host_memory, 0, RHI_WHOLE_SIZE, 0, &mapped);
+            m_rhi->mapMemory(_emitter_buffer_batches[i].m_counter_host_memory, 0, RHI_WHOLE_SIZE, 0, &mapped);
 
-            m_rhi->invalidateMappedMemoryRanges(nullptr, m_emitter_buffer_batches[i].m_counter_host_memory, 0, RHI_WHOLE_SIZE);
+            m_rhi->invalidateMappedMemoryRanges(nullptr, _emitter_buffer_batches[i].m_counter_host_memory, 0, RHI_WHOLE_SIZE);
 
             //copy to output
             ParticleCounter counter_next{};
             memcpy(&counter_next, mapped, sizeof(ParticleCounter));
-            m_rhi->unmapMemory(m_emitter_buffer_batches[i].m_counter_host_memory);
+            m_rhi->unmapMemory(_emitter_buffer_batches[i].m_counter_host_memory);
 
             if constexpr (s_verbose_particle_alive_info) {
                 LOG_INFO(
@@ -1668,22 +1666,22 @@ namespace Dao {
                     counter_next.emit_count
                 );
             }
-            m_emitter_buffer_batches[i].m_num_particle = counter_next.alive_count_after_sim;
+            _emitter_buffer_batches[i].m_num_particle = counter_next.alive_count_after_sim;
         }
-        m_emitter_tick_indices.clear();
-        m_emitter_transform_indices.clear();
+        _emitter_tick_indices.clear();
+        _emitter_transform_indices.clear();
     }
 
     void ParticlePass::prepareUniformBuffer() {
         RHIDeviceMemory* d_mem;
         m_rhi->createBuffer(
-            sizeof(m_particle_collision_perframe_storage_buffer_object),
+            sizeof(_particle_collision_perframe_storage_buffer_object),
             RHI_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
             RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT | RHI_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-            m_scene_uniform_buffer, d_mem
+            _scene_uniform_buffer, d_mem
         );
 
-        if (m_rhi->mapMemory(d_mem, 0, RHI_WHOLE_SIZE, 0, &m_scene_uniform_buffer_mapped) != RHI_SUCCESS) {
+        if (m_rhi->mapMemory(d_mem, 0, RHI_WHOLE_SIZE, 0, &_scene_uniform_buffer_mapped) != RHI_SUCCESS) {
             LOG_FATAL("failed to map billboard uniform buffer");
         }
         RHIDeviceMemory* d_uniformdmemory;
@@ -1691,16 +1689,16 @@ namespace Dao {
         m_rhi->createBufferAndInitialize(
             RHI_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
             RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT | RHI_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-            m_compute_uniform_buffer,
+            _compute_uniform_buffer,
             d_uniformdmemory,
             sizeof(m_ubo)
         );
 
-        if (m_rhi->mapMemory(d_uniformdmemory, 0, RHI_WHOLE_SIZE, 0, &m_particle_compute_buffer_mapped) != RHI_SUCCESS) {
+        if (m_rhi->mapMemory(d_uniformdmemory, 0, RHI_WHOLE_SIZE, 0, &_particle_compute_buffer_mapped) != RHI_SUCCESS) {
             LOG_FATAL("failed to map buffer");
         }
 
-        const GlobalParticleRes& global_res = m_particle_manager->getGlobalParticleRes();
+        const GlobalParticleRes& global_res = _particle_manager->getGlobalParticleRes();
 
         m_ubo.emit_gap = global_res.m_emit_gap;
         m_ubo.time_step = global_res.m_time_step;
@@ -1708,10 +1706,10 @@ namespace Dao {
         m_ubo.gravity = global_res.m_gravity;
         std::random_device r;
         std::seed_seq seed{ r() };
-        m_random_engine.seed(seed);
-        float rnd0 = m_random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
-        float rnd1 = m_random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
-        float rnd2 = m_random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
+        _random_engine.seed(seed);
+        float rnd0 = _random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
+        float rnd1 = _random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
+        float rnd2 = _random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
         m_ubo.pack = Vector4{ rnd0, static_cast<float>(m_rhi->getCurrentFrameIndex()), rnd1, rnd2 };
         m_ubo.xemit_count = 100000;
 
@@ -1723,42 +1721,42 @@ namespace Dao {
         m_ubo.extent.x = m_rhi->getSwapchainInfo().scissor->extent.width;
         m_ubo.extent.y = m_rhi->getSwapchainInfo().scissor->extent.height;
 
-        memcpy(m_particle_compute_buffer_mapped, &m_ubo, sizeof(m_ubo));
+        memcpy(_particle_compute_buffer_mapped, &m_ubo, sizeof(m_ubo));
 
         {
             RHIDeviceMemory* d_mem;
             m_rhi->createBuffer(
-                sizeof(m_particle_billboard_perframe_storage_buffer_object),
+                sizeof(_particle_billboard_perframe_storage_buffer_object),
                 RHI_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
                 RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT | RHI_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-                m_particle_billboard_uniform_buffer,
+                _particle_billboard_uniform_buffer,
                 d_mem
             );
 
-            if (m_rhi->mapMemory(d_mem, 0, RHI_WHOLE_SIZE, 0, &m_particle_billboard_uniform_buffer_mapped) != RHI_SUCCESS) {
+            if (m_rhi->mapMemory(d_mem, 0, RHI_WHOLE_SIZE, 0, &_particle_billboard_uniform_buffer_mapped) != RHI_SUCCESS) {
                 LOG_FATAL("map billboard uniform buffer");
             }
         }
     }
 
     void ParticlePass::updateEmitterTransform() {
-        for (ParticleEmitterTransformDesc& transform_desc : m_emitter_transform_indices)
+        for (ParticleEmitterTransformDesc& transform_desc : _emitter_transform_indices)
         {
             int index = transform_desc.m_id;
-            m_emitter_buffer_batches[index].m_emitter_desc.m_position = transform_desc.m_position;
-            m_emitter_buffer_batches[index].m_emitter_desc.m_rotation = transform_desc.m_rotation;
+            _emitter_buffer_batches[index].m_emitter_desc.m_position = transform_desc.m_position;
+            _emitter_buffer_batches[index].m_emitter_desc.m_rotation = transform_desc.m_rotation;
 
-            memcpy(m_emitter_buffer_batches[index].m_emitter_desc_mapped, &m_emitter_buffer_batches[index].m_emitter_desc, sizeof(ParticleEmitterDesc));
+            memcpy(_emitter_buffer_batches[index].m_emitter_desc_mapped, &_emitter_buffer_batches[index].m_emitter_desc, sizeof(ParticleEmitterDesc));
         }
     }
 
     void ParticlePass::updateUniformBuffer() {
         std::random_device r;
         std::seed_seq seed{ r() };
-        m_random_engine.seed(seed);
-        float rnd0 = m_random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
-        float rnd1 = m_random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
-        float rnd2 = m_random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
+        _random_engine.seed(seed);
+        float rnd0 = _random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
+        float rnd1 = _random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
+        float rnd2 = _random_engine.uniformDistribution<float>(0, 1000) * 0.001f;
         m_ubo.pack = Vector4{ rnd0, rnd1, rnd2, static_cast<float>(m_rhi->getCurrentFrameIndex()) };
 
         m_ubo.viewport.x = m_rhi->getSwapchainInfo().viewport->x;
@@ -1770,18 +1768,18 @@ namespace Dao {
 
         m_ubo.extent.z = g_runtime_global_context.m_render_system->getRenderCamera()->m_znear;
         m_ubo.extent.w = g_runtime_global_context.m_render_system->getRenderCamera()->m_zfar;
-        memcpy(m_particle_compute_buffer_mapped, &m_ubo, sizeof(m_ubo));
+        memcpy(_particle_compute_buffer_mapped, &m_ubo, sizeof(m_ubo));
     }
 
     void ParticlePass::preparePassData(std::shared_ptr<RenderResourceBase> render_resource) {
         const RenderResource* vulkan_resource = static_cast<const RenderResource*>(render_resource.get());
         if (vulkan_resource)
         {
-            m_particle_collision_perframe_storage_buffer_object = vulkan_resource->m_particle_collision_perframe_storage_buffer_object;
-            memcpy(m_scene_uniform_buffer_mapped, &m_particle_collision_perframe_storage_buffer_object, sizeof(ParticleCollisionPerframeStorageBufferObject));
+            _particle_collision_perframe_storage_buffer_object = vulkan_resource->m_particle_collision_perframe_storage_buffer_object;
+            memcpy(_scene_uniform_buffer_mapped, &_particle_collision_perframe_storage_buffer_object, sizeof(ParticleCollisionPerframeStorageBufferObject));
 
-            m_particle_billboard_perframe_storage_buffer_object = vulkan_resource->m_particle_billboard_perframe_storage_buffer_object;
-            memcpy(m_particle_billboard_uniform_buffer_mapped, &m_particle_billboard_perframe_storage_buffer_object, sizeof(m_particle_billboard_perframe_storage_buffer_object));
+            _particle_billboard_perframe_storage_buffer_object = vulkan_resource->m_particle_billboard_perframe_storage_buffer_object;
+            memcpy(_particle_billboard_uniform_buffer_mapped, &_particle_billboard_perframe_storage_buffer_object, sizeof(_particle_billboard_perframe_storage_buffer_object));
 
             m_viewport_params = *m_rhi->getSwapchainInfo().viewport;
             updateUniformBuffer();
@@ -1790,23 +1788,23 @@ namespace Dao {
     }
 
     void ParticlePass::setDepthAndNormalImage(RHIImage* depth_image, RHIImage* normal_image) {
-        m_src_depth_image = depth_image;
-        m_src_normal_image = normal_image;
+        _src_depth_image = depth_image;
+        _src_normal_image = normal_image;
     }
 
     void ParticlePass::setRenderCommandBufferHandle(RHICommandBuffer* command_buffer) {
-        m_render_command_buffer = command_buffer;
+        _render_command_buffer = command_buffer;
     }
 
     void ParticlePass::setRenderPassHandle(RHIRenderPass* render_pass) {
-        m_render_pass = render_pass;
+        _render_pass = render_pass;
     }
 
     void ParticlePass::setTickIndices(const std::vector<ParticleEmitterID>& tick_indices) {
-        m_emitter_tick_indices = tick_indices;
+        _emitter_tick_indices = tick_indices;
     }
 
     void ParticlePass::setTransformIndices(const std::vector<ParticleEmitterTransformDesc>& transform_indices) {
-        m_emitter_transform_indices = transform_indices;
+        _emitter_transform_indices = transform_indices;
     }
 }

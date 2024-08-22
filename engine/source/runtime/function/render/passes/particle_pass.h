@@ -74,48 +74,48 @@ namespace Dao {
 		void updateDescriptorSet();
 		void setupParticleDescriptorSet();
 
-		RHIPipeline* m_kickoff_pipeline = nullptr;
-		RHIPipeline* m_emit_pipeline = nullptr;
-		RHIPipeline* m_simulate_pipeline = nullptr;
+		RHIPipeline* _kickoff_pipeline = nullptr;
+		RHIPipeline* _emit_pipeline = nullptr;
+		RHIPipeline* _simulate_pipeline = nullptr;
 
-		RHICommandBuffer* m_compute_command_buffer = nullptr;
-		RHICommandBuffer* m_render_command_buffer = nullptr;
-		RHICommandBuffer* m_copy_command_buffer = nullptr;
+		RHICommandBuffer* _compute_command_buffer = nullptr;
+		RHICommandBuffer* _render_command_buffer = nullptr;
+		RHICommandBuffer* _copy_command_buffer = nullptr;
 
-		RHIBuffer* m_scene_uniform_buffer = nullptr;
-		RHIBuffer* m_compute_uniform_buffer = nullptr;
-		RHIBuffer* m_particle_billboard_uniform_buffer = nullptr;
+		RHIBuffer* _scene_uniform_buffer = nullptr;
+		RHIBuffer* _compute_uniform_buffer = nullptr;
+		RHIBuffer* _particle_billboard_uniform_buffer = nullptr;
 
 		RHIViewport m_viewport_params;
 
-		RHIFence* m_fence = nullptr;
+		RHIFence* _fence = nullptr;
 
-		RHIImage* m_src_depth_image = nullptr;
-		RHIImage* m_dst_depth_image = nullptr;
-		RHIImage* m_src_normal_image = nullptr;
-		RHIImage* m_dst_normal_image = nullptr;
-		RHIImageView* m_src_depth_image_view = nullptr;
-		RHIImageView* m_src_normal_image_view = nullptr;
-		RHIDeviceMemory* m_dst_depth_image_memory = nullptr;
-		RHIDeviceMemory* m_dst_normal_image_memory = nullptr;
+		RHIImage* _src_depth_image = nullptr;
+		RHIImage* _dst_depth_image = nullptr;
+		RHIImage* _src_normal_image = nullptr;
+		RHIImage* _dst_normal_image = nullptr;
+		RHIImageView* _src_depth_image_view = nullptr;
+		RHIImageView* _src_normal_image_view = nullptr;
+		RHIDeviceMemory* _dst_depth_image_memory = nullptr;
+		RHIDeviceMemory* _dst_normal_image_memory = nullptr;
 
 		//particle rendering
-		RHIImage* m_particle_billboard_texture_image = nullptr;
-		RHIImageView* m_particle_billboard_texture_image_view = nullptr;
-		VmaAllocation m_particle_billboard_texture_vma_allocation;
+		RHIImage* _particle_billboard_texture_image = nullptr;
+		RHIImageView* _particle_billboard_texture_image_view = nullptr;
+		VmaAllocation _particle_billboard_texture_vma_allocation;
 
-		RHIImage* m_dao_logo_texture_image = nullptr;
-		RHIImageView* m_dao_logo_texture_image_view = nullptr;
-		VmaAllocation m_dao_logo_texture_vma_allocation;
+		RHIImage* _dao_logo_texture_image = nullptr;
+		RHIImageView* _dao_logo_texture_image_view = nullptr;
+		VmaAllocation _dao_logo_texture_vma_allocation;
 
-		RHIRenderPass* m_render_pass = nullptr;
+		RHIRenderPass* _render_pass = nullptr;
 
-		ParticleBillboardPerframeStorageBufferObject m_particle_billboard_perframe_storage_buffer_object;
-		ParticleCollisionPerframeStorageBufferObject m_particle_collision_perframe_storage_buffer_object;
+		ParticleBillboardPerframeStorageBufferObject _particle_billboard_perframe_storage_buffer_object;
+		ParticleCollisionPerframeStorageBufferObject _particle_collision_perframe_storage_buffer_object;
 
-		void* m_particle_compute_buffer_mapped{ nullptr };
-		void* m_particle_billboard_uniform_buffer_mapped{ nullptr };
-		void* m_scene_uniform_buffer_mapped{ nullptr };
+		void* _particle_compute_buffer_mapped{ nullptr };
+		void* _particle_billboard_uniform_buffer_mapped{ nullptr };
+		void* _scene_uniform_buffer_mapped{ nullptr };
 
 	private:
 		struct uvec4 {
@@ -165,17 +165,17 @@ namespace Dao {
 		};
 
 	private:
-		std::vector<ParticleEmitterBufferBatch> m_emitter_buffer_batches;
-		std::shared_ptr<ParticleManager> m_particle_manager;
+		std::vector<ParticleEmitterBufferBatch> _emitter_buffer_batches;
+		std::shared_ptr<ParticleManager> _particle_manager;
 
-		DefaultRNG m_random_engine;
+		DefaultRNG _random_engine;
 
-		int m_emitter_count;
+		int _emitter_count;
 
 		static constexpr bool s_verbose_particle_alive_info{ false };
 
-		std::vector<ParticleEmitterID> m_emitter_tick_indices;
+		std::vector<ParticleEmitterID> _emitter_tick_indices;
 
-		std::vector<ParticleEmitterTransformDesc> m_emitter_transform_indices;
+		std::vector<ParticleEmitterTransformDesc> _emitter_transform_indices;
 	};
 }

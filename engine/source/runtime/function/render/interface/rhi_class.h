@@ -438,7 +438,7 @@ namespace Dao {
         RHIStructureType sType;
         const void* pNext;
         RHIPipelineCreateFlags flags;
-        RHIPipelineShaderStageCreateInfo* pStages;
+        RHIPipelineShaderStageCreateInfo* pStage;
         RHIPipelineLayout* layout;
         RHIPipeline* basePipelineHandle;
         int32_t basePipelineIndex;
