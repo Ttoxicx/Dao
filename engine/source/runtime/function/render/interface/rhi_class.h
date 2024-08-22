@@ -438,7 +438,7 @@ namespace Dao {
         RHIStructureType sType;
         const void* pNext;
         RHIPipelineCreateFlags flags;
-        RHIPipelineShaderStageCreateInfo* pStage;
+        RHIPipelineShaderStageCreateInfo* pStages;
         RHIPipelineLayout* layout;
         RHIPipeline* basePipelineHandle;
         int32_t basePipelineIndex;
@@ -1030,7 +1030,7 @@ namespace Dao {
     struct RHISpecializationInfo
     {
         uint32_t mapEntryCount;
-        const RHISpecializationMapEntry** pMapEntries;
+        const RHISpecializationMapEntry* pMapEntries;
         size_t dataSize;
         const void* pData;
     };

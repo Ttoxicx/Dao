@@ -879,9 +879,9 @@ namespace Dao {
                     for (int j = 0; j < rhi_pipeline_shader_stage_create_info_element.pSpecializationInfo->mapEntryCount; ++j) {
                         const auto& rhi_specialization_map_entry_element = rhi_pipeline_shader_stage_create_info_element.pSpecializationInfo->pMapEntries[j];
                         auto& vk_specialization_map_entry_element = vk_specialization_map_entry_list[specialization_map_entry_current];
-                        vk_specialization_map_entry_element.constantID = rhi_specialization_map_entry_element->constantID;
-                        vk_specialization_map_entry_element.offset = rhi_specialization_map_entry_element->offset;
-                        vk_specialization_map_entry_element.size = rhi_specialization_map_entry_element->size;
+                        vk_specialization_map_entry_element.constantID = rhi_specialization_map_entry_element.constantID;
+                        vk_specialization_map_entry_element.offset = rhi_specialization_map_entry_element.offset;
+                        vk_specialization_map_entry_element.size = rhi_specialization_map_entry_element.size;
                         specialization_map_entry_current++;
                     }
                     specialization_info_current++;
@@ -1132,32 +1132,32 @@ namespace Dao {
         for (int k = 0; k < create_info_count; ++k) {
             const auto& create_info = &create_infos[k];
             VkPipelineShaderStageCreateInfo shader_stage_create_info{};
-            if (create_info->pStage->pSpecializationInfo != nullptr) {
+            if (create_info->pStages->pSpecializationInfo != nullptr) {
                 VkSpecializationInfo vk_specialization_info{};
-                std::vector<VkSpecializationMapEntry> vk_specialization_map_entry_list(create_info->pStage->pSpecializationInfo->mapEntryCount);
-                vk_specialization_info.mapEntryCount = create_info->pStage->pSpecializationInfo->mapEntryCount;
+                std::vector<VkSpecializationMapEntry> vk_specialization_map_entry_list(create_info->pStages->pSpecializationInfo->mapEntryCount);
+                vk_specialization_info.mapEntryCount = create_info->pStages->pSpecializationInfo->mapEntryCount;
                 vk_specialization_info.pMapEntries = vk_specialization_map_entry_list.data();
-                vk_specialization_info.dataSize = create_info->pStage->pSpecializationInfo->dataSize;
-                vk_specialization_info.pData = (const void*)create_info->pStage->pSpecializationInfo->pData;
-                for (int i = 0; i < create_info->pStage->pSpecializationInfo->mapEntryCount; ++i) {
-                    const auto& rhi_specialization_map_entry_element = create_info->pStage->pSpecializationInfo->pMapEntries[i];
+                vk_specialization_info.dataSize = create_info->pStages->pSpecializationInfo->dataSize;
+                vk_specialization_info.pData = (const void*)create_info->pStages->pSpecializationInfo->pData;
+                for (int i = 0; i < create_info->pStages->pSpecializationInfo->mapEntryCount; ++i) {
+                    const auto& rhi_specialization_map_entry_element = create_info->pStages->pSpecializationInfo->pMapEntries[i];
                     auto& vk_specialization_map_entry_element = vk_specialization_map_entry_list[i];
 
-                    vk_specialization_map_entry_element.constantID = rhi_specialization_map_entry_element->constantID;
-                    vk_specialization_map_entry_element.offset = rhi_specialization_map_entry_element->offset;
-                    vk_specialization_map_entry_element.size = rhi_specialization_map_entry_element->size;
+                    vk_specialization_map_entry_element.constantID = rhi_specialization_map_entry_element.constantID;
+                    vk_specialization_map_entry_element.offset = rhi_specialization_map_entry_element.offset;
+                    vk_specialization_map_entry_element.size = rhi_specialization_map_entry_element.size;
                 }
                 shader_stage_create_info.pSpecializationInfo = &vk_specialization_info;
             }
             else {
                 shader_stage_create_info.pSpecializationInfo = nullptr;
             }
-            shader_stage_create_info.sType = (VkStructureType)create_info->pStage->sType;
-            shader_stage_create_info.pNext = (const void*)create_info->pStage->pNext;
-            shader_stage_create_info.flags = (VkPipelineShaderStageCreateFlags)create_info->pStage->flags;
-            shader_stage_create_info.stage = (VkShaderStageFlagBits)create_info->pStage->stage;
-            shader_stage_create_info.module = ((VulkanShader*)create_info->pStage->module)->getResource();
-            shader_stage_create_info.pName = create_info->pStage->pName;
+            shader_stage_create_info.sType = (VkStructureType)create_info->pStages->sType;
+            shader_stage_create_info.pNext = (const void*)create_info->pStages->pNext;
+            shader_stage_create_info.flags = (VkPipelineShaderStageCreateFlags)create_info->pStages->flags;
+            shader_stage_create_info.stage = (VkShaderStageFlagBits)create_info->pStages->stage;
+            shader_stage_create_info.module = ((VulkanShader*)create_info->pStages->module)->getResource();
+            shader_stage_create_info.pName = create_info->pStages->pName;
 
             auto& createInfo = createInfos[k];
             createInfo.sType = (VkStructureType)create_info->sType;

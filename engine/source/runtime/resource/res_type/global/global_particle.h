@@ -19,6 +19,6 @@ namespace Dao {
         float       m_max_life;
         Vector3     m_gravity;
         std::string m_particle_billboard_texture_path;
-        std::string m_piccolo_logo_texture_path;
+        std::string m_dao_logo_texture_path;
     };
 }

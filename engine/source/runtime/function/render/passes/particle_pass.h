@@ -102,7 +102,7 @@ namespace Dao {
 		//particle rendering
 		RHIImage* m_particle_billboard_texture_image = nullptr;
 		RHIImageView* m_particle_billboard_texture_image_view = nullptr;
-		VmaAllocation m_larticle_billboard_texture_vma_allocation;
+		VmaAllocation m_particle_billboard_texture_vma_allocation;
 
 		RHIImage* m_dao_logo_texture_image = nullptr;
 		RHIImageView* m_dao_logo_texture_image_view = nullptr;
@@ -166,7 +166,7 @@ namespace Dao {
 
 	private:
 		std::vector<ParticleEmitterBufferBatch> m_emitter_buffer_batches;
-		std::shared_ptr<ParticleManager> m_particle_maneger;
+		std::shared_ptr<ParticleManager> m_particle_manager;
 
 		DefaultRNG m_random_engine;
 
