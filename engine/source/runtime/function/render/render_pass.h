@@ -17,12 +17,12 @@ namespace Dao {
 		main_camera_pass_gbuffer_c = 2,
 		main_camera_pass_backup_buffer_odd = 3,
 		main_camera_pass_backup_buffer_even = 4,
-		main_camera_pass_post_proccess_buffer_odd = 5,
-		main_camera_pass_post_proccess_buffer_even = 6,
+		main_camera_pass_post_process_buffer_odd = 5,
+		main_camera_pass_post_process_buffer_even = 6,
 		main_camera_pass_depth = 7,
 		main_camera_pass_swap_chain_image = 8,
 		main_camera_pass_custom_attachment_count = 5,
-		main_camera_pass_post_proccess_attachment_count = 2,
+		main_camera_pass_post_process_attachment_count = 2,
 		main_camera_pass_attachment_count = 9
 	};
 

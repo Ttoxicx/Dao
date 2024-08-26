@@ -94,7 +94,7 @@ namespace Dao {
 
 		FXAAPassInitInfo fxaa_init_info;
 		fxaa_init_info.render_pass = main_camera_pass->getRenderPass();
-		fxaa_init_info.input_attachment = main_camera_pass->getFrameBufferImageViews()[main_camera_pass_post_proccess_buffer_odd];
+		fxaa_init_info.input_attachment = main_camera_pass->getFrameBufferImageViews()[main_camera_pass_post_process_buffer_odd];
 		m_fxaa_pass->initialize(&fxaa_init_info);
 	}
 
@@ -170,7 +170,7 @@ namespace Dao {
 		main_camera_pass.updateAfterFramebufferRecreate();
 		tone_mapping_pass.updateAfterFramebufferRecreate(main_camera_pass.getFrameBufferImageViews()[main_camera_pass_backup_buffer_odd]);
 		color_grading_pass.updateAfterFramebufferRecreate(main_camera_pass.getFrameBufferImageViews()[main_camera_pass_backup_buffer_even]);
-		fxaa_pass.updateAfterFramebufferRecreate(main_camera_pass.getFrameBufferImageViews()[main_camera_pass_post_proccess_buffer_odd]);
+		fxaa_pass.updateAfterFramebufferRecreate(main_camera_pass.getFrameBufferImageViews()[main_camera_pass_post_process_buffer_odd]);
 		combine_ui_pass.updateAfterFramebufferRecreate(main_camera_pass.getFrameBufferImageViews()[main_camera_pass_backup_buffer_odd], main_camera_pass.getFrameBufferImageViews()[main_camera_pass_backup_buffer_even]);
 		pick_pass.recreateFramebuffer();
 		particle_pass.updateAfterFramebufferRecreate();

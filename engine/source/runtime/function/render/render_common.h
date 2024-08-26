@@ -57,7 +57,11 @@ namespace Dao {
 	};
 
 	struct MeshPerdrawcallStorageBufferObject {
-		VulkanMeshInstance mesh_instance[s_mesh_per_drawcall_max_instance_count];
+		VulkanMeshInstance mesh_instances[s_mesh_per_drawcall_max_instance_count];
+	};
+
+	struct MeshPerdrawcallVertexBlendingStorageBufferObject {
+		Matrix4x4 joint_matrices[s_mesh_vertex_blending_max_joint_count * s_mesh_per_drawcall_max_instance_count];
 	};
 
 	struct MeshPerMaterialUniformBufferObject {

@@ -20,7 +20,7 @@ namespace Dao {
 	public:
 		enum LayoutType :uint8_t {
 			layout_type_per_mesh = 0,
-			layout_type_mesh_gloabel,
+			layout_type_mesh_global,
 			layout_type_mesh_per_material,
 			layout_type_skybox,
 			layout_type_axis,
@@ -82,21 +82,20 @@ namespace Dao {
 		void setupDescriptorSet();
 		void setupFramebufferDescriptorSet();
 		void setupSwapchainFramebuffers();
-		
+
 		void setupModelGlobalDescriptorSet();
 		void setupSkyboxDescriptorSet();
 		void setupAxisDescriptorSet();
-		void setupParticleDescriptorSet();
 		void setupGbufferLightingDescriptorSet();
 
 		void drawMeshGbuffer();
-		void drawDefferredLighting();
+		void drawDeferredLighting();
 		void drawMeshLighting();
 		void drawSkybox();
 		void drawAxis();
 
 	private:
-		std::vector<RHIFramebuffer*> m_swapchain_framebuffers;
-		std::vector<ParticlePass> m_particle_pass;
+		std::vector<RHIFramebuffer*> _swapchain_framebuffers;
+		std::shared_ptr<ParticlePass> _particle_pass;
 	};
 }

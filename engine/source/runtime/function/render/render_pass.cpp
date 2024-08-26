@@ -6,6 +6,8 @@
 
 namespace Dao {
 	
+	VisibleNodes RenderPass::m_visible_nodes;
+
 	void RenderPass::initialize(const RenderPassInitInfo* init_info) {
 		m_global_render_resource = &(std::static_pointer_cast<RenderResource>(m_render_resource)->m_global_render_resource);
 	}

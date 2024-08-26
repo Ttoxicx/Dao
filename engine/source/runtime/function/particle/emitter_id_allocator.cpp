@@ -3,6 +3,9 @@
 #include "core/base/macro.h"
 
 namespace Dao {
+
+	std::atomic<ParticleEmitterID> ParticleEmitterIDAllocator::m_next_id{ 0 };
+
 	ParticleEmitterID ParticleEmitterIDAllocator::allocate() {
 		std::atomic<ParticleEmitterID> new_emmiter = m_next_id.load();
 		m_next_id++;
