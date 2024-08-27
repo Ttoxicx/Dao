@@ -1,6 +1,8 @@
 ﻿.vs
-out
 CMakeSettings.json
-engine/bin
-engine/source/_generated
-engine/shader/_generated
+/build/
+/out/
+/engine/bin/
+/engine/source/_generated/
+/engine/shader/_generated/
+/bin/
