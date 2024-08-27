@@ -23,7 +23,7 @@ namespace Dao {
 		clear();
 	}
 
-	void RenderSystem::initialize(RenderSystemnInitInfo init_info) {
+	void RenderSystem::initialize(RenderSystemInitInfo init_info) {
 		std::shared_ptr<ConfigManager> config_manager = g_runtime_global_context.m_config_manager;
 		ASSERT(config_manager);
 		std::shared_ptr<AssetManager> asset_manager = g_runtime_global_context.m_asset_manager;

@@ -10,6 +10,7 @@ namespace Dao {
 	class ConfigManager;
 	class RenderSystem;
 	class ParticleManager;
+	class WindowSystem;
 
 	class RuntimeGlobalContext {
 	public:
@@ -22,6 +23,7 @@ namespace Dao {
 		std::shared_ptr<ConfigManager>		m_config_manager;
 		std::shared_ptr<RenderSystem>		m_render_system;
 		std::shared_ptr<ParticleManager>	m_particle_manager;
+		std::shared_ptr<WindowSystem>       m_window_system;
 	};
 	
 	extern RuntimeGlobalContext g_runtime_global_context;

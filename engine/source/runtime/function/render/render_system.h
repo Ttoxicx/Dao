@@ -19,7 +19,7 @@ namespace Dao {
 	class RenderCamera;
 	class WindowUI;
 
-	struct RenderSystemnInitInfo {
+	struct RenderSystemInitInfo {
 		std::shared_ptr<WindowSystem> window_system;
 	};
 
@@ -35,7 +35,7 @@ namespace Dao {
 		RenderSystem() = default;
 		~RenderSystem();
 
-		void initialize(RenderSystemnInitInfo init_info);
+		void initialize(RenderSystemInitInfo init_info);
 		void tick(float delta_time);
 		void clear();
 

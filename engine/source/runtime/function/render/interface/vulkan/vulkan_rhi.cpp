@@ -2977,7 +2977,7 @@ namespace Dao {
         bool is_swapchain_adequate = false;
         if (is_extension_supported) {
             SwapChainSupportDetails swapchian_support_detail = querySwapChainSupport(physical_device);
-            is_swapchain_adequate = swapchian_support_detail.formats.empty() && !swapchian_support_detail.presentModes.empty();
+            is_swapchain_adequate = !swapchian_support_detail.formats.empty() && !swapchian_support_detail.presentModes.empty();
         }
         VkPhysicalDeviceFeatures physical_device_features;
         vkGetPhysicalDeviceFeatures(physical_device, &physical_device_features);
