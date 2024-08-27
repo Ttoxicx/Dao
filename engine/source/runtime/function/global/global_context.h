@@ -14,8 +14,8 @@ namespace Dao {
 
 	class RuntimeGlobalContext {
 	public:
-		void startSystem();
-		void shutdownSystem();
+		void startSystems(const std::string& config_file_path);
+		void shutdownSystems();
 
 	public:
 		std::shared_ptr<LogSystem>			m_log_system;

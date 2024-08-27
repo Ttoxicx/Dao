@@ -8,7 +8,7 @@ namespace Dao {
 
 	void ConfigManager::initialize(const std::filesystem::path& config_file_path) {
         std::ifstream config_file(config_file_path);
-        std::string   config_line;
+        std::string config_line;
         while (std::getline(config_file, config_line)){
             size_t seperate_pos = config_line.find_first_of('=');
             if (seperate_pos > 0 && seperate_pos < (config_line.length() - 1)) {

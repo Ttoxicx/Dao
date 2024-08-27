@@ -1,11 +1,13 @@
 # glfw
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+option(GLFW_BUILD_EXAMPLES "" OFF)
+option(GLFW_BUILD_TESTS "" OFF)
+option(GLFW_BUILD_DOCS "" OFF)
+option(GLFW_INSTALL "" OFF)
 add_subdirectory(glfw)
 
 # spdlog
-set(SPDLOG_BUILD_EXAMPLE OFF CACHE BOOL "" FORCE)
+option(SPDLOG_BUILD_EXAMPLE "" OFF)
+option(SPDLOG_INSTALL "" OFF)
 add_subdirectory(spdlog)
 
 # json11

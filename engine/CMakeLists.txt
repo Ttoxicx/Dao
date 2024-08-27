@@ -15,6 +15,14 @@ else()
     message(FATAL_ERROR "Unknown Platform")
 endif()
 
+set(ASSET_DIR ${CMAKE_CURRENT_SOURCE_DIR}/asset)
+set(RESOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resource)
+set(CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/config)
+
+install(DIRECTORY "${ASSET_DIR}/" DESTINATION "asset" FILES_MATCHING PATTERN "*")
+install(DIRECTORY "${RESOURCE_DIR}/" DESTINATION "resource" FILES_MATCHING PATTERN "*")
+install(DIRECTORY "${CONFIG_DIR}/" DESTINATION "config" FILES_MATCHING PATTERN "*")
+
 set(SHADER_COMPILE_TARGET DaoShaderCompile)
 add_subdirectory(shader)
 
@@ -28,3 +36,13 @@ set(CODEGEN_TARGET "DaoPreCompile")
 include(source/precompile/precompile.cmake)
 add_dependencies(DaoRuntime "${CODEGEN_TARGET}")
 add_dependencies("${CODEGEN_TARGET}" "DaoParser")
+# TODO(find way to prohibit install tinyobjloader)
+install(
+    CODE [[
+       file(REMOVE_RECURSE 
+           ${CMAKE_INSTALL_PREFIX}/include 
+           ${CMAKE_INSTALL_PREFIX}/lib
+           ${CMAKE_INSTALL_PREFIX}/share
+       )
+    ]]
+)

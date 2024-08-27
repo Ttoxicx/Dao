@@ -10,10 +10,12 @@
 namespace Dao {
 	RuntimeGlobalContext g_runtime_global_context;
 
-	void RuntimeGlobalContext::startSystem() {
+	void RuntimeGlobalContext::startSystems(const std::string& config_file_path) {
 		m_log_system = std::make_shared<LogSystem>();
 		m_asset_manager = std::make_shared<AssetManager>();
+
 		m_config_manager = std::make_shared<ConfigManager>();
+		m_config_manager->initialize(config_file_path);
 
 		m_window_system = std::make_shared<WindowSystem>();
 		m_window_system->initialize(WindowCreateInfo());
@@ -29,7 +31,7 @@ namespace Dao {
 		m_log_system->log(LogSystem::LogLevel::warn, "Global context is not complete");
 	}
 
-	void RuntimeGlobalContext::shutdownSystem() {
+	void RuntimeGlobalContext::shutdownSystems() {
 		m_particle_manager.reset();
 
 		m_render_system->clear();

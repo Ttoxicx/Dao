@@ -9,9 +9,9 @@
 namespace Dao {
 	std::unordered_set<std::string> g_editor_tick_component_types{};
 
-	void DaoEngine::startEngine() {
+	void DaoEngine::startEngine(const std::string& config_file_path) {
 		Reflection::TypeMetaRegister::metaRegister();
-		g_runtime_global_context.startSystem();
+		g_runtime_global_context.startSystems(config_file_path);
 
 		LOG_INFO("engine start");
 	}
@@ -19,7 +19,7 @@ namespace Dao {
 	void DaoEngine::shutdownEngine() {
 		LOG_INFO("engine shutdown");
 
-		g_runtime_global_context.shutdownSystem();
+		g_runtime_global_context.shutdownSystems();
 		Reflection::TypeMetaRegister::metaUnregister();
 	}
 

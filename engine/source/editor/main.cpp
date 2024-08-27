@@ -19,9 +19,11 @@ namespace Dao {
 
 int main() {
 	
+	std::filesystem::path config_file_path = "config/DaoEditor.ini";
+
 	Dao::DaoEngine engine;
 
-	engine.startEngine();
+	engine.startEngine(config_file_path.generic_string());
 	engine.initialize();
 	engine.clear();
 	engine.shutdownEngine();
