@@ -849,10 +849,30 @@ namespace Dao {
         RHIPipeline*& pipelines
     ) {
         std::vector<VkGraphicsPipelineCreateInfo> createInfos(create_info_count);
+        std::vector<std::vector<VkSpecializationInfo>> specializationInfoListArrays(create_info_count);
+        std::vector<std::vector<VkSpecializationMapEntry>> specializationMapEntryListArrays(create_info_count);
+        std::vector<std::vector<VkPipelineShaderStageCreateInfo>> shaderStageListArrays(create_info_count);
+        std::vector<std::vector<VkVertexInputBindingDescription>> vertexBindingDescriptionListArrays(create_info_count);
+        std::vector<std::vector<VkVertexInputAttributeDescription>> vertexAttributeDescriptionListArrays(create_info_count);
+        std::vector<VkPipelineVertexInputStateCreateInfo> vertexInputStateList(create_info_count);
+        std::vector<VkPipelineInputAssemblyStateCreateInfo> inputAssemblyStateList(create_info_count);
+        std::vector<VkPipelineTessellationStateCreateInfo*> tessellationStatePtrList(create_info_count);
+        std::vector<VkPipelineTessellationStateCreateInfo> tessellationStateList(create_info_count);
+        std::vector<std::vector<VkViewport>> viewportListArrays(create_info_count);
+        std::vector<std::vector<VkRect2D>> rects2DListArrays(create_info_count);
+        std::vector<VkPipelineViewportStateCreateInfo> viewportStateList(create_info_count);
+        std::vector<VkPipelineRasterizationStateCreateInfo> rasterizationStateList(create_info_count);
+        std::vector<VkPipelineMultisampleStateCreateInfo> multisampleStateList(create_info_count);
+        std::vector<VkPipelineDepthStencilStateCreateInfo> depthStencilStateList(create_info_count);
+        std::vector<std::vector<VkPipelineColorBlendAttachmentState>> colorBlendAttachmentStateListArrays(create_info_count);
+        std::vector<VkPipelineColorBlendStateCreateInfo> colorBlendStateList(create_info_count);
+        std::vector<std::vector<VkDynamicState>> dynamincStateListArrays(create_info_count);
+        std::vector<VkPipelineDynamicStateCreateInfo> dynamincStateList(create_info_count);
         for (int k = 0; k < create_info_count; ++k) {
             const auto& create_info = &create_infos[k];
             int pipeline_shader_stage_create_info_size = create_info->stageCount;
-            std::vector<VkPipelineShaderStageCreateInfo> vk_pipeline_shader_stage_create_info_list(pipeline_shader_stage_create_info_size);
+            std::vector<VkPipelineShaderStageCreateInfo>& vk_pipeline_shader_stage_create_info_list = shaderStageListArrays[k];
+            vk_pipeline_shader_stage_create_info_list.resize(pipeline_shader_stage_create_info_size);
             int specialization_map_entry_size_total = 0;
             int specialization_info_total = 0;
             for (int i = 0; i < pipeline_shader_stage_create_info_size; ++i) {
@@ -862,8 +882,10 @@ namespace Dao {
                     specialization_map_entry_size_total += rhi_pipeline_shader_stage_create_info_element.pSpecializationInfo->mapEntryCount;
                 }
             }
-            std::vector<VkSpecializationInfo> vk_specialization_info_list(specialization_info_total);
-            std::vector<VkSpecializationMapEntry> vk_specialization_map_entry_list(specialization_map_entry_size_total);
+            std::vector<VkSpecializationInfo>& vk_specialization_info_list = specializationInfoListArrays[k];
+            vk_specialization_info_list.resize(specialization_info_total);
+            std::vector<VkSpecializationMapEntry>& vk_specialization_map_entry_list = specializationMapEntryListArrays[k];
+            specializationMapEntryListArrays.resize(specialization_map_entry_size_total);
             int specialization_map_entry_current = 0;
             int specialization_info_current = 0;
             for (int i = 0; i < pipeline_shader_stage_create_info_size; ++i) {
@@ -902,7 +924,8 @@ namespace Dao {
             }
 
             int vertex_input_binding_description_size = create_info->pVertexInputState->vertexBindingDescriptionCount;
-            std::vector<VkVertexInputBindingDescription> vk_vertex_input_binding_description_list(vertex_input_binding_description_size);
+            std::vector<VkVertexInputBindingDescription>& vk_vertex_input_binding_description_list = vertexBindingDescriptionListArrays[k];
+            specializationMapEntryListArrays.resize(vertex_input_binding_description_size);
             for (int i = 0; i < vertex_input_binding_description_size; ++i) {
                 const auto& rhi_vertex_input_binding_decription_element = create_info->pVertexInputState->pVertexBindingDescriptions[i];
                 auto& vk_vertex_input_binding_decription_element = vk_vertex_input_binding_description_list[i];
@@ -911,7 +934,8 @@ namespace Dao {
                 vk_vertex_input_binding_decription_element.inputRate = (VkVertexInputRate)rhi_vertex_input_binding_decription_element.inputRate;
             }
             int vertex_input_attribute_description_size = create_info->pVertexInputState->vertexAttributeDescriptionCount;
-            std::vector<VkVertexInputAttributeDescription> vk_vertex_input_attribute_description_list(vertex_input_attribute_description_size);
+            std::vector<VkVertexInputAttributeDescription>& vk_vertex_input_attribute_description_list = vertexAttributeDescriptionListArrays[k];
+            vertexAttributeDescriptionListArrays.resize(vertex_input_attribute_description_size);
             for (int i = 0; i < vertex_input_attribute_description_size; ++i) {
                 const auto& rhi_vertex_input_attribute_description_element = create_info->pVertexInputState->pVertexAttributeDescriptions[i];
                 auto& vk_vertex_input_attribute_description_element = vk_vertex_input_attribute_description_list[i];
@@ -920,7 +944,7 @@ namespace Dao {
                 vk_vertex_input_attribute_description_element.format = (VkFormat)rhi_vertex_input_attribute_description_element.format;
                 vk_vertex_input_attribute_description_element.offset = rhi_vertex_input_attribute_description_element.offset;
             }
-            VkPipelineVertexInputStateCreateInfo vk_pipeline_vertex_input_state_create_info{};
+            VkPipelineVertexInputStateCreateInfo& vk_pipeline_vertex_input_state_create_info = vertexInputStateList[k];
             vk_pipeline_vertex_input_state_create_info.sType = (VkStructureType)create_info->pVertexInputState->sType;
             vk_pipeline_vertex_input_state_create_info.pNext = (const void*)create_info->pVertexInputState->pNext;
             vk_pipeline_vertex_input_state_create_info.flags = (VkPipelineVertexInputStateCreateFlags)create_info->pVertexInputState->flags;
@@ -929,15 +953,15 @@ namespace Dao {
             vk_pipeline_vertex_input_state_create_info.vertexAttributeDescriptionCount = vertex_input_attribute_description_size;
             vk_pipeline_vertex_input_state_create_info.pVertexAttributeDescriptions = vk_vertex_input_attribute_description_list.data();
 
-            VkPipelineInputAssemblyStateCreateInfo vk_pipeline_input_assembly_state_create_info{};
+            VkPipelineInputAssemblyStateCreateInfo& vk_pipeline_input_assembly_state_create_info = inputAssemblyStateList[k];
             vk_pipeline_input_assembly_state_create_info.sType = (VkStructureType)create_info->pInputAssemblyState->sType;
             vk_pipeline_input_assembly_state_create_info.pNext = (const void*)create_info->pInputAssemblyState->pNext;
             vk_pipeline_input_assembly_state_create_info.flags = (VkPipelineInputAssemblyStateCreateFlags)create_info->pInputAssemblyState->flags;
             vk_pipeline_input_assembly_state_create_info.topology = (VkPrimitiveTopology)create_info->pInputAssemblyState->topology;
             vk_pipeline_input_assembly_state_create_info.primitiveRestartEnable = (VkBool32)create_info->pInputAssemblyState->primitiveRestartEnable;
 
-            const VkPipelineTessellationStateCreateInfo* vk_pipeline_tessellation_state_create_info_ptr = nullptr;
-            VkPipelineTessellationStateCreateInfo vk_pipeline_tessellation_state_create_info{};
+            VkPipelineTessellationStateCreateInfo*& vk_pipeline_tessellation_state_create_info_ptr = tessellationStatePtrList[k];
+            VkPipelineTessellationStateCreateInfo& vk_pipeline_tessellation_state_create_info = tessellationStateList[k];
             if (create_info->pTessellationState != nullptr) {
                 vk_pipeline_tessellation_state_create_info.sType = (VkStructureType)create_info->pTessellationState->sType;
                 vk_pipeline_tessellation_state_create_info.pNext = (const void*)create_info->pTessellationState->pNext;
@@ -947,7 +971,8 @@ namespace Dao {
             }
 
             int viewport_size = create_info->pViewportState->viewportCount;
-            std::vector<VkViewport> vk_viewport_list(viewport_size);
+            std::vector<VkViewport>& vk_viewport_list = viewportListArrays[k];
+            vk_viewport_list.resize(viewport_size);
             for (int i = 0; i < viewport_size; ++i) {
                 const auto& rhi_viewport_element = create_info->pViewportState->pViewports[i];
                 auto& vk_viewport_element = vk_viewport_list[i];
@@ -959,7 +984,8 @@ namespace Dao {
                 vk_viewport_element.maxDepth = rhi_viewport_element.maxDepth;
             }
             int rect_2d_size = create_info->pViewportState->scissorCount;
-            std::vector<VkRect2D> vk_rect_2d_list(rect_2d_size);
+            std::vector<VkRect2D>& vk_rect_2d_list = rects2DListArrays[k];
+            rects2DListArrays.resize(rect_2d_size);
             for (int i = 0; i < rect_2d_size; ++i) {
                 const auto& rhi_rect_2d_element = create_info->pViewportState->pScissors[i];
                 auto& vk_rect_2d_element = vk_rect_2d_list[i];
@@ -972,7 +998,7 @@ namespace Dao {
                 vk_rect_2d_element.offset = offset2d;
                 vk_rect_2d_element.extent = extend2d;
             }
-            VkPipelineViewportStateCreateInfo vk_pipeline_viewport_state_create_info{};
+            VkPipelineViewportStateCreateInfo& vk_pipeline_viewport_state_create_info = viewportStateList[k];
             vk_pipeline_viewport_state_create_info.sType = (VkStructureType)create_info->pViewportState->sType;
             vk_pipeline_viewport_state_create_info.pNext = (const void*)create_info->pViewportState->pNext;
             vk_pipeline_viewport_state_create_info.flags = (VkPipelineViewportStateCreateFlags)create_info->pVertexInputState->flags;
@@ -981,7 +1007,7 @@ namespace Dao {
             vk_pipeline_viewport_state_create_info.scissorCount = rect_2d_size;
             vk_pipeline_viewport_state_create_info.pScissors = vk_rect_2d_list.data();
 
-            VkPipelineRasterizationStateCreateInfo vk_pipeline_rasterization_state_create_info{};
+            VkPipelineRasterizationStateCreateInfo& vk_pipeline_rasterization_state_create_info = rasterizationStateList[k];
             vk_pipeline_rasterization_state_create_info.sType = (VkStructureType)create_info->pRasterizationState->sType;
             vk_pipeline_rasterization_state_create_info.pNext = (const void*)create_info->pRasterizationState->pNext;
             vk_pipeline_rasterization_state_create_info.flags = (VkPipelineRasterizationStateCreateFlags)create_info->pRasterizationState->flags;
@@ -996,7 +1022,7 @@ namespace Dao {
             vk_pipeline_rasterization_state_create_info.depthBiasSlopeFactor = create_info->pRasterizationState->depthBiasSlopeFactor;
             vk_pipeline_rasterization_state_create_info.lineWidth = create_info->pRasterizationState->lineWidth;
 
-            VkPipelineMultisampleStateCreateInfo vk_pipeline_multisample_state_create_info{};
+            VkPipelineMultisampleStateCreateInfo& vk_pipeline_multisample_state_create_info = multisampleStateList[k];
             vk_pipeline_multisample_state_create_info.sType = (VkStructureType)create_info->pMultisampleState->sType;
             vk_pipeline_multisample_state_create_info.pNext = (const void*)create_info->pMultisampleState->pNext;
             vk_pipeline_multisample_state_create_info.flags = (VkPipelineMultisampleStateCreateFlags)create_info->pMultisampleState->flags;
@@ -1023,7 +1049,7 @@ namespace Dao {
             stencil_op_state_back.compareMask = create_info->pDepthStencilState->back.compareMask;
             stencil_op_state_back.writeMask = create_info->pDepthStencilState->back.writeMask;
             stencil_op_state_back.reference = create_info->pDepthStencilState->back.reference;
-            VkPipelineDepthStencilStateCreateInfo vk_pipeline_depth_stencil_state_create_info{};
+            VkPipelineDepthStencilStateCreateInfo& vk_pipeline_depth_stencil_state_create_info = depthStencilStateList[k];
             vk_pipeline_depth_stencil_state_create_info.sType = (VkStructureType)create_info->pDepthStencilState->sType;
             vk_pipeline_depth_stencil_state_create_info.pNext = (const void*)create_info->pDepthStencilState->pNext;
             vk_pipeline_depth_stencil_state_create_info.flags = (VkPipelineDepthStencilStateCreateFlags)create_info->pDepthStencilState->flags;
@@ -1038,7 +1064,8 @@ namespace Dao {
             vk_pipeline_depth_stencil_state_create_info.maxDepthBounds = create_info->pDepthStencilState->maxDepthBounds;
 
             int pipeline_color_blend_attachment_state_size = create_info->pColorBlendState->attachmentCount;
-            std::vector<VkPipelineColorBlendAttachmentState> vk_pipeline_color_blend_attachment_state_list(pipeline_color_blend_attachment_state_size);
+            std::vector<VkPipelineColorBlendAttachmentState>& vk_pipeline_color_blend_attachment_state_list = colorBlendAttachmentStateListArrays[k];
+            vk_pipeline_color_blend_attachment_state_list.resize(pipeline_color_blend_attachment_state_size);
             for (int i = 0; i < pipeline_color_blend_attachment_state_size; ++i) {
                 const auto& rhi_pipeline_color_blend_attachment_state_element = create_info->pColorBlendState->pAttachments[i];
                 auto& vk_pipeline_color_blend_attachment_state_element = vk_pipeline_color_blend_attachment_state_list[i];
@@ -1051,7 +1078,7 @@ namespace Dao {
                 vk_pipeline_color_blend_attachment_state_element.alphaBlendOp = (VkBlendOp)rhi_pipeline_color_blend_attachment_state_element.alphaBlendOp;
                 vk_pipeline_color_blend_attachment_state_element.colorWriteMask = (VkColorComponentFlags)rhi_pipeline_color_blend_attachment_state_element.colorWriteMask;
             }
-            VkPipelineColorBlendStateCreateInfo vk_pipeline_color_blend_state_create_info{};
+            VkPipelineColorBlendStateCreateInfo& vk_pipeline_color_blend_state_create_info = colorBlendStateList[k];
             vk_pipeline_color_blend_state_create_info.sType = (VkStructureType)create_info->pColorBlendState->sType;
             vk_pipeline_color_blend_state_create_info.pNext = (const void*)create_info->pColorBlendState->pNext;
             vk_pipeline_color_blend_state_create_info.flags = (VkPipelineColorBlendStateCreateFlags)create_info->pColorBlendState->flags;
@@ -1064,13 +1091,14 @@ namespace Dao {
             }
 
             int dynamic_state_size = create_info->pDynamicState->dynamicStateCount;
-            std::vector<VkDynamicState> vk_dynamic_state_list(dynamic_state_size);
+            std::vector<VkDynamicState>& vk_dynamic_state_list = dynamincStateListArrays[k];
+            vk_dynamic_state_list.resize(dynamic_state_size);
             for (int i = 0; i < dynamic_state_size; ++i) {
                 const auto& rhi_dynamic_state_element = create_info->pDynamicState->pDynamicStates[i];
                 auto& vk_dynamic_state_element = vk_dynamic_state_list[i];
                 vk_dynamic_state_element = (VkDynamicState)rhi_dynamic_state_element;
             }
-            VkPipelineDynamicStateCreateInfo vk_pipeline_dynamic_state_create_info{};
+            VkPipelineDynamicStateCreateInfo& vk_pipeline_dynamic_state_create_info = dynamincStateList[k];
             vk_pipeline_dynamic_state_create_info.sType = (VkStructureType)create_info->pDynamicState->sType;
             vk_pipeline_dynamic_state_create_info.pNext = (const void*)create_info->pDynamicState->pNext;
             vk_pipeline_dynamic_state_create_info.flags = (VkPipelineDynamicStateCreateFlags)create_info->pDynamicState->flags;
@@ -1129,12 +1157,16 @@ namespace Dao {
         RHIPipeline*& pipelines
     ) {
         std::vector<VkComputePipelineCreateInfo> createInfos(create_info_count);
+        std::vector<VkSpecializationInfo> specializationInfoList(create_info_count);
+        std::vector<std::vector<VkSpecializationMapEntry>> specializationMapEntryListArrays(create_info_count);
+        std::vector<VkPipelineShaderStageCreateInfo> shaderStageList(create_info_count);
         for (int k = 0; k < create_info_count; ++k) {
             const auto& create_info = &create_infos[k];
-            VkPipelineShaderStageCreateInfo shader_stage_create_info{};
+            VkPipelineShaderStageCreateInfo& shader_stage_create_info = shaderStageList[k];
             if (create_info->pStage->pSpecializationInfo != nullptr) {
-                VkSpecializationInfo vk_specialization_info{};
-                std::vector<VkSpecializationMapEntry> vk_specialization_map_entry_list(create_info->pStage->pSpecializationInfo->mapEntryCount);
+                VkSpecializationInfo& vk_specialization_info = specializationInfoList[k];
+                std::vector<VkSpecializationMapEntry> vk_specialization_map_entry_list = specializationMapEntryListArrays[k];
+                vk_specialization_map_entry_list.resize(create_info->pStage->pSpecializationInfo->mapEntryCount);
                 vk_specialization_info.mapEntryCount = create_info->pStage->pSpecializationInfo->mapEntryCount;
                 vk_specialization_info.pMapEntries = vk_specialization_map_entry_list.data();
                 vk_specialization_info.dataSize = create_info->pStage->pSpecializationInfo->dataSize;

@@ -138,7 +138,7 @@ namespace Dao {
 		RHIPhysicalDeviceProperties physical_device_properties{};
 		rhi->getPhysicalDeviceProperties(&physical_device_properties);
 
-		RHISamplerCreateInfo sampler_info;
+		RHISamplerCreateInfo sampler_info{};
 		sampler_info.sType = RHI_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
 		sampler_info.magFilter = RHI_FILTER_LINEAR;
 		sampler_info.minFilter = RHI_FILTER_LINEAR;

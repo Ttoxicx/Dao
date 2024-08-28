@@ -116,7 +116,7 @@ namespace Dao {
 
 		RHIAttachmentReference shadow_pass_color_attachment_reference{};
 		shadow_pass_color_attachment_reference.attachment = &point_light_shadow_color_attachment_description - attachments;
-		shadow_pass_color_attachment_reference.layout = RHI_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		shadow_pass_color_attachment_reference.layout = RHI_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
 		RHIAttachmentReference shadow_pass_depth_stencil_attachment_reference{};
 		shadow_pass_depth_stencil_attachment_reference.attachment = &point_light_shadow_stencil_depth_attachment_description - attachments;
@@ -144,6 +144,7 @@ namespace Dao {
 		renderpass_create_info.attachmentCount = sizeof(attachments) / sizeof(attachments[0]);
 		renderpass_create_info.pAttachments = attachments;
 		renderpass_create_info.subpassCount = sizeof(subpasses) / sizeof(subpasses[0]);
+		renderpass_create_info.pSubpasses = subpasses;
 		renderpass_create_info.dependencyCount = sizeof(dependencies) / sizeof(dependencies[0]);
 		renderpass_create_info.pDependencies = dependencies;
 
