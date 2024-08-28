@@ -358,7 +358,7 @@ namespace Dao {
 		);
 		vkDestroyBuffer(static_cast<VulkanRHI*>(rhi)->m_device, inefficient_staging_buffer, nullptr);
 		vkFreeMemory(static_cast<VulkanRHI*>(rhi)->m_device, inefficient_staging_buffer_memory, nullptr);
-		genMipmappedImage(rhi, image, texture_image_width, texture_image_height, miplevels);
+		genMipmappedImage(rhi, image, texture_image_width, texture_image_height, mip_levels);
 		image_view = createImageView(
 			static_cast<VulkanRHI*>(rhi)->m_device,
 			image,
@@ -515,7 +515,7 @@ namespace Dao {
 	) {
 		VkFormatProperties format_properties;
 		vkGetPhysicalDeviceFormatProperties(
-			static_cast<VulkanRHI*>(rhi)->m_physical_device, 
+			static_cast<VulkanRHI*>(rhi)->m_physical_device,
 			image_format, &format_properties
 		);
 		if (!(format_properties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
@@ -591,7 +591,7 @@ namespace Dao {
 		barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
 		barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 		barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-		barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+		barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
 		vkCmdPipelineBarrier(
 			command_buffer,
 			VK_PIPELINE_STAGE_TRANSFER_BIT,

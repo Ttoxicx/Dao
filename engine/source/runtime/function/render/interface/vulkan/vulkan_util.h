@@ -82,7 +82,7 @@ namespace Dao {
 			uint32_t texture_image_height,
 			void* texture_image_pixels,
 			RHIFormat texture_image_format,
-			uint32_t miplevels = 0
+			uint32_t miplevels = 1
 		);
 		static void createCubeMap(
 			RHI* rhi,
@@ -93,7 +93,7 @@ namespace Dao {
 			uint32_t texture_image_height,
 			std::array<void*, 6> texture_image_pixels,
 			RHIFormat texture_image_format,
-			uint32_t miplevels
+			uint32_t miplevels = 1
 		);
 		static void generateTextureMipmaps(
 			RHI* rhi,

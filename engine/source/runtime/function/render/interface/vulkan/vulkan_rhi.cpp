@@ -504,11 +504,12 @@ namespace Dao {
         appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
         appInfo.pEngineName = "Dao";
         appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+        appInfo.apiVersion = _vulkan_api_version;
 
         VkInstanceCreateInfo instance_create_info{};
         instance_create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         instance_create_info.pApplicationInfo = &appInfo;
-        
+
         std::vector<const char*> extensions = getRequredExtensions();
         instance_create_info.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
         instance_create_info.ppEnabledExtensionNames = extensions.data();
@@ -885,7 +886,7 @@ namespace Dao {
             std::vector<VkSpecializationInfo>& vk_specialization_info_list = specializationInfoListArrays[k];
             vk_specialization_info_list.resize(specialization_info_total);
             std::vector<VkSpecializationMapEntry>& vk_specialization_map_entry_list = specializationMapEntryListArrays[k];
-            specializationMapEntryListArrays.resize(specialization_map_entry_size_total);
+            vk_specialization_map_entry_list.resize(specialization_map_entry_size_total);
             int specialization_map_entry_current = 0;
             int specialization_info_current = 0;
             for (int i = 0; i < pipeline_shader_stage_create_info_size; ++i) {
@@ -925,7 +926,7 @@ namespace Dao {
 
             int vertex_input_binding_description_size = create_info->pVertexInputState->vertexBindingDescriptionCount;
             std::vector<VkVertexInputBindingDescription>& vk_vertex_input_binding_description_list = vertexBindingDescriptionListArrays[k];
-            specializationMapEntryListArrays.resize(vertex_input_binding_description_size);
+            vk_vertex_input_binding_description_list.resize(vertex_input_binding_description_size);
             for (int i = 0; i < vertex_input_binding_description_size; ++i) {
                 const auto& rhi_vertex_input_binding_decription_element = create_info->pVertexInputState->pVertexBindingDescriptions[i];
                 auto& vk_vertex_input_binding_decription_element = vk_vertex_input_binding_description_list[i];
@@ -935,7 +936,7 @@ namespace Dao {
             }
             int vertex_input_attribute_description_size = create_info->pVertexInputState->vertexAttributeDescriptionCount;
             std::vector<VkVertexInputAttributeDescription>& vk_vertex_input_attribute_description_list = vertexAttributeDescriptionListArrays[k];
-            vertexAttributeDescriptionListArrays.resize(vertex_input_attribute_description_size);
+            vk_vertex_input_attribute_description_list.resize(vertex_input_attribute_description_size);
             for (int i = 0; i < vertex_input_attribute_description_size; ++i) {
                 const auto& rhi_vertex_input_attribute_description_element = create_info->pVertexInputState->pVertexAttributeDescriptions[i];
                 auto& vk_vertex_input_attribute_description_element = vk_vertex_input_attribute_description_list[i];
@@ -985,7 +986,7 @@ namespace Dao {
             }
             int rect_2d_size = create_info->pViewportState->scissorCount;
             std::vector<VkRect2D>& vk_rect_2d_list = rects2DListArrays[k];
-            rects2DListArrays.resize(rect_2d_size);
+            vk_rect_2d_list.resize(rect_2d_size);
             for (int i = 0; i < rect_2d_size; ++i) {
                 const auto& rhi_rect_2d_element = create_info->pViewportState->pScissors[i];
                 auto& vk_rect_2d_element = vk_rect_2d_list[i];
