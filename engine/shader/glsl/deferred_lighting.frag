@@ -48,7 +48,7 @@ layout(input_attachment_index=3,set=1,binding=3) uniform highp subpassInput in_s
 layout(set=2,binding=1) uniform samplerCube skybox_sampler;
 
 layout(location=0) in highp vec2 in_texcoord;
-layout(location=1) out highp vec4 out_color;
+layout(location=0) out highp vec4 out_color;
 
 #include "mesh_lighting.h"
 
