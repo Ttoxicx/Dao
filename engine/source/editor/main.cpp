@@ -25,6 +25,7 @@ int main() {
 
 	engine.startEngine(config_file_path.generic_string());
 	engine.initialize();
+	engine.run();
 	engine.clear();
 	engine.shutdownEngine();
 

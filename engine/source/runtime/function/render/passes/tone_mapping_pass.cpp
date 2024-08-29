@@ -190,9 +190,9 @@ namespace Dao {
         post_process_perframe_input_attachment_info.imageView = input_attachment;
         post_process_perframe_input_attachment_info.imageLayout = RHI_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
-        RHIWriteDescriptorSet post_process_descriptor_writes_info[1];
+        RHIWriteDescriptorSet post_process_descriptor_writes_info[1] = {};
         
-        RHIWriteDescriptorSet& post_process_descriptor_input_attachment_write_info = post_process_descriptor_input_attachment_write_info;
+        RHIWriteDescriptorSet& post_process_descriptor_input_attachment_write_info = post_process_descriptor_writes_info[0];
         post_process_descriptor_input_attachment_write_info.sType = RHI_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
         post_process_descriptor_input_attachment_write_info.pNext = nullptr;
         post_process_descriptor_input_attachment_write_info.dstSet = m_descriptor_infos[0].descriptor_set;

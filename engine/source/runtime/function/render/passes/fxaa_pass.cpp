@@ -62,13 +62,13 @@ namespace Dao {
 		RHIShader* frag_shader_module = m_rhi->createShaderModule(FXAA_FRAG);
 
 		RHIPipelineShaderStageCreateInfo vert_pipeline_shader_create_info{};
-		vert_pipeline_shader_create_info.sType = RHI_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+		vert_pipeline_shader_create_info.sType = RHI_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 		vert_pipeline_shader_create_info.stage = RHI_SHADER_STAGE_VERTEX_BIT;
 		vert_pipeline_shader_create_info.module = vert_shader_module;
 		vert_pipeline_shader_create_info.pName = "main";
 
 		RHIPipelineShaderStageCreateInfo frag_pipeline_shader_create_info{};
-		frag_pipeline_shader_create_info.sType = RHI_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+		frag_pipeline_shader_create_info.sType = RHI_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 		frag_pipeline_shader_create_info.stage = RHI_SHADER_STAGE_FRAGMENT_BIT;
 		frag_pipeline_shader_create_info.module = frag_shader_module;
 		frag_pipeline_shader_create_info.pName = "main";
@@ -151,6 +151,7 @@ namespace Dao {
 		RHIGraphicsPipelineCreateInfo pipeline_info{};
 		pipeline_info.sType = RHI_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
 		pipeline_info.stageCount = sizeof(shader_stages) / sizeof(shader_stages[0]);
+		pipeline_info.pStages = shader_stages;
 		pipeline_info.pVertexInputState = &vertex_input_state_create_info;
 		pipeline_info.pInputAssemblyState = &input_assembly_create_info;
 		pipeline_info.pViewportState = &viewport_state_create_info;

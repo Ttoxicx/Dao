@@ -309,20 +309,22 @@ namespace Dao {
         VkResult acquire_image_result = vkAcquireNextImageKHR(
             m_device, m_swapchain, UINT64_MAX,
             m_image_available_for_render_semaphores[m_current_frame_index],
-            VK_NULL_HANDLE, &m_current_swapchain_image_index);
+            VK_NULL_HANDLE, &m_current_swapchain_image_index
+        );
         if (acquire_image_result == VK_ERROR_OUT_OF_DATE_KHR) {
             recreateSwapchain();
             pass_update_after_recreate_swapchain();
             return RHI_SUCCESS;
         }
-        else if (acquire_image_result==VK_SUBOPTIMAL_KHR) {
+        else if (acquire_image_result == VK_SUBOPTIMAL_KHR) {
             recreateSwapchain();
             pass_update_after_recreate_swapchain();
-            VkPipelineStageFlags wait_stagesp[] = { VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT };
+            VkPipelineStageFlags wait_stages[] = { VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT };
             VkSubmitInfo submit_info{};
             submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
             submit_info.waitSemaphoreCount = 1;
             submit_info.pWaitSemaphores = &m_image_available_for_render_semaphores[m_current_frame_index];
+            submit_info.pWaitDstStageMask = wait_stages;
             submit_info.commandBufferCount = 0;
             submit_info.pCommandBuffers = nullptr;
             submit_info.signalSemaphoreCount = 0;
@@ -357,7 +359,7 @@ namespace Dao {
             LOG_ERROR("f_vkBeginCommandBuffer failed!");
             return RHI_FALSE;
         }
-        return RHI_SUCCESS;
+        return RHI_FALSE;
     }
 
     void VulkanRHI::submitRendering(std::function<void()> pass_update_after_recreate_swapchain) {

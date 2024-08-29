@@ -36,7 +36,7 @@ namespace Dao {
 		global_layout_normal_input_attachment_binding.descriptorCount = 1;
 		global_layout_normal_input_attachment_binding.stageFlags = RHI_SHADER_STAGE_FRAGMENT_BIT;
 
-		RHIDescriptorSetLayoutCreateInfo post_process_global_layout_create_info;
+		RHIDescriptorSetLayoutCreateInfo post_process_global_layout_create_info{};
 		post_process_global_layout_create_info.sType = RHI_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
 		post_process_global_layout_create_info.pNext = nullptr;
 		post_process_global_layout_create_info.bindingCount = sizeof(post_process_global_layout_bindings) / sizeof(post_process_global_layout_bindings[0]);

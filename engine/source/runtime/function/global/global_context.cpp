@@ -20,13 +20,13 @@ namespace Dao {
 		m_window_system = std::make_shared<WindowSystem>();
 		m_window_system->initialize(WindowCreateInfo());
 
+		m_particle_manager = std::make_shared<ParticleManager>();
+		m_particle_manager->initialize();
+
 		m_render_system = std::make_shared<RenderSystem>();
 		RenderSystemInitInfo render_init_info;
 		render_init_info.window_system = m_window_system;
 		m_render_system->initialize(render_init_info);
-
-		m_particle_manager = std::make_shared<ParticleManager>();
-		m_particle_manager->initialize();
 
 		m_log_system->log(LogSystem::LogLevel::warn, "Global context is not complete");
 	}
