@@ -7,6 +7,7 @@
 #include "runtime/core/meta/reflection/reflection_register.h"
 
 namespace Dao {
+	bool g_is_editor_mode{ false };
 	std::unordered_set<std::string> g_editor_tick_component_types{};
 
 	void DaoEngine::startEngine(const std::string& config_file_path) {
