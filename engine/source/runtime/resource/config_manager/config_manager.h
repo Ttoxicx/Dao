@@ -14,13 +14,10 @@ namespace Dao {
 		const std::filesystem::path& getEditorBigIconPath() const { return _editor_big_icon_path; }
 		const std::filesystem::path& getEditorSmallIconPath() const { return _editor_small_icon_path; }
 		const std::filesystem::path& getEditorFontPath() const { return _editor_font_path; }
-#ifdef ENABLE_PHYSICS_DEBUG_RENDERER
-		const std::filesystem::path& getJoltPhysicsAssetFolder() const { return _jolt_physics_asset_folder; }
-#endif
 		const std::string& getDefaultWorldUrl() const { return _default_world_url; }
 		const std::string& getGlobalRenderingResUrl() const { return _global_rendering_res_url; }
 		const std::string& getGlobalParticleResUrl() const { return _global_particle_res_url; }
-		
+
 	private:
 		std::filesystem::path _root_folder;
 		std::filesystem::path _asset_folder;
@@ -28,12 +25,9 @@ namespace Dao {
 		std::filesystem::path _editor_big_icon_path;
 		std::filesystem::path _editor_small_icon_path;
 		std::filesystem::path _editor_font_path;
-#ifdef ENABLE_PHYSICS_DEBUG_RENDERER
-		std::filesystem::path _jolt_physics_asset_folder;
-#endif
+
 		std::string _default_world_url;
 		std::string _global_rendering_res_url;
 		std::string _global_particle_res_url;
 	};
-
 }

@@ -6,10 +6,10 @@
 
 namespace Dao {
 
-	void ConfigManager::initialize(const std::filesystem::path& config_file_path) {
+    void ConfigManager::initialize(const std::filesystem::path& config_file_path) {
         std::ifstream config_file(config_file_path);
         std::string config_line;
-        while (std::getline(config_file, config_line)){
+        while (std::getline(config_file, config_line)) {
             size_t seperate_pos = config_line.find_first_of('=');
             if (seperate_pos > 0 && seperate_pos < (config_line.length() - 1)) {
                 std::string name = config_line.substr(0, seperate_pos);
@@ -41,12 +41,7 @@ namespace Dao {
                 else if (name == "GlobalParticleRes") {
                     _global_particle_res_url = value;
                 }
-#ifdef ENABLE_PHYSICS_DEBUG_RENDERER
-                else if (name == "JoltAssetFolder") {
-                    _jolt_physics_asset_folder = _root_folder / value;
-                }
-#endif
             }
         }
-	}
+    }
 }

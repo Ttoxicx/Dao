@@ -35,3 +35,20 @@ target_include_directories(stb INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/stb)
 
 # tiny_obj_loader
 add_subdirectory(tinyobjloader)
+
+# jolt
+option(TARGET_HELLO_WORLD "" OFF)
+option(TARGET_PERFORMANCE_TEST "" OFF)
+option(TARGET_SAMPLES "" OFF)
+option(TARGET_UNIT_TESTS "" OFF)
+option(TARGET_VIEWER "" OFF)
+option(TARGET_TEST_FRAMEWORK "" OFF)
+add_subdirectory(JoltPhysics/Build)
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag("-Wno-unqualified-std-cast-call" COMPILER_CHECK_UNQUALIFIED)
+    if(COMPILER_CHECK_UNQUALIFIED)
+        target_compile_options(Jolt PRIVATE "-Wno-unqualified-std-cast-call")
+    endif()
+endif()
+set_target_properties(Jolt PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
