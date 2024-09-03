@@ -56,10 +56,10 @@ namespace Dao {
 		
 		switch (m_current_render_camera_type)
 		{
-		case Dao::RenderCameraType::Editor:
+		case Dao::RenderCameraType::EDITOR:
 			view_matrix = Math::makeLookAtMatrix(position(), position() + forward(), up());
 			break;
-		case Dao::RenderCameraType::Motor:
+		case Dao::RenderCameraType::MOTOR:
 			view_matrix = m_view_matrices[MAIN_VIEW_MATRIX_INDEX];
 			break;
 		default:

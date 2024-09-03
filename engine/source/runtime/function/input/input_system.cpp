@@ -74,6 +74,9 @@ namespace Dao {
 			case GLFW_KEY_LEFT_ALT:
 				_input_command |= (unsigned int)InputCommand::LEFT_ALT;
 				break;
+			case GLFW_KEY_LEFT_SHIFT:
+				_input_command |= (unsigned int)InputCommand::LEFT_SHIFT;
+				break;
 			case GLFW_KEY_SPACE:
 				_input_command |= (unsigned int)InputCommand::SPACE;
 				break;
@@ -100,6 +103,9 @@ namespace Dao {
 				break;
 			case GLFW_KEY_Q:
 				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::Q);
+				break;
+			case GLFW_KEY_LEFT_SHIFT:
+				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::LEFT_SHIFT);
 				break;
 			case GLFW_KEY_LEFT_ALT:
 				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::LEFT_ALT);

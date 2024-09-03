@@ -12,7 +12,8 @@ namespace Dao {
 		E = 1 << 4,
 		Q = 1 << 5,
 		LEFT_ALT = 1 << 6,
-		SPACE = 1 << 7,
+		LEFT_SHIFT = 1 << 7,
+		SPACE = 1 << 8,
 		INVALID = (unsigned int)(1 << 31)
 	};
 
@@ -33,8 +34,8 @@ namespace Dao {
 		Radian m_cursor_delta_yaw{ 0 };
 		Radian m_cursor_delta_pitch{ 0 };
 
-		void resetGameCommand() { _input_command = 0; }
-		unsigned int getGameCommand() const { return _input_command; }
+		void resetInputCommand() { _input_command = 0; }
+		unsigned int getInputCommand() const { return _input_command; }
 
 	private:
 		void onKeyInGameMode(int key, int sancode, int action, int modes);

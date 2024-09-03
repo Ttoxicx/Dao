@@ -5,8 +5,6 @@
 namespace Dao {
 	
 	class Bone :public Node {
-		friend class LoDSkeleton;
-
 	public:
 		Bone();
 		void initialize(std::shared_ptr<RawBone> dinition, Bone* parent_bone);

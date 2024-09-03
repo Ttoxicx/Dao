@@ -83,7 +83,7 @@ namespace Reflection{
         MethodFunctionTuple* method_function_tuple_{{class_method_name}}=new MethodFunctionTuple(
             &TypeFieldReflectionOparator::Type{{class_name}}Operator::getMethodName_{{class_method_name}},
             &TypeFieldReflectionOparator::Type{{class_name}}Operator::invoke_{{class_method_name}});
-        REGISTER_Method_TO_MAP("{{class_name}}", method_function_tuple_{{class_method_name}});
+        REGISTER_METHOD_TO_MAP("{{class_name}}", method_function_tuple_{{class_method_name}});
         {{/class_method_defines}}
 
         {{#vector_exist}}{{#vector_defines}}ArrayFunctionTuple* array_tuple_{{vector_useful_name}} = new  ArrayFunctionTuple(

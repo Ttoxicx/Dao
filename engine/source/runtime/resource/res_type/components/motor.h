@@ -8,9 +8,9 @@ namespace Dao {
 
     enum class ControllerType : unsigned char
     {
-        none,
-        physics,
-        invalid
+        NONE,
+        PHYSICS,
+        INVALID
     };
 
     REFLECTION_TYPE(ControllerConfig);

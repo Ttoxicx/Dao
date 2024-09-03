@@ -14,6 +14,6 @@ namespace Dao {
 		static GObjectID allocate();
 
 	private:
-		static std::atomic<GObjectID> m_next_id;
+		static std::atomic<GObjectID> _next_id;
 	};
 }

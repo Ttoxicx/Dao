@@ -34,6 +34,6 @@ namespace Dao {
         std::string              m_name;
         std::string              m_definition;
 
-        std::vector<Reflection::ReflectionPtr<Component>> m_component_instances;
+        std::vector<Reflection::ReflectionPtr<Component>> m_instanced_components;
     };
 }

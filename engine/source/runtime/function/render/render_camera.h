@@ -7,14 +7,14 @@
 namespace Dao {
 
 	enum class RenderCameraType :int {
-		Editor,
-		Motor
+		EDITOR,
+		MOTOR
 	};
 
 	class RenderCamera {
 	public:
-		RenderCameraType m_current_render_camera_type{ RenderCameraType::Editor };
-		
+		RenderCameraType m_current_render_camera_type{ RenderCameraType::EDITOR };
+
 		static const Vector3 X, Y, Z;
 
 		Vector3 m_position{ 0.0f,0.0f,0.0f };
@@ -31,7 +31,7 @@ namespace Dao {
 		std::vector<Matrix4x4> m_view_matrices{ Matrix4x4::IDENTITY };
 
 		void setCurrentCameraType(RenderCameraType type);
-		void setMainViewMatrix(const Matrix4x4& view_matrix, RenderCameraType type = RenderCameraType::Editor);
+		void setMainViewMatrix(const Matrix4x4& view_matrix, RenderCameraType type = RenderCameraType::EDITOR);
 
 		void move(Vector3 delta);
 		void rotate(Vector2 delta);
