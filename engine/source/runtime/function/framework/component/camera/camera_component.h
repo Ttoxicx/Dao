@@ -38,8 +38,7 @@ namespace Dao {
 		void tickFreeCamera(float delta_time);
 
 	private:
-		META(Enable)
-		CameraComponentRes _camera_res;
+		META(Enable) CameraComponentRes _camera_res;
 		CameraMode _camera_mode{ CameraMode::INVALID };
 		Vector3 _position;
 		Vector3 _forward{ Vector3::NEGATIVE_UNIT_Y };

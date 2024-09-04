@@ -20,8 +20,9 @@ namespace Dao
         REFLECTION_BODY(Test1);
 
     public:
-        META(Enable)
-            char m_char;
+        META(Enable) char m_char;
+    private:
+        META(Enable) int xxx_xx;
     };
 
     REFLECTION_TYPE(Test2);

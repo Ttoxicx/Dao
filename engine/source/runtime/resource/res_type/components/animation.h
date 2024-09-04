@@ -35,7 +35,6 @@ namespace Dao {
         // animation to skeleton map
         float       m_frame_position; // 0-1
 
-        META(Disable)
-        AnimationResult m_animation_result;
+        META(Disable) AnimationResult m_animation_result;
     };
 }

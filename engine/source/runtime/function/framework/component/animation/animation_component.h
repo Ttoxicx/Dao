@@ -21,8 +21,7 @@ namespace Dao {
 		const Skeleton& getSkeleton() const;
 
 	protected:
-		META(Enable)
-		AnimationComponentRes m_animation_res;
+		META(Enable) AnimationComponentRes m_animation_res;
 		Skeleton m_skeleton;
 	};
 }

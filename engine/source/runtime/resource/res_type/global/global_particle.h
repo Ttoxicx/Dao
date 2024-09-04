@@ -12,8 +12,7 @@ namespace Dao {
     public:
         GlobalParticleRes() {}
 
-        META(Enable)
-        int         m_emit_gap;
+        META(Enable) int m_emit_gap;
         int         m_emit_count;
         float       m_time_step;
         float       m_max_life;

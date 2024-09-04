@@ -1,7 +1,6 @@
 #include "runtime/core/meta/test.h"
 #include "_generated/serializer/all_serializer.h"
 #include "runtime/core/meta/reflection/reflection_register.h"
-#include "runtime/core/base/macro.h"
 
 #include <filesystem>
 #include <fstream>
@@ -37,7 +36,7 @@ namespace Dao
 
         auto&& Test1_json = Json::parse(test1_context, err);
         Serializer::read(Test1_json, test1_out);
-        LOG_INFO(test1_context);
+        std::cout << (test1_context) << std::endl;
 
         auto        Test2_json_in = Serializer::write(test2_in);
         std::string test2_context = Test2_json_in.dump();
@@ -50,7 +49,7 @@ namespace Dao
         Test2  test2_out;
         auto&& test2_json = Json::parse(test2_context, err);
         Serializer::read(test2_json, test2_out);
-        LOG_INFO(test2_context.c_str());
+        std::cout << (test2_context.c_str()) << std::endl;;
 
         // reflection
         auto                       meta = TypeMetaDef(Test2, &test2_out);

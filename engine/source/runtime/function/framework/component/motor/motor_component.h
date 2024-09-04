@@ -35,8 +35,7 @@ namespace Dao {
 		float getSpeedRatio() const { return _move_speed_ratio; }
 		bool getIsMoving() const { return _is_moving; }
 
-		META(Enable)
-		void getOffStuckDead();
+		META(Enable) void getOffStuckDead();
 
 	private:
 		void calculateDesiredHorizontalMoveSpeed(unsigned int commond, float delta_time);
@@ -46,8 +45,7 @@ namespace Dao {
 		void calculateTargetPosition(const Vector3 && current_position);
 
 	private:
-		META(Enable)
-		MotorComponentRes _motor_res;
+		META(Enable) MotorComponentRes _motor_res;
 
 		float _move_speed_ratio{ 0.f };
 		float _vertical_move_speed{ 0.f };

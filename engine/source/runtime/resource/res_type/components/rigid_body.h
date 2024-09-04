@@ -24,10 +24,8 @@ namespace Dao {
         AxisAlignedBox     m_bounding_box;
         RigidBodyShapeType m_type{ RigidBodyShapeType::invalid };
 
-        META(Enable)
-        Transform m_local_transform;
-        META(Enable)
-        Reflection::ReflectionPtr<Geometry> m_geometry;
+        META(Enable) Transform m_local_transform;
+        META(Enable) Reflection::ReflectionPtr<Geometry> m_geometry;
 
         RigidBodyShape() = default;
         RigidBodyShape(const RigidBodyShape & res);

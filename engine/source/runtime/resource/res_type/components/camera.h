@@ -28,10 +28,8 @@ namespace Dao {
     {
         REFLECTION_BODY(ThirdPersonCameraParameter);
     public:
-        META(Enable)
-        float m_horizontal_offset{ 3.f };
-        META(Enable)
-        float      m_vertical_offset{ 2.5f };
+        META(Enable) float m_horizontal_offset{ 3.f };
+        META(Enable) float m_vertical_offset{ 2.5f };
         Quaternion m_cursor_pitch;
         Quaternion m_cursor_yaw;
     };

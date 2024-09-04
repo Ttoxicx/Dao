@@ -35,8 +35,7 @@ namespace Dao {
 		void tryUpdateRigidBodyComponent();
 
 	protected:
-		META(Enable)
-		Transform m_transform;
+		META(Enable) Transform m_transform;
 		Transform m_transform_buffer[2];
 		size_t m_current_index{ 0 };
 		size_t m_next_index{ 1 };
