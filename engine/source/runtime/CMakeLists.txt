@@ -31,6 +31,7 @@ target_link_libraries(${TARGET_NAME} PUBLIC ${VULKAN_LIB})
 target_link_libraries(${TARGET_NAME} PUBLIC json11)
 target_link_libraries(${TARGET_NAME} PUBLIC Jolt)
 target_link_libraries(${TARGET_NAME} PRIVATE stb)
+target_link_libraries(${TARGET_NAME} PRIVATE lua sol2)
 target_link_libraries(${TARGET_NAME} PRIVATE tinyobjloader)
 
 add_dependencies(${TARGET_NAME} ${SHADER_COMPILE_TARGET})
