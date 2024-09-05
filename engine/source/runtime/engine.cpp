@@ -1,9 +1,11 @@
 #include "runtime/engine.h"
 
+#include "runtime/core/base/macro.h"
 #include "runtime/function/global/global_context.h"
 #include "runtime/function/render/render_system.h"
 #include "runtime/function/render/window_system.h"
-#include "runtime/core/base/macro.h"
+#include "runtime/function/input/input_system.h"
+#include "runtime/function/framework/world/world_manager.h"
 #include "runtime/core/meta/reflection/reflection_register.h"
 
 namespace Dao {
@@ -63,7 +65,8 @@ namespace Dao {
 	}
 
 	void DaoEngine::logicalTick(float delta_time) {
-		
+		g_runtime_global_context.m_world_manager->tick(delta_time);
+		g_runtime_global_context.m_input_system->tick();
 	}
 
 	void DaoEngine::rendererTick(float delta_time) {

@@ -240,7 +240,7 @@ namespace Dao {
 				updateMeshData(rhi, true, index_buffer_size, index_buffer_data, vertex_buffer_size, vertex_buffer_data, joint_binding_buffer_size, joint_binding_buffer_data, mesh);
 			}
 			else {
-				updateMeshData(rhi, true, index_buffer_size, index_buffer_data, vertex_buffer_size, vertex_buffer_data, 0, nullptr, mesh);
+				updateMeshData(rhi, false, index_buffer_size, index_buffer_data, vertex_buffer_size, vertex_buffer_data, 0, nullptr, mesh);
 			}
 			return mesh;
 		}
@@ -393,6 +393,7 @@ namespace Dao {
 			material_descriptor_set_alloc_info.sType = RHI_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 			material_descriptor_set_alloc_info.pNext = nullptr;
 			material_descriptor_set_alloc_info.descriptorPool = vulkan_context->m_descriptor_pool;
+			material_descriptor_set_alloc_info.descriptorSetCount = 1;
 			material_descriptor_set_alloc_info.pSetLayouts = m_material_descriptor_set_layout;
 
 			bool success = rhi->allocateDescriptorSets(&material_descriptor_set_alloc_info, material.material_descriptor_set) == RHI_SUCCESS;
@@ -498,7 +499,7 @@ namespace Dao {
 			RHIDeviceSize vertex_varying_enable_blending_buffer_size = sizeof(MeshVertex::VulkanMeshVertexVaryingEnableBlending) * vertex_count;
 			RHIDeviceSize vertex_varying_buffer_size = sizeof(MeshVertex::VulkanMeshVertexVarying) * vertex_count;
 			RHIDeviceSize vertex_joint_binding_buffer_size = sizeof(MeshVertex::VulkanMeshVertexJointBinding) * index_count;
-			
+
 			RHIDeviceSize vertex_position_buffer_offset = 0;
 			RHIDeviceSize vertex_varying_enable_blending_buffer_offset = vertex_position_buffer_offset + vertex_position_buffer_size;
 			RHIDeviceSize vertex_varying_buffer_offset = vertex_varying_enable_blending_buffer_offset + vertex_varying_enable_blending_buffer_size;
@@ -516,10 +517,10 @@ namespace Dao {
 			);
 			void* inefficient_staging_buffer_data;
 			rhi->mapMemory(inefficient_staging_buffer_memory, 0, RHI_WHOLE_SIZE, 0, &inefficient_staging_buffer_data);
-			
+
 			uintptr_t init_address = reinterpret_cast<uintptr_t>(inefficient_staging_buffer_data);
 			MeshVertex::VulkanMeshVertexPosition* mesh_verex_positions = reinterpret_cast<MeshVertex::VulkanMeshVertexPosition*>(init_address + vertex_position_buffer_offset);
-			MeshVertex::VulkanMeshVertexVaryingEnableBlending* mesh_vertex_enable_blending_varyings = reinterpret_cast<MeshVertex::VulkanMeshVertexVaryingEnableBlending*>(init_address, vertex_varying_enable_blending_buffer_offset);
+			MeshVertex::VulkanMeshVertexVaryingEnableBlending* mesh_vertex_enable_blending_varyings = reinterpret_cast<MeshVertex::VulkanMeshVertexVaryingEnableBlending*>(init_address + vertex_varying_enable_blending_buffer_offset);
 			MeshVertex::VulkanMeshVertexVarying* mesh_vertex_varyings = reinterpret_cast<MeshVertex::VulkanMeshVertexVarying*>(init_address + vertex_varying_buffer_offset);
 			MeshVertex::VulkanMeshVertexJointBinding* mesh_vertex_joint_binding = reinterpret_cast<MeshVertex::VulkanMeshVertexJointBinding*>(init_address + vertex_joint_binding_buffer_offset);
 
@@ -552,10 +553,10 @@ namespace Dao {
 			for (uint32_t index_index = 0; index_index < index_count; ++index_index) {
 				//TODO(move to assets loading process)
 				uint32_t vertex_buffer_index = index_buffer_data[index_index];
-				mesh_vertex_joint_binding[index_index].indices[0]=joint_binding_buffer_data[vertex_buffer_index].m_index0;
-				mesh_vertex_joint_binding[index_index].indices[1]=joint_binding_buffer_data[vertex_buffer_index].m_index1;
-				mesh_vertex_joint_binding[index_index].indices[2]=joint_binding_buffer_data[vertex_buffer_index].m_index2;
-				mesh_vertex_joint_binding[index_index].indices[3]=joint_binding_buffer_data[vertex_buffer_index].m_index3;
+				mesh_vertex_joint_binding[index_index].indices[0] = joint_binding_buffer_data[vertex_buffer_index].m_index0;
+				mesh_vertex_joint_binding[index_index].indices[1] = joint_binding_buffer_data[vertex_buffer_index].m_index1;
+				mesh_vertex_joint_binding[index_index].indices[2] = joint_binding_buffer_data[vertex_buffer_index].m_index2;
+				mesh_vertex_joint_binding[index_index].indices[3] = joint_binding_buffer_data[vertex_buffer_index].m_index3;
 				float inv_total_weight = joint_binding_buffer_data[vertex_buffer_index].m_weight0 + joint_binding_buffer_data[vertex_buffer_index].m_weight1 + joint_binding_buffer_data[vertex_buffer_index].m_weight2 + joint_binding_buffer_data[vertex_buffer_index].m_weight3;
 				inv_total_weight = (inv_total_weight != 0.0) ? 1 / inv_total_weight : 1.0;
 				Vector4 weigts = Vector4(
@@ -576,13 +577,13 @@ namespace Dao {
 			buffer_info.size = vertex_position_buffer_size;
 			rhi->createBufferVMA(
 				vulkan_context->m_assets_allocator, &buffer_info, &alloc_info,
-				mesh.mesh_vertex_position_buffer, 
+				mesh.mesh_vertex_position_buffer,
 				&mesh.mesh_vertex_position_buffer_allocation, nullptr
 			);
 			buffer_info.size = vertex_varying_enable_blending_buffer_size;
 			rhi->createBufferVMA(
 				vulkan_context->m_assets_allocator, &buffer_info, &alloc_info,
-				mesh.mesh_vertex_varying_enable_blending_buffer, 
+				mesh.mesh_vertex_varying_enable_blending_buffer,
 				&mesh.mesh_vertex_varying_enable_blending_buffer_allocation, nullptr
 			);
 			buffer_info.size = vertex_varying_buffer_size;
@@ -620,10 +621,11 @@ namespace Dao {
 			rhi->freeMemory(inefficient_staging_buffer_memory);
 
 			//update descriptor set
-			RHIDescriptorSetAllocateInfo mesh_vertex_blending_per_mesh_descriptor_set_alloc_info;
+			RHIDescriptorSetAllocateInfo mesh_vertex_blending_per_mesh_descriptor_set_alloc_info{};
 			mesh_vertex_blending_per_mesh_descriptor_set_alloc_info.sType = RHI_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 			mesh_vertex_blending_per_mesh_descriptor_set_alloc_info.pNext = nullptr;
 			mesh_vertex_blending_per_mesh_descriptor_set_alloc_info.descriptorPool = vulkan_context->m_descriptor_pool;
+			mesh_vertex_blending_per_mesh_descriptor_set_alloc_info.descriptorSetCount = 1;
 			mesh_vertex_blending_per_mesh_descriptor_set_alloc_info.pSetLayouts = m_mesh_descriptor_set_layout;
 			auto success = rhi->allocateDescriptorSets(&mesh_vertex_blending_per_mesh_descriptor_set_alloc_info, mesh.mesh_vertex_blending_descriptor_set) == RHI_SUCCESS;
 			if (!success) {
@@ -679,7 +681,7 @@ namespace Dao {
 
 			uintptr_t init_address = reinterpret_cast<uintptr_t>(inefficient_staging_buffer_data);
 			MeshVertex::VulkanMeshVertexPosition* mesh_verex_positions = reinterpret_cast<MeshVertex::VulkanMeshVertexPosition*>(init_address + vertex_position_buffer_offset);
-			MeshVertex::VulkanMeshVertexVaryingEnableBlending* mesh_vertex_enable_blending_varyings = reinterpret_cast<MeshVertex::VulkanMeshVertexVaryingEnableBlending*>(init_address, vertex_varying_enable_blending_buffer_offset);
+			MeshVertex::VulkanMeshVertexVaryingEnableBlending* mesh_vertex_enable_blending_varyings = reinterpret_cast<MeshVertex::VulkanMeshVertexVaryingEnableBlending*>(init_address + vertex_varying_enable_blending_buffer_offset);
 			MeshVertex::VulkanMeshVertexVarying* mesh_vertex_varyings = reinterpret_cast<MeshVertex::VulkanMeshVertexVarying*>(init_address + vertex_varying_buffer_offset);
 
 			for (uint32_t vertex_index = 0; vertex_index < vertex_count; ++vertex_index) {
@@ -732,7 +734,7 @@ namespace Dao {
 				mesh.mesh_vertex_varying_buffer,
 				&mesh.mesh_vertex_varying_buffer_allocation, nullptr
 			);
-			
+
 			//use date from staging buffer
 			rhi->copyBuffer(
 				inefficient_staging_buffer, mesh.mesh_vertex_position_buffer,
@@ -756,6 +758,7 @@ namespace Dao {
 			mesh_vertex_blending_per_mesh_descriptor_set_alloc_info.sType = RHI_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 			mesh_vertex_blending_per_mesh_descriptor_set_alloc_info.pNext = nullptr;
 			mesh_vertex_blending_per_mesh_descriptor_set_alloc_info.descriptorPool = vulkan_context->m_descriptor_pool;
+			mesh_vertex_blending_per_mesh_descriptor_set_alloc_info.descriptorSetCount = 1;
 			mesh_vertex_blending_per_mesh_descriptor_set_alloc_info.pSetLayouts = m_mesh_descriptor_set_layout;
 			auto success = rhi->allocateDescriptorSets(&mesh_vertex_blending_per_mesh_descriptor_set_alloc_info, mesh.mesh_vertex_blending_descriptor_set) == RHI_SUCCESS;
 			if (!success) {

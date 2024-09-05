@@ -360,7 +360,7 @@ namespace Dao {
             particlebillboard_global_descriptorset_alloc_info.descriptorPool = m_rhi->getDescriptorPool();
             particlebillboard_global_descriptorset_alloc_info.descriptorSetCount = 1;
             particlebillboard_global_descriptorset_alloc_info.pSetLayouts = &m_descriptor_infos[2].layout;
-            if (m_rhi->allocateDescriptorSets(&particlebillboard_global_descriptorset_alloc_info, m_descriptor_infos[eid * 3 + 2].descriptor_set)) {
+            if (m_rhi->allocateDescriptorSets(&particlebillboard_global_descriptorset_alloc_info, m_descriptor_infos[eid * 3 + 2].descriptor_set) != RHI_SUCCESS) {
                 LOG_FATAL("failed to allocate particle billboard global descriptor set");
             }
 

@@ -62,7 +62,6 @@ namespace Dao {
 		ControllerType _controller_type{ ControllerType::NONE };
 		Controller* _controller{ nullptr };
 
-		META(Enable)
-		bool _is_moving{ false };
+		META(Enable) bool _is_moving{ false };
 	};
 }
