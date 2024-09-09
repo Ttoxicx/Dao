@@ -174,7 +174,7 @@ namespace Dao {
 				Vector3 vertex[3];
 				Vector3 normal[3];
 				Vector2 uv[3];
-				
+
 				if (nv != 3) {
 					index_offset += nv;
 					continue;
@@ -275,12 +275,13 @@ namespace Dao {
 		mesh_data.m_vertex_buffer = std::make_shared<BufferData>(mesh_vertices.size() * stride);
 		mesh_data.m_index_buffer = std::make_shared<BufferData>(mesh_vertices.size() * sizeof(uint16_t));
 		ASSERT(mesh_vertices.size() <= std::numeric_limits<uint16_t>::max());//must consistent with the index range used by vulkan
-		uint16_t* indices = (uint16_t*)mesh_data.m_index_buffer->m_data;
+		MeshVertexDataDefinition* vertices = static_cast<MeshVertexDataDefinition*>(mesh_data.m_vertex_buffer->m_data);
+		uint16_t* indices = static_cast<uint16_t*>(mesh_data.m_index_buffer->m_data);
 		for (size_t i = 0; i < mesh_vertices.size(); ++i) {
-			static_cast<MeshVertexDataDefinition*>(mesh_data.m_vertex_buffer->m_data)[i] = mesh_vertices[i];
+			vertices[i] = mesh_vertices[i];
 			indices[i] = static_cast<uint16_t>(i);
 		}
-		
+
 		return mesh_data;
 	}
 }

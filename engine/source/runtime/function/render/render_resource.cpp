@@ -45,18 +45,18 @@ namespace Dao {
 		std::array<std::shared_ptr<TextureData>, 6> irradiance_maps = {
 			irradiance_pos_x_map,
 			irradiance_neg_x_map,
-			irradiance_pos_y_map,
-			irradiance_neg_y_map,
 			irradiance_pos_z_map,
-			irradiance_neg_z_map
+			irradiance_neg_z_map,
+			irradiance_pos_y_map,
+			irradiance_neg_y_map
 		};
 		std::array<std::shared_ptr<TextureData>, 6> specular_maps = {
 			specular_pos_x_map,
 			specular_neg_x_map,
-			specular_pos_y_map,
-			specular_neg_y_map,
 			specular_pos_z_map,
-			specular_neg_z_map
+			specular_neg_z_map,
+			specular_pos_y_map,
+			specular_neg_y_map
 		};
 		createIBLTextures(rhi, irradiance_maps, specular_maps);
 

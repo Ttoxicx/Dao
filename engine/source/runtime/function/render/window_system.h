@@ -188,6 +188,7 @@ namespace Dao {
 			if (app_window) {
 				app_window->_width = width;
 				app_window->_height = height;
+				app_window->onWindowSize(width, height);
 			}
 		}
 

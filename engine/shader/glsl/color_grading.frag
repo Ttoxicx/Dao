@@ -12,9 +12,14 @@ layout(set=0,binding=1) uniform sampler2D color_grading_lut_texture_sampler;
 layout(location=0) out highp vec4 out_color;
 
 void main(){
-	highp ivec2 lut_tex_size=textureSize(color_grading_lut_texture_sampler,0);
-	highp float _COLORS=float(lut_tex_size.y);
 	highp vec4 color=subpassLoad(in_color).rgba;
-	//texture(color_grading_lut_texture_sampler,uv)
+	//highp ivec2 lut_tex_size=textureSize(color_grading_lut_texture_sampler,0);
+	//highp float _COLORS=float(lut_tex_size.y);
+	//highp float rIndex = floor(color.r * (_COLORS-1.0));
+	//highp float gIndex = floor(color.g * (_COLORS-1.0));
+	//highp float bIndex = floor(color.b * (_COLORS-1.0));
+	//highp float x = (rIndex + bIndex * _COLORS) / (_COLORS*_COLORS);
+	//highp float y = gIndex / _COLORS;
+	//out_color=texture(color_grading_lut_texture_sampler,vec2(x,y));
 	out_color=color;
 }

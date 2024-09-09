@@ -64,7 +64,7 @@ highp vec3 BRDF(highp vec3 L, highp vec3 V, highp vec3 N, highp vec3 F0, highp v
 }
 
 highp vec2 ndcxy_to_uv(highp vec2 ndcxy) {
-	return ndcxy * vec2(0.5, 0.5) * vec2(0.5, 0.5);
+	return ndcxy * vec2(0.5, 0.5) + vec2(0.5, 0.5);
 }
 
 highp vec2 uv_to_ndcxy(highp vec2 uv) {

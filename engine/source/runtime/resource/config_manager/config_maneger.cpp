@@ -26,15 +26,6 @@ namespace Dao {
                 else if (name == "DefaultWorld") {
                     _default_world_url = value;
                 }
-                else if (name == "BigIconFile") {
-                    _editor_big_icon_path = _root_folder / value;
-                }
-                else if (name == "SmallIconFile") {
-                    _editor_small_icon_path = _root_folder / value;
-                }
-                else if (name == "FontFile") {
-                    _editor_font_path = _root_folder / value;
-                }
                 else if (name == "GlobalRenderingRes") {
                     _global_rendering_res_url = value;
                 }

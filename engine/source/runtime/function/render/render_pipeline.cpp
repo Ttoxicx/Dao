@@ -52,7 +52,7 @@ namespace Dao {
 		m_particle_pass->initialize(&particle_init_info);
 
 		main_camera_pass->m_point_light_shadow_color_image_view = std::static_pointer_cast<RenderPass>(m_point_light_shadow_pass)->getFrameBufferImageViews()[0];
-		main_camera_pass->m_directional_light_shadow_color_image_view = std::static_pointer_cast<RenderPass>(m_directional_light_shadow_pass)->m_framebuffer.attachments[0].view;
+		main_camera_pass->m_directional_light_shadow_color_image_view = std::static_pointer_cast<RenderPass>(m_directional_light_shadow_pass)->getFrameBufferImageViews()[0];
 
 		MainCameraPassInitInfo main_camera_pass_init_info;
 		main_camera_pass_init_info.enable_fxaa = init_info.m_enable_fxaa;
@@ -162,7 +162,7 @@ namespace Dao {
 		ColorGradingPass& color_grading_pass = *(static_cast<ColorGradingPass*>(m_color_grading_pass.get()));
 		FXAAPass& fxaa_pass = *(static_cast<FXAAPass*>(m_fxaa_pass.get()));
 		ToneMappingPass& tone_mapping_pass = *(static_cast<ToneMappingPass*>(m_tone_mapping_pass.get()));
-		PickPass& pick_pass = *(static_cast<PickPass*>(m_ui_pass.get()));
+		PickPass& pick_pass = *(static_cast<PickPass*>(m_pick_pass.get()));
 		CombineUIPass& combine_ui_pass = *(static_cast<CombineUIPass*>(m_combine_ui_pass.get()));
 		ParticlePass& particle_pass = *(static_cast<ParticlePass*>(m_particle_pass.get()));
 		MainCameraPass& main_camera_pass = *(static_cast<MainCameraPass*>(m_main_camera_pass.get()));

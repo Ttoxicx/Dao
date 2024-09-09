@@ -28,8 +28,8 @@ void main(){
 	color=color*(1.0f/Uncharted2Tonemap(vec3(11.2f)));
 
 	//gamma correction
-	//TODO(select the VK_FORMAT_B8G8R8A8_SRGB surface format,there is no need to do gamma correction in fragment shader)
-	color=vec3(pow(color.x,1.0/2.2),pow(color.y,1.0/2.2),pow(color.z,1.0/2.2));
+	//VK_FORMAT_B8G8R8A8_SRGB surface format,there is no need to do gamma correction in fragment shader)
+	//color=vec3(pow(color.x,1.0/2.2),pow(color.y,1.0/2.2),pow(color.z,1.0/2.2));
 
 	out_color=vec4(color,1.0f);
 }

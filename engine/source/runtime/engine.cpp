@@ -57,6 +57,7 @@ namespace Dao {
 		g_runtime_global_context.m_render_system->swapLogicRenderData();
 		rendererTick(delta_time);
 
+		g_runtime_global_context.m_window_system->pollEvents();
 		g_runtime_global_context.m_window_system->setTitle(std::string("Dao - " + std::to_string(getFPS()) + " FPS").c_str());
 
 		const bool should_not_window_close = !(g_runtime_global_context.m_window_system->shouldClose());
