@@ -442,7 +442,6 @@ namespace Dao {
 
 
     void ParticlePass::createEmitter(int id, const ParticleEmitterDesc& desc) {
-        const RHIDeviceSize counter_buffer_size = sizeof(ParticleCounter);
         ParticleCounter counter;
         counter.alive_count = _emitter_buffer_batches[id].m_num_particle;
         counter.dead_count = s_max_particles - _emitter_buffer_batches[id].m_num_particle;
@@ -461,7 +460,7 @@ namespace Dao {
         }
 
         {
-            const RHIDeviceSize      indirect_argument_size = sizeof(IndirectArgument);
+            const RHIDeviceSize indirect_argument_size = sizeof(IndirectArgument);
             struct IndirectArgument indirectargument = {};
             indirectargument.alive_flap_bit = 1;
             m_rhi->createBufferAndInitialize(
@@ -475,7 +474,7 @@ namespace Dao {
             );
 
             const RHIDeviceSize alive_list_size = 4 * sizeof(uint32_t) * s_max_particles;
-            std::vector<int>   alive_indices(s_max_particles * 4, 0);
+            std::vector<int> alive_indices(s_max_particles * 4, 0);
             for (int i = 0; i < s_max_particles; ++i) {
                 alive_indices[i * 4] = i;
             }
@@ -497,7 +496,7 @@ namespace Dao {
                 alive_list_size
             );
 
-            const RHIDeviceSize   dead_list_size = 4 * sizeof(uint32_t) * s_max_particles;
+            const RHIDeviceSize dead_list_size = 4 * sizeof(uint32_t) * s_max_particles;
             std::vector<int32_t> dead_indices(s_max_particles * 4, 0);
             for (int32_t i = 0; i < s_max_particles; ++i) {
                 dead_indices[i * 4] = s_max_particles - 1 - i;
@@ -515,8 +514,8 @@ namespace Dao {
         }
 
         RHIFence* fence = nullptr;
-        ParticleCounter counter_next{};
         {
+            const RHIDeviceSize counter_buffer_size = sizeof(ParticleCounter);
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_TRANSFER_SRC_BIT | RHI_BUFFER_USAGE_TRANSFER_DST_BIT,
                 RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
@@ -601,11 +600,10 @@ namespace Dao {
             m_rhi->freeCommandBuffers(m_rhi->getCommandPool(), 1, copy_command);
         }
 
-        const VkDeviceSize stagging_buffer_size = s_max_particles * sizeof(Particle);
-        _emitter_buffer_batches[id].m_emitter_desc = desc;
-
         //fill in data
         {
+            _emitter_buffer_batches[id].m_emitter_desc = desc;
+
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_STORAGE_BUFFER_BIT,
                 RHI_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
@@ -625,6 +623,8 @@ namespace Dao {
             {
                 LOG_FATAL("failed to map emitter component res buffer");
             }
+
+            const VkDeviceSize stagging_buffer_size = s_max_particles * sizeof(Particle);
 
             m_rhi->createBufferAndInitialize(
                 RHI_BUFFER_USAGE_TRANSFER_SRC_BIT | RHI_BUFFER_USAGE_TRANSFER_DST_BIT,

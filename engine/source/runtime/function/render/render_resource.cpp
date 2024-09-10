@@ -105,7 +105,7 @@ namespace Dao {
 
 		//set ubo data
 		m_particle_collision_perframe_storage_buffer_object.view_matrix = view_matrix;
-		m_particle_collision_perframe_storage_buffer_object.proj_view_matrix = view_matrix;
+		m_particle_collision_perframe_storage_buffer_object.proj_view_matrix = proj_view_matrix;
 		m_particle_collision_perframe_storage_buffer_object.proj_inv_matrix = proj_matrix.inverse();
 		m_mesh_perframe_storage_buffer_object.proj_view_matrix = proj_view_matrix;
 		m_mesh_perframe_storage_buffer_object.camera_position = camera_position;
