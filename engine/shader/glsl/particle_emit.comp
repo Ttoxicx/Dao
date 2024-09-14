@@ -111,26 +111,17 @@ void main(){
 				particle.pos.z=emitterinfo.pos.z+rotated_pos.z;
 
 				vec4 color=texture(daotexture,vec2(1.0-rnd0,1.0-rnd1));
-				if(color.w>0.9){
-					particle.color=color;
-					fix=true;
-				}else{
-					particle.color.x=1.0-rnd0;
-					particle.color.y=1.0-rnd1;
-					particle.color.z=1.0-rnd2;
-					particle.color.w=0.0f;
+				particle.color=color;
+				vec4 rotated_vel=emitterinfo.rotation*vec4(
+					(rnd0*2-1)*emitterinfo.vel.w+emitterinfo.vel.x,
+					(rnd1*2-1)*emitterinfo.vel.w+emitterinfo.vel.y,
+					(rnd2*2-1)*emitterinfo.vel.w+emitterinfo.vel.z,
+					1
+				);
 
-					vec4 rotated_vel=emitterinfo.rotation*vec4(
-						(rnd0*2-1)*emitterinfo.vel.w+emitterinfo.vel.x,
-						(rnd1*2-1)*emitterinfo.vel.w+emitterinfo.vel.y,
-						(rnd2*2-1)*emitterinfo.vel.w+emitterinfo.vel.z,
-						1
-					);
-
-					particle.vel.x=rotated_vel.x;
-					particle.vel.y=rotated_vel.y;
-					particle.vel.z=rotated_vel.z;
-				}
+				particle.vel.x=rotated_vel.x;
+				particle.vel.y=rotated_vel.y;
+				particle.vel.z=rotated_vel.z;
 			}else{
 				//wrong emitter type
 			}

@@ -1,7 +1,7 @@
 #include "runtime/function/character/character.h"
 
 #include "runtime/engine.h"
-#include "runtime/function/framework/component/motor/motor_component.h"
+#include "runtime/function/framework/component/movement/movement_component.h"
 #include "runtime/function/framework/component/transform/transform_component.h"
 #include "runtime/function/global/global_context.h"
 #include "runtime/function/input/input_system.h"
@@ -37,9 +37,9 @@ namespace Dao {
 			return;
 		}
 
-		unsigned int command = g_runtime_global_context.m_input_system->getInputCommand();
-		if (command < (unsigned int)InputCommand::INVALID) {
-			if (((command & (unsigned int)InputCommand::LEFT_ALT) > 0) != m_is_free_camera) {
+		uint64_t command = g_runtime_global_context.m_input_system->getInputCommand();
+		if (command < (uint64_t)InputKey::INVALID) {
+			if (((command & (uint64_t)InputKey::KEY_LEFT_ALT) > 0) != m_is_free_camera) {
 				toggleFreeCamera();
 			}
 		}
@@ -51,18 +51,18 @@ namespace Dao {
 			m_rotation_dirty = false;
 		}
 
-		const MotorComponent* motor_component = m_character_object->tryGetComponentConst(MotorComponent);
-		if (motor_component == nullptr) {
+		const MovementComponent* movement_component = m_character_object->tryGetComponentConst(MovementComponent);
+		if (movement_component == nullptr) {
 			return;
 		}
 
-		if (motor_component->getIsMoving()) {
+		if (movement_component->getIsMoving()) {
 			m_rotation_buffer = m_rotation;
 			transform_component->setRotation(m_rotation_buffer);
 			m_rotation_dirty = true;
 		}
 
-		const Vector3& new_position = motor_component->getTargetPosition();
+		const Vector3& new_position = movement_component->getTargetPosition();
 		m_position = new_position;
 	}
 

@@ -1,4 +1,4 @@
-#include "runtime/function/framework/component/motor/motor_component.h"
+#include "runtime/function/framework/component/movement/movement_component.h"
 
 #include "runtime/core/base/macro.h"
 #include "runtime/function/character/character.h"
@@ -13,21 +13,21 @@
 #include "runtime/function/physics/physics_scene.h"
 
 namespace Dao {
-    MotorComponent::~MotorComponent() {
+    MovementComponent::~MovementComponent() {
         if (_controller_type == ControllerType::PHYSICS) {
             delete _controller;
             _controller = nullptr;
         }
     }
 
-    void MotorComponent::postLoadResource(std::weak_ptr<GObject> parent_object) {
+    void MovementComponent::postLoadResource(std::weak_ptr<GObject> parent_object) {
         m_parent_object = parent_object;
-        if (_motor_res.m_controller_config.getTypeName() == "PhysicsControllerConfig") {
+        if (_movement_res.m_controller_config.getTypeName() == "PhysicsControllerConfig") {
             _controller_type = ControllerType::PHYSICS;
-            PhysicsControllerConfig* controller_config = static_cast<PhysicsControllerConfig*>(_motor_res.m_controller_config);
+            PhysicsControllerConfig* controller_config = static_cast<PhysicsControllerConfig*>(_movement_res.m_controller_config);
             _controller = new CharacterController(controller_config->m_capsule_shape);
         }
-        else if (_motor_res.m_controller_config != nullptr) {
+        else if (_movement_res.m_controller_config != nullptr) {
             _controller_type = ControllerType::INVALID;
             LOG_ERROR("invalid controller type,not able to move");
         }
@@ -35,15 +35,15 @@ namespace Dao {
         _target_position = transform_component->getPosition();
     }
 
-    void MotorComponent::getOffStuckDead() {
+    void MovementComponent::getOffStuckDead() {
 
     }
 
-    void MotorComponent::tick(float delta_time) {
-        tickPlayerMotor(delta_time);
+    void MovementComponent::tick(float delta_time) {
+        tickPlayerMovement(delta_time);
     }
 
-    void MotorComponent::tickPlayerMotor(float delta_time) {
+    void MovementComponent::tickPlayerMovement(float delta_time) {
         if (!m_parent_object.lock()) {
             return;
         }
@@ -57,8 +57,8 @@ namespace Dao {
         }
         TransformComponent* transform_component = m_parent_object.lock()->tryGetComponent(TransformComponent);
         Radian turn_angle_yaw = g_runtime_global_context.m_input_system->m_cursor_delta_yaw;
-        unsigned int command = g_runtime_global_context.m_input_system->getInputCommand();
-        if (command >= (unsigned int)InputCommand::INVALID) {
+        uint64_t command = g_runtime_global_context.m_input_system->getInputCommand();
+        if (command >= (uint64_t)InputKey::INVALID) {
             return;
         }
 
@@ -71,48 +71,48 @@ namespace Dao {
         transform_component->setPosition(_target_position);
     }
 
-    void MotorComponent::calculateDesiredHorizontalMoveSpeed(unsigned int command, float delta_time) {
-        bool has_move_command = ((unsigned int)InputCommand::W | (unsigned int)InputCommand::A | (unsigned int)InputCommand::S | (unsigned int)InputCommand::D) & command;
-        bool has_sprint_command = (unsigned int)InputCommand::LEFT_SHIFT & command;
+    void MovementComponent::calculateDesiredHorizontalMoveSpeed(uint64_t command, float delta_time) {
+        bool has_move_command = ((uint64_t)InputKey::KEY_W | (uint64_t)InputKey::KEY_A | (uint64_t)InputKey::KEY_S | (uint64_t)InputKey::KEY_D) & command;
+        bool has_sprint_command = (uint64_t)InputKey::KEY_LEFT_SHIFT & command;
 
         bool  is_acceleration = false;
-        float final_acceleration = _motor_res.m_move_acceleration;
+        float final_acceleration = _movement_res.m_move_acceleration;
         float min_speed_ratio = 0.f;
         float max_speed_ratio = 0.f;
         if (has_move_command) {
             is_acceleration = true;
-            max_speed_ratio = _motor_res.m_max_move_speed_ratio;
-            if (_move_speed_ratio >= _motor_res.m_max_move_speed_ratio) {
-                final_acceleration = _motor_res.m_sprint_acceleration;
+            max_speed_ratio = _movement_res.m_max_move_speed_ratio;
+            if (_move_speed_ratio >= _movement_res.m_max_move_speed_ratio) {
+                final_acceleration = _movement_res.m_sprint_acceleration;
                 is_acceleration = has_sprint_command;
-                min_speed_ratio = _motor_res.m_max_move_speed_ratio;
-                max_speed_ratio = _motor_res.m_max_sprint_speed_ratio;
+                min_speed_ratio = _movement_res.m_max_move_speed_ratio;
+                max_speed_ratio = _movement_res.m_max_sprint_speed_ratio;
             }
         }
         else {
             is_acceleration = false;
             min_speed_ratio = 0.f;
-            max_speed_ratio = _motor_res.m_max_sprint_speed_ratio;
+            max_speed_ratio = _movement_res.m_max_sprint_speed_ratio;
         }
 
         _move_speed_ratio += (is_acceleration ? 1.0f : -1.0f) * final_acceleration * delta_time;
         _move_speed_ratio = std::clamp(_move_speed_ratio, min_speed_ratio, max_speed_ratio);
     }
 
-    void MotorComponent::calculateDesiredVerticalMoveSpeed(unsigned int command, float delta_time) {
+    void MovementComponent::calculateDesiredVerticalMoveSpeed(uint64_t command, float delta_time) {
         std::shared_ptr<PhysicsScene> physics_scene = g_runtime_global_context.m_world_manager->getCurrentActivePhysicsScene().lock();
         ASSERT(physics_scene);
 
-        if (_motor_res.m_jump_height == 0.f) {
+        if (_movement_res.m_jump_height == 0.f) {
             return;
         }
 
         const float gravity = physics_scene->getGravity().length();
 
         if (_jump_state == JumpState::IDEL) {
-            if ((unsigned int)InputCommand::SPACE & command) {
+            if ((uint64_t)InputKey::KEY_SPACE & command) {
                 _jump_state = JumpState::RISING;
-                _vertical_move_speed = Math::sqrt(_motor_res.m_jump_height * 2 * gravity);
+                _vertical_move_speed = Math::sqrt(_movement_res.m_jump_height * 2 * gravity);
                 _jump_horizontal_speed_ratio = _move_speed_ratio;
             }
             else {
@@ -127,7 +127,7 @@ namespace Dao {
         }
     }
 
-    void MotorComponent::calculateDesiredMoveDirection(unsigned int command, const Quaternion& object_rotation) {
+    void MovementComponent::calculateDesiredMoveDirection(uint64_t command, const Quaternion& object_rotation) {
         if (_jump_state == JumpState::IDEL) {
             Vector3 forward_dir = object_rotation * Vector3::NEGATIVE_UNIT_Y;
             Vector3 left_dir = object_rotation * Vector3::UNIT_X;
@@ -136,19 +136,19 @@ namespace Dao {
                 _desired_horizontal_move_direction = Vector3::ZERO;
             }
 
-            if ((unsigned int)InputCommand::W & command) {
+            if ((uint64_t)InputKey::KEY_W & command) {
                 _desired_horizontal_move_direction += forward_dir;
             }
 
-            if ((unsigned int)InputCommand::S & command) {
+            if ((uint64_t)InputKey::KEY_S & command) {
                 _desired_horizontal_move_direction -= forward_dir;
             }
 
-            if ((unsigned int)InputCommand::A & command) {
+            if ((uint64_t)InputKey::KEY_A & command) {
                 _desired_horizontal_move_direction += left_dir;
             }
 
-            if ((unsigned int)InputCommand::D & command) {
+            if ((uint64_t)InputKey::KEY_D & command) {
                 _desired_horizontal_move_direction -= left_dir;
             }
 
@@ -156,12 +156,12 @@ namespace Dao {
         }
     }
 
-    void MotorComponent::calculateDesiredDisplacement(float delta_time) {
+    void MovementComponent::calculateDesiredDisplacement(float delta_time) {
         float horizontal_speed_ratio = _jump_state == JumpState::IDEL ? _move_speed_ratio : _jump_horizontal_speed_ratio;
-        _desired_displacement = _desired_horizontal_move_direction * _motor_res.m_move_speed * horizontal_speed_ratio * delta_time + Vector3::UNIT_Z * _vertical_move_speed * delta_time;
+        _desired_displacement = _desired_horizontal_move_direction * _movement_res.m_move_speed * horizontal_speed_ratio * delta_time + Vector3::UNIT_Z * _vertical_move_speed * delta_time;
     }
 
-    void MotorComponent::calculateTargetPosition(const Vector3&& current_position) {
+    void MovementComponent::calculateTargetPosition(const Vector3&& current_position) {
         Vector3 final_position;
 
         switch (_controller_type)

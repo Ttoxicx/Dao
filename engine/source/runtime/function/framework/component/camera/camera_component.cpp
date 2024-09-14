@@ -133,8 +133,8 @@ namespace Dao {
 	}
 
 	void CameraComponent::tickFreeCamera(float delta_time) {
-		unsigned char command = g_runtime_global_context.m_input_system->getInputCommand();
-		if (command >= (unsigned char)InputCommand::INVALID) {
+		uint64_t command = g_runtime_global_context.m_input_system->getInputCommand();
+		if (command >= (uint64_t)InputKey::INVALID) {
 			return;
 		}
 		std::shared_ptr<Level> current_level = g_runtime_global_context.m_world_manager->getCurrentActiveLevel().lock();
@@ -152,20 +152,20 @@ namespace Dao {
 		_up = _forward.crossProduct(_left);
 
 
-		bool has_move_command = ((unsigned int)InputCommand::W | (unsigned int)InputCommand::A | (unsigned int)InputCommand::S | (unsigned int)InputCommand::D) & command;
+		bool has_move_command = ((uint64_t)InputKey::KEY_W | (uint64_t)InputKey::KEY_A | (uint64_t)InputKey::KEY_S | (uint64_t)InputKey::KEY_D) & command;
 
 		if (has_move_command) {
 			Vector3 move_direction = Vector3::ZERO;
-			if ((unsigned int)InputCommand::W & command) {
+			if ((uint64_t)InputKey::KEY_W & command) {
 				move_direction += _forward;
 			}
-			if ((unsigned int)InputCommand::S & command) {
+			if ((uint64_t)InputKey::KEY_S & command) {
 				move_direction -= _forward;
 			}
-			if ((unsigned int)InputCommand::A & command) {
+			if ((uint64_t)InputKey::KEY_A & command) {
 				move_direction += _left;
 			}
-			if ((unsigned int)InputCommand::D & command) {
+			if ((uint64_t)InputKey::KEY_D & command) {
 				move_direction -= _left;
 			}
 			_position += move_direction * 2.0f * delta_time;

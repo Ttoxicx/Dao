@@ -31,13 +31,13 @@ namespace Dao {
         Capsule m_capsule_shape;
     };
 
-    REFLECTION_TYPE(MotorComponentRes);
-    CLASS(MotorComponentRes, Fields)
+    REFLECTION_TYPE(MovementComponentRes);
+    CLASS(MovementComponentRes, Fields)
     {
-        REFLECTION_BODY(MotorComponentRes);
+        REFLECTION_BODY(MovementComponentRes);
     public:
-        MotorComponentRes() = default;
-        ~MotorComponentRes() {}
+        MovementComponentRes() = default;
+        ~MovementComponentRes() {}
 
         float m_move_speed{ 0.f };
         float m_jump_height{ 0.f };

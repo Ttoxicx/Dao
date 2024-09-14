@@ -11,7 +11,7 @@
 
 namespace Dao {
 
-	unsigned int k_complement_control_command = 0xFFFFFFFF;
+	uint64_t k_complement_control_command = UINT64_MAX;
 
 	void InputSystem::initialize() {
 		std::shared_ptr<WindowSystem> window_system = g_runtime_global_context.m_window_system;
@@ -32,10 +32,10 @@ namespace Dao {
 
 		std::shared_ptr<WindowSystem> window_system = g_runtime_global_context.m_window_system;
 		if (window_system->getFocusMode()) {
-			_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::INVALID);
+			_input_command &= (k_complement_control_command ^ (uint64_t)InputKey::INVALID);
 		}
 		else {
-			_input_command |= (unsigned int)InputCommand::INVALID;
+			_input_command |= (uint64_t)InputKey::INVALID;
 		}
 	}
 
@@ -52,69 +52,49 @@ namespace Dao {
 
 	void InputSystem::onKeyInGameMode(int key, int scancode, int action, int mods) {
 		if (action == GLFW_PRESS) {
-			switch (key) {
-			case GLFW_KEY_W:
-				_input_command |= (unsigned int)InputCommand::W;
-				break;
-			case GLFW_KEY_A:
-				_input_command |= (unsigned int)InputCommand::A;
-				break;
-			case GLFW_KEY_S:
-				_input_command |= (unsigned int)InputCommand::S;
-				break;
-			case GLFW_KEY_D:
-				_input_command |= (unsigned int)InputCommand::D;
-				break;
-			case GLFW_KEY_E:
-				_input_command |= (unsigned int)InputCommand::E;
-				break;
-			case GLFW_KEY_Q:
-				_input_command |= (unsigned int)InputCommand::Q;
-				break;
-			case GLFW_KEY_LEFT_ALT:
-				_input_command |= (unsigned int)InputCommand::LEFT_ALT;
-				break;
-			case GLFW_KEY_LEFT_SHIFT:
-				_input_command |= (unsigned int)InputCommand::LEFT_SHIFT;
-				break;
-			case GLFW_KEY_SPACE:
-				_input_command |= (unsigned int)InputCommand::SPACE;
-				break;
-			default:
-				break;
+			if (key >= GLFW_KEY_0 && key <= GLFW_KEY_9) {
+				_input_command |= (1ui64 << (key - GLFW_KEY_0));
+			}
+			else if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z) {
+				_input_command |= (1ui64 << (key - GLFW_KEY_A + 10));
+			}
+			else if (key >= GLFW_KEY_ESCAPE && key <= GLFW_KEY_TAB) {
+				_input_command |= (1ui64 << (key - GLFW_KEY_ESCAPE + 36));
+			}
+			else if (key >= GLFW_KEY_DELETE && key <= GLFW_KEY_UP) {
+				_input_command |= (1ui64 << (key - GLFW_KEY_DELETE + 39));
+			}
+			else if (key >= GLFW_KEY_LEFT_SHIFT && key <= GLFW_KEY_RIGHT_SUPER) {
+				_input_command |= (1ui64 << (key - GLFW_KEY_LEFT_SHIFT + 44));
+			}
+			else if (key >= GLFW_MOUSE_BUTTON_LEFT && key <= GLFW_MOUSE_BUTTON_MIDDLE) {
+				_input_command |= (1ui64 << (key - GLFW_MOUSE_BUTTON_LEFT + 52));
+			}
+			else if (key == GLFW_KEY_SPACE) {
+				_input_command |= (uint64_t)InputKey::KEY_SPACE;
 			}
 		}
 		else if (action == GLFW_RELEASE) {
-			switch (key) {
-			case GLFW_KEY_W:
-				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::W);
-				break;
-			case GLFW_KEY_A:
-				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::A);
-				break;
-			case GLFW_KEY_S:
-				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::S);
-				break;
-			case GLFW_KEY_D:
-				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::D);
-				break;
-			case GLFW_KEY_E:
-				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::E);
-				break;
-			case GLFW_KEY_Q:
-				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::Q);
-				break;
-			case GLFW_KEY_LEFT_SHIFT:
-				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::LEFT_SHIFT);
-				break;
-			case GLFW_KEY_LEFT_ALT:
-				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::LEFT_ALT);
-				break;
-			case GLFW_KEY_SPACE:
-				_input_command &= (k_complement_control_command ^ (unsigned int)InputCommand::SPACE);
-				break;
-			default:
-				break;
+			if (key >= GLFW_KEY_0 && key <= GLFW_KEY_9) {
+				_input_command &= (k_complement_control_command ^ (1ui64 << (key - GLFW_KEY_0)));
+			}
+			else if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z) {
+				_input_command &= (k_complement_control_command ^ (1ui64 << (key - GLFW_KEY_A + 10)));
+			}
+			else if (key >= GLFW_KEY_ESCAPE && key <= GLFW_KEY_TAB) {
+				_input_command &= (k_complement_control_command ^ (1ui64 << (key - GLFW_KEY_ESCAPE + 36)));
+			}
+			else if (key >= GLFW_KEY_DELETE && key <= GLFW_KEY_UP) {
+				_input_command &= (k_complement_control_command ^ (1ui64 << (key - GLFW_KEY_DELETE + 39)));
+			}
+			else if (key >= GLFW_KEY_LEFT_SHIFT && key <= GLFW_KEY_RIGHT_SUPER) {
+				_input_command &= (k_complement_control_command ^ (1ui64 << (key - GLFW_KEY_LEFT_SHIFT + 44)));
+			}
+			else if (key >= GLFW_MOUSE_BUTTON_LEFT && key <= GLFW_MOUSE_BUTTON_MIDDLE) {
+				_input_command &= (k_complement_control_command ^ (1ui64 << (key - GLFW_MOUSE_BUTTON_LEFT + 52)));
+			}
+			else if (key == GLFW_KEY_SPACE) {
+				_input_command &= (k_complement_control_command ^ (uint64_t)InputKey::KEY_SPACE);
 			}
 		}
 	}

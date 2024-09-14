@@ -1,12 +1,12 @@
 #pragma once
 
-#include "runtime/resource/res_type/components/motor.h"
+#include "runtime/resource/res_type/components/movement.h"
 #include "runtime/function/controller/character_controller.h"
 #include "runtime/function/framework/component/component.h"
 
 namespace Dao {
 
-	enum class MotorState :unsigned char {
+	enum class MovementState :unsigned char {
 		MOVING,
 		JUMPING
 	};
@@ -17,19 +17,19 @@ namespace Dao {
 		FALLING,
 	};
 
-	REFLECTION_TYPE(MotorComponent);
-	CLASS(MotorComponent:public Component, WhiteListFields, WhiteListMethods)
+	REFLECTION_TYPE(MovementComponent);
+	CLASS(MovementComponent:public Component, WhiteListFields, WhiteListMethods)
 	{
-		REFLECTION_BODY(MotorComponent);
+		REFLECTION_BODY(MovementComponent);
 	public:
-		MotorComponent() = default;
+		MovementComponent() = default;
 
-		~MotorComponent() override;
+		~MovementComponent() override;
 
 		void postLoadResource(std::weak_ptr<GObject> parent_object) override;
 
 		void tick(float delta_time) override;
-		void tickPlayerMotor(float delta_time);
+		void tickPlayerMovement(float delta_time);
 
 		const Vector3& getTargetPosition() const { return _target_position; }
 		float getSpeedRatio() const { return _move_speed_ratio; }
@@ -38,14 +38,14 @@ namespace Dao {
 		META(Enable) void getOffStuckDead();
 
 	private:
-		void calculateDesiredHorizontalMoveSpeed(unsigned int commond, float delta_time);
-		void calculateDesiredVerticalMoveSpeed(unsigned int commond, float delta_time);
-		void calculateDesiredMoveDirection(unsigned int commond, const Quaternion & object_rotation);
+		void calculateDesiredHorizontalMoveSpeed(uint64_t commond, float delta_time);
+		void calculateDesiredVerticalMoveSpeed(uint64_t commond, float delta_time);
+		void calculateDesiredMoveDirection(uint64_t commond, const Quaternion & object_rotation);
 		void calculateDesiredDisplacement(float delta_time);
 		void calculateTargetPosition(const Vector3 && current_position);
 
 	private:
-		META(Enable) MotorComponentRes _motor_res;
+		META(Enable) MovementComponentRes _movement_res;
 
 		float _move_speed_ratio{ 0.f };
 		float _vertical_move_speed{ 0.f };
@@ -56,7 +56,7 @@ namespace Dao {
 		Vector3 _jump_initial_velocity;
 		Vector3 _target_position;
 
-		MotorState _motor_state{ MotorState::MOVING };
+		MovementState _motor_state{ MovementState::MOVING };
 		JumpState  _jump_state{ JumpState::IDEL };
 
 		ControllerType _controller_type{ ControllerType::NONE };
