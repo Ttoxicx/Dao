@@ -39,7 +39,7 @@ namespace Dao {
 
 		uint64_t command = g_runtime_global_context.m_input_system->getInputCommand();
 		if (command < (uint64_t)InputKey::INVALID) {
-			if (((command & (uint64_t)InputKey::KEY_LEFT_ALT) > 0) != m_is_free_camera) {
+			if (((command & (uint64_t)InputKey::KEY_F) > 0) != m_is_free_camera) {
 				toggleFreeCamera();
 			}
 		}

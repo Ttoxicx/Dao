@@ -36,7 +36,7 @@ namespace Dao {
     }
 
     void MovementComponent::getOffStuckDead() {
-
+        LOG_INFO("invoke function test (>v<)");
     }
 
     void MovementComponent::tick(float delta_time) {

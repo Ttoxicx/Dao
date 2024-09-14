@@ -39,7 +39,7 @@ namespace Dao {
                 target_instance = component_iter->getPtr();
             }
             else {
-                LOG_ERROR("Cand find component");
+                LOG_ERROR("Can't find component");
                 return;
             }
         }

@@ -28,11 +28,11 @@ namespace Dao {
 			}
 		);
 		auto input = g_runtime_global_context.m_input_system;
-		window->registeronKeyFunc([=](int key, int scancode, int action, int mods) {
-			if (key == GLFW_KEY_LEFT_ALT && action == GLFW_PRESS) {
-				window->setFocusMode(false);
-			}
-			input->onKey(key, scancode, action, mods);
+		window->registeronKeyFunc(
+			[=](int key, int scancode, int action, int mods) {
+				if (key == GLFW_KEY_LEFT_ALT && action == GLFW_PRESS) {
+					window->setFocusMode(false);
+				}
 			}
 		);
 	}

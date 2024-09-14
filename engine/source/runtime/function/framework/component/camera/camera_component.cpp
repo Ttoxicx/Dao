@@ -121,6 +121,7 @@ namespace Dao {
 		_position = current_character->getRotation() * param->m_cursor_pitch * offset + current_character->getPosition();
 		_forward = center_pos - _position;
 		_up = current_character->getRotation() * param->m_cursor_pitch * Vector3::UNIT_Z;
+		_left = _up.crossProduct(_forward);
 
 		current_character->setRotation(q_yaw * current_character->getRotation());
 
