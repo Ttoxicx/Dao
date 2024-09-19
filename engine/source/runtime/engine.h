@@ -12,7 +12,10 @@ namespace Dao {
 	extern std::unordered_set<std::string> g_editor_tick_component_types;
 
 	class DaoEngine {
+
+		friend class DaoEditor;
 		static const float s_fps_alpha;
+
 	public:
 		void startEngine(const std::string& config_file_path);
 		void shutdownEngine();

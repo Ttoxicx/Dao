@@ -585,7 +585,7 @@ namespace Dao {
 		if (m_rhi->endCommandBufferPFN(m_rhi->getCurrentCommandBuffer()) != RHI_SUCCESS) {
 			LOG_FATAL("failed to end pick up pass command buffer");
 		}
-		if (m_rhi->resetFencesPFN(1, &m_rhi->getFenceList()[m_rhi->getCurrentFrameIndex()])) {
+		if (m_rhi->resetFencesPFN(1, &m_rhi->getFenceList()[m_rhi->getCurrentFrameIndex()]) != RHI_SUCCESS) {
 			LOG_FATAL("failed to rest pick up pass fences");
 		}
 

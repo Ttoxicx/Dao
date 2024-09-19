@@ -39,17 +39,17 @@ namespace Dao {
 		typedef std::function<void(int, int)>			onWindowSizeFunc;
 		typedef std::function<void()>					onWindowCloseFunc;
 
-		void registeronResetFunc(onResetFunc func) { _onResetFunc.push_back(func); }
-		void registeronKeyFunc(onKeyFunc func) { _onKeyFunc.push_back(func); }
-		void registeronCharFunc(onCharFunc func) { _onCharFunc.push_back(func); }
-		void registeronCharModsFunc(onCharModsFunc func) { _onCharModsFunc.push_back(func); }
-		void registeronMouseButtonFunc(onMouseButtonFunc func) { _onMouseButtonFunc.push_back(func); }
-		void registeronCursorPosFunc(onCursorPosFunc func) { _onCursorPosFunc.push_back(func); }
-		void registeronCursorEnterFunc(onCursorEnterFunc func) { _onCursorEnterFunc.push_back(func); }
-		void registeronScrollFunc(onScrollFunc func) { _onScrollFunc.push_back(func); }
-		void registeronDropFunc(onDropFunc func) { _onDropFunc.push_back(func); }
-		void registeronWindowSizeFunc(onWindowSizeFunc func) { _onWindowSizeFunc.push_back(func); }
-		void registeronWindowCloseFunc(onWindowCloseFunc func) { _onWindowCloseFunc.push_back(func); }
+		void registerOnResetFunc(onResetFunc func) { _onResetFunc.push_back(func); }
+		void registerOnKeyFunc(onKeyFunc func) { _onKeyFunc.push_back(func); }
+		void registerOnCharFunc(onCharFunc func) { _onCharFunc.push_back(func); }
+		void registerOnCharModsFunc(onCharModsFunc func) { _onCharModsFunc.push_back(func); }
+		void registerOnMouseButtonFunc(onMouseButtonFunc func) { _onMouseButtonFunc.push_back(func); }
+		void registerOnCursorPosFunc(onCursorPosFunc func) { _onCursorPosFunc.push_back(func); }
+		void registerOnCursorEnterFunc(onCursorEnterFunc func) { _onCursorEnterFunc.push_back(func); }
+		void registerOnScrollFunc(onScrollFunc func) { _onScrollFunc.push_back(func); }
+		void registerOnDropFunc(onDropFunc func) { _onDropFunc.push_back(func); }
+		void registerOnWindowSizeFunc(onWindowSizeFunc func) { _onWindowSizeFunc.push_back(func); }
+		void registerOnWindowCloseFunc(onWindowCloseFunc func) { _onWindowCloseFunc.push_back(func); }
 
 		bool isMouseButtonDown(int button) const {
 			if (button<GLFW_MOUSE_BUTTON_1 || button>GLFW_MOUSE_BUTTON_LAST) {

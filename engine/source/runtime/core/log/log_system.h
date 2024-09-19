@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 namespace Dao {
+
 	class LogSystem final {
 	public:
 		enum class LogLevel : uint8_t
@@ -46,8 +47,7 @@ namespace Dao {
 		}
 
 		template<typename... TARGS>
-		void fatalCallBack(TARGS&&... args)
-		{
+		void fatalCallBack(TARGS&&... args) {
 			const std::string format_str = fmt::format(std::forward<TARGS>(args)...);
 			throw std::runtime_error(format_str);
 		}
