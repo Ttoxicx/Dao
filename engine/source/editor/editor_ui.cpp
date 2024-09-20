@@ -470,8 +470,7 @@ namespace Dao {
         }
 
         static ImGuiTableFlags flags = ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH |
-            ImGuiTableFlags_Resizable | ImGuiTableFlags_RowBg |
-            ImGuiTableFlags_NoBordersInBody;
+            ImGuiTableFlags_Resizable | ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
 
         if (ImGui::BeginTable("File Content", 2, flags)) {
             ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
@@ -722,9 +721,11 @@ namespace Dao {
         windowContentScaleUpdate(content_scale);
         glfwSetWindowContentScaleCallback(init_info.window_system->getWindow(), windowContentScaleCallback);
 
-        // enable docking
+        // enable docking and disable save
         ImGuiIO& io = ImGui::GetIO();
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+        io.ConfigFlags |= ImGuiConfigFlags_IsSRGB;
+        io.IniFilename = nullptr;
 
         // style
         ImGuiStyle& style = ImGui::GetStyle();
@@ -739,8 +740,8 @@ namespace Dao {
 
         // setup window icon
         GLFWimage   window_icon[2];
-        std::string big_icon_path_string = config_manager->getRootFolder().generic_string() + "resource/asuka_langley.jpg";
-        std::string small_icon_path_string = config_manager->getRootFolder().generic_string() + "resource/asuka_langley.jpg";
+        std::string big_icon_path_string = config_manager->getRootFolder().generic_string() + "resource/asuka_langley.png";
+        std::string small_icon_path_string = config_manager->getRootFolder().generic_string() + "resource/ayanami_rei.png";
         window_icon[0].pixels = stbi_load(big_icon_path_string.data(), &window_icon[0].width, &window_icon[0].height, 0, 4);
         window_icon[1].pixels = stbi_load(small_icon_path_string.data(), &window_icon[1].width, &window_icon[1].height, 0, 4);
         glfwSetWindowIcon(init_info.window_system->getWindow(), 2, window_icon);
@@ -825,14 +826,12 @@ namespace Dao {
         ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
 
-        float  lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-        ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
-
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-        if (ImGui::Button("X", buttonSize))
+        if (ImGui::Button("X")) {
             values.x = resetValue;
+        }
         ImGui::PopStyleColor(3);
 
         ImGui::SameLine();
@@ -843,8 +842,9 @@ namespace Dao {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.45f, 0.2f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.55f, 0.3f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.45f, 0.2f, 1.0f });
-        if (ImGui::Button("Y", buttonSize))
+        if (ImGui::Button("Y")) {
             values.y = resetValue;
+        }
         ImGui::PopStyleColor(3);
 
         ImGui::SameLine();
@@ -855,8 +855,9 @@ namespace Dao {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-        if (ImGui::Button("Z", buttonSize))
+        if (ImGui::Button("Z")) {
             values.z = resetValue;
+        }
         ImGui::PopStyleColor(3);
 
         ImGui::SameLine();
@@ -880,13 +881,10 @@ namespace Dao {
         ImGui::PushMultiItemsWidths(4, ImGui::CalcItemWidth());
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
 
-        float  lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-        ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
-
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-        if (ImGui::Button("X", buttonSize)) {
+        if (ImGui::Button("X")) {
             values.x = resetValue;
         }
         ImGui::PopStyleColor(3);
@@ -899,7 +897,7 @@ namespace Dao {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.45f, 0.2f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.55f, 0.3f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.45f, 0.2f, 1.0f });
-        if (ImGui::Button("Y", buttonSize)) {
+        if (ImGui::Button("Y")) {
             values.y = resetValue;
         }
         ImGui::PopStyleColor(3);
@@ -912,7 +910,7 @@ namespace Dao {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-        if (ImGui::Button("Z", buttonSize)) {
+        if (ImGui::Button("Z")) {
             values.z = resetValue;
         }
         ImGui::PopStyleColor(3);
@@ -925,7 +923,7 @@ namespace Dao {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.5f, 0.25f, 0.5f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.6f, 0.35f, 0.6f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.5f, 0.25f, 0.5f, 1.0f });
-        if (ImGui::Button("W", buttonSize)) {
+        if (ImGui::Button("W")) {
             values.w = resetValue;
         }
         ImGui::PopStyleColor(3);
