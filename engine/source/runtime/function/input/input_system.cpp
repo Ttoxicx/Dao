@@ -52,6 +52,9 @@ namespace Dao {
 
 	void InputSystem::onKeyInGameMode(int key, int scancode, int action, int mods) {
 		if (action == GLFW_PRESS) {
+			if (key == GLFW_KEY_LEFT_ALT) {
+				glfwSetInputMode(g_runtime_global_context.m_window_system->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			}
 			if (key >= GLFW_KEY_0 && key <= GLFW_KEY_9) {
 				_input_command |= (1ui64 << (key - GLFW_KEY_0));
 			}
@@ -75,6 +78,9 @@ namespace Dao {
 			}
 		}
 		else if (action == GLFW_RELEASE) {
+			if (key == GLFW_KEY_LEFT_ALT) {
+				glfwSetInputMode(g_runtime_global_context.m_window_system->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			}
 			if (key >= GLFW_KEY_0 && key <= GLFW_KEY_9) {
 				_input_command &= (k_complement_control_command ^ (1ui64 << (key - GLFW_KEY_0)));
 			}

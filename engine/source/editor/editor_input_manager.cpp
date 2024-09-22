@@ -94,10 +94,10 @@ namespace Dao {
                 _editor_command |= (unsigned int)EditorCommand::camera_right;
                 break;
             case GLFW_KEY_Q:
-                _editor_command |= (unsigned int)EditorCommand::camera_up;
+                _editor_command |= (unsigned int)EditorCommand::camera_down;
                 break;
             case GLFW_KEY_E:
-                _editor_command |= (unsigned int)EditorCommand::camera_down;
+                _editor_command |= (unsigned int)EditorCommand::camera_up;
                 break;
             case GLFW_KEY_T:
                 _editor_command |= (unsigned int)EditorCommand::translation_mode;
@@ -134,10 +134,10 @@ namespace Dao {
                 _editor_command &= (k_complement_control_command ^ (unsigned int)EditorCommand::camera_right);
                 break;
             case GLFW_KEY_Q:
-                _editor_command &= (k_complement_control_command ^ (unsigned int)EditorCommand::camera_up);
+                _editor_command &= (k_complement_control_command ^ (unsigned int)EditorCommand::camera_down);
                 break;
             case GLFW_KEY_E:
-                _editor_command &= (k_complement_control_command ^ (unsigned int)EditorCommand::camera_down);
+                _editor_command &= (k_complement_control_command ^ (unsigned int)EditorCommand::camera_up);
                 break;
             case GLFW_KEY_T:
                 _editor_command &= (k_complement_control_command ^ (unsigned int)EditorCommand::translation_mode);
