@@ -1,0 +1,7 @@
+{
+  "base_colour_texture_file": "asset/texture/object/pbr/grass/albedo.png",
+  "metallic_roughness_texture_file": "asset/texture/pbr/grass/roughness.png",
+  "normal_texture_file": "asset/texture/object/pbr/grass/normal.png",
+  "occlusion_texture_file": "",
+  "emissive_texture_file": ""
+}

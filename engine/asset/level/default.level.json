@@ -1,0 +1,322 @@
+{
+  "gravity": {
+    "x": 0,
+    "y": 0,
+    "z": -15
+  },
+  "character_name": "Player",
+  "objects": [
+    {
+      "name": "Emitter",
+      "instanced_components": [
+        {
+          "$typeName": "TransformComponent",
+          "$context": {
+            "transform": {
+              "position": {
+                "x": 11,
+                "y": 3,
+                "z": 3
+              },
+              "rotation": {
+                "w": 0.70710678118654752,
+                "x": 0,
+                "y": 0,
+                "z": 0.70710678118654752
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          }
+        }
+      ],
+      "definition": "asset/object/environment/particle.object.json"
+    },
+    {
+      "name": "Player",
+      "instanced_components": [
+        {
+          "$typeName": "TransformComponent",
+          "$context": {
+            "transform": {
+              "position": {
+                "x": 3,
+                "y": 3,
+                "z": 0
+              },
+              "rotation": {
+                "w": 0.70710678118654752,
+                "x": 0,
+                "y": 0,
+                "z": 0.70710678118654752
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          }
+        }
+      ],
+      "definition": "asset/object/character/player.object.json"
+    },
+    {
+      "name": "WallWithDoor",
+      "definition": "asset/object/environment/wall_with_door.object.json",
+      "instanced_components": [
+        {
+          "$context": {
+            "transform": {
+              "position": {
+                "x": -19.083700180053711,
+                "y": 3.6104748249053955,
+                "z": 0
+              },
+              "rotation": {
+                "w": 1,
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "scale": {
+                "x": 1,
+                "y": 0.87999975681304932,
+                "z": 1
+              }
+            }
+          },
+          "$typeName": "TransformComponent"
+        }
+      ]
+    },
+    {
+      "name": "WallWithWindow",
+      "definition": "asset/object/environment/wall_with_window.object.json",
+      "instanced_components": [
+        {
+          "$context": {
+            "transform": {
+              "position": {
+                "x": -26.9268,
+                "y": -19.3617,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          "$typeName": "TransformComponent"
+        }
+      ]
+    },
+    {
+      "name": "WallBlock",
+      "definition": "asset/object/environment/wall_block.object.json",
+      "instanced_components": [
+        {
+          "$context": {
+            "transform": {
+              "position": {
+                "x": 5.70719,
+                "y": 13.5344,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          "$typeName": "TransformComponent"
+        }
+      ]
+    },
+    {
+      "name": "Stairs",
+      "definition": "asset/object/environment/stairs.object.json",
+      "instanced_components": [
+        {
+          "$context": {
+            "transform": {
+              "position": {
+                "x": 5.87136,
+                "y": -1.51802,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          "$typeName": "TransformComponent"
+        }
+      ]
+    },
+    {
+      "name": "Ground",
+      "definition": "asset/object/environment/floor.object.json",
+      "instanced_components": [
+        {
+          "$context": {
+            "transform": {
+              "rotation": {},
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            }
+          },
+          "$typeName": "TransformComponent"
+        }
+      ]
+    },
+    {
+      "name": "Fence",
+      "transform": {
+        "rotation": {},
+        "scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "definition": "asset/object/environment/fence.object.json",
+      "instanced_components": [
+        {
+          "$context": {
+            "transform": {
+              "rotation": {},
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            }
+          },
+          "$typeName": "TransformComponent"
+        }
+      ]
+    },
+    {
+      "name": "Nanosuit",
+      "definition": "asset/object/environment/nanosuit.object.json",
+      "instanced_components": [
+        {
+          "$context": {
+            "transform": {
+              "rotation": {
+                "w": 0.5,
+                "x": 0.5,
+                "y": -0.5,
+                "z": -0.5
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "position": {
+                "x": 26.17,
+                "y": -2.6,
+                "z": 0
+              }
+            }
+          },
+          "$typeName": "TransformComponent"
+        }
+      ]
+    },
+    {
+      "name": "Planet",
+      "definition": "asset/object/environment/planet.object.json",
+      "instanced_components": [
+        {
+          "$context": {
+            "transform": {
+              "rotation": {},
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "position": {
+                "x": -10,
+                "y": -15,
+                "z": 10
+              }
+            }
+          },
+          "$typeName": "TransformComponent"
+        }
+      ]
+    },
+    {
+      "name": "Rock",
+      "definition": "asset/object/environment/rock.object.json",
+      "instanced_components": [
+        {
+          "$context": {
+            "transform": {
+              "rotation": {},
+              "scale": {
+                "x": 2,
+                "y": 2,
+                "z": 2
+              },
+              "position": {
+                "x": -35,
+                "y": 10,
+                "z": 15
+              }
+            }
+          },
+          "$typeName": "TransformComponent"
+        }
+      ]
+    }
+  ]
+}

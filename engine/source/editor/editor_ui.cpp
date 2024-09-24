@@ -584,12 +584,7 @@ namespace Dao {
         }
 
         if (!g_is_editor_mode) {
-            ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Press Left Alt key to display the mouse cursor!");
-        }
-        else {
-            ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f),
-                "Current editor camera move speed: [%f]",
-                g_editor_global_context.m_input_manager->getCameraSpeed());
+            ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Press Left-Alt key to show cursor!");
         }
 
         // GetWindowPos() ----->  X--------------------------------------------O

@@ -1,0 +1,7 @@
+{
+  "name": "DefaultWorld",
+  "level_urls": [
+    "asset/level/default.level.json"
+  ],
+  "default_level_url": "asset/level/default.level.json"
+}
