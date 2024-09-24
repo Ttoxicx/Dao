@@ -24,7 +24,8 @@ namespace Dao {
 
 		GlobalParticleRes global_particle_res;
 		const std::string& global_particle_res_url = config_manager->getGlobalParticleResUrl();
-		ASSERT(asset_manager->loadAsset(global_particle_res_url, global_particle_res));
+		bool success = asset_manager->loadAsset(global_particle_res_url, global_particle_res);
+		ASSERT(success);
 
 		if (global_particle_res.m_emit_gap < 0) {
 			LOG_ERROR("emit_gap should >= 0");
