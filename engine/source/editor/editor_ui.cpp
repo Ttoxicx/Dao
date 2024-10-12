@@ -278,14 +278,15 @@ namespace Dao {
 
         if (ImGui::BeginMenuBar()) {
             if (ImGui::BeginMenu("Menu")) {
-                if (ImGui::MenuItem("Reload Current Level")) {
+                //TODO(fix save and reload)
+                /*if (ImGui::MenuItem("Reload Current Level")) {
                     g_runtime_global_context.m_world_manager->reloadCurrentLevel();
                     g_runtime_global_context.m_render_system->clearForLevelReloading();
                     g_editor_global_context.m_scene_manager->onGObjectSelected(k_invalid_gobject_id);
                 }
                 if (ImGui::MenuItem("Save Current Level")) {
                     g_runtime_global_context.m_world_manager->saveCurrentLevel();
-                }
+                }*/
                 if (ImGui::MenuItem("Exit")) {
                     g_editor_global_context.m_engine_runtime->shutdownEngine();
                     exit(0);
